@@ -12,7 +12,7 @@ public class AboutEquality {
         Object object = new Object();
         Object sameObject = object;
         assertEquals(object == sameObject, true);
-        assertEquals(object == new Object(), false);
+        assertEquals(object == new Object(), false); 
     }
 
     @Koan
