@@ -1,5 +1,6 @@
 package edu.pdx.cs410J.betruong;
 
+import edu.pdx.cs410J.InvokeMainTestCase;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -38,5 +39,12 @@ public class PhoneCallTest {
     PhoneCall call = new PhoneCall();
     assertThat(call.getBeginTime(), is(nullValue()));
   }
-  
+
+  // beginning of my own work
+  @Test
+  void testNoArguments(){
+
+  }
+
+
 }
