@@ -3,6 +3,8 @@ package edu.pdx.cs410J.betruong;
 import edu.pdx.cs410J.InvokeMainTestCase;
 import org.junit.jupiter.api.Test;
 
+import static edu.pdx.cs410J.betruong.PhoneCall.UnrecognizedPhoneNumberException;
+import static edu.pdx.cs410J.betruong.PhoneCall.validatePhoneNumber;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -23,7 +25,7 @@ public class PhoneCallTest {
   // beginning of my own work
 
   @Test
-  void createPhoneCallGetsCorrectCaller() {
+  void createPhoneCallGetsCorrectCaller() throws PhoneCall.UnrecognizedPhoneNumberException {
     String caller = "123-456-7890";
     String callee = "113-456-7890";
     String beginTime = "3/15/2022";
@@ -34,7 +36,7 @@ public class PhoneCallTest {
     assertThat(call.getCaller(), is(caller));
   }
   @Test
-  void createPhoneCallGetsCorrectCallee() {
+  void createPhoneCallGetsCorrectCallee() throws PhoneCall.UnrecognizedPhoneNumberException {
     String caller = "123-456-7890";
     String callee = "113-456-7890";
     String beginTime = "3/15/2022";
@@ -45,7 +47,7 @@ public class PhoneCallTest {
     assertThat(call.getCallee(), is(callee));
   }
   @Test
-  void createPhoneCallGetsCorrectBeginTime() {
+  void createPhoneCallGetsCorrectBeginTime() throws PhoneCall.UnrecognizedPhoneNumberException {
     String caller = "123-456-7890";
     String callee = "113-456-7890";
     String beginTime = "3/15/2022";
@@ -56,7 +58,7 @@ public class PhoneCallTest {
     assertThat(call.getBeginTimeString(), equalTo(beginTime + " " + beginDate));
   }
   @Test
-  void createPhoneCallGetsCorrectEndTime() {
+  void createPhoneCallGetsCorrectEndTime() throws PhoneCall.UnrecognizedPhoneNumberException {
     String caller = "123-456-7890";
     String callee = "113-456-7890";
     String beginTime = "3/15/2022";
@@ -65,6 +67,17 @@ public class PhoneCallTest {
     String endDate = "1:03";
     PhoneCall call = new PhoneCall(caller,callee, beginTime, beginDate, endTime, endDate);
     assertThat(call.getEndTimeString(), equalTo(endTime + " " + endDate));
+  }
+
+  @Test
+  void inputWrongCallerFormatThrowUnrecognizedPhoneNumberException(){
+    String caller = "fdsf";
+    assertThrows(UnrecognizedPhoneNumberException.class, () -> PhoneCall.validatePhoneNumber(caller));
+  }
+  @Test
+  void inputCorrectCallerFormatThrowUnrecognizedPhoneNumberException() throws UnrecognizedPhoneNumberException {
+    String caller = "123-456-7890";
+    assertThat(caller, equalTo(PhoneCall.validatePhoneNumber(caller)));
   }
 
 

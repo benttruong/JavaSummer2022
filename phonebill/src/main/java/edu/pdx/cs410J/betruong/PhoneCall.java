@@ -3,6 +3,8 @@ package edu.pdx.cs410J.betruong;
 import com.google.common.annotations.VisibleForTesting;
 import edu.pdx.cs410J.AbstractPhoneCall;
 
+import java.util.regex.*;
+
 public class PhoneCall extends AbstractPhoneCall {
 
   private final String caller;
@@ -15,8 +17,8 @@ public class PhoneCall extends AbstractPhoneCall {
 
   // method to construct PhoneCall with information from command lines:
   @VisibleForTesting
-  public PhoneCall(String caller, String callee, String beginTime, String beginDate, String endTime, String endDate) {
-    this.caller = caller;
+  public PhoneCall(String caller, String callee, String beginTime, String beginDate, String endTime, String endDate) throws UnrecognizedPhoneNumberException {
+    this.caller = validatePhoneNumber(caller);
     this.callee = callee;
     this.beginTime = beginTime;
     this.beginDate = beginDate;
@@ -53,4 +55,15 @@ public class PhoneCall extends AbstractPhoneCall {
   public String getEndTimeString() {
     return endTime + " " + endDate;
   }
+  @VisibleForTesting
+  static String validatePhoneNumber(String number) throws UnrecognizedPhoneNumberException {
+    Pattern p = Pattern.compile("^\\d{3}-\\d{3}-\\d{4}$");
+    Matcher m = p.matcher(number);
+    if (!m.matches())
+      throw new UnrecognizedPhoneNumberException();
+    else
+      return number;
+  }
+  @VisibleForTesting
+  static class UnrecognizedPhoneNumberException extends Exception{}
 }
