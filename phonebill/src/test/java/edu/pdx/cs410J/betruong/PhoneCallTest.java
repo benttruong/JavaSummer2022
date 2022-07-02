@@ -26,37 +26,45 @@ public class PhoneCallTest {
   void createPhoneCallGetsCorrectCaller() {
     String caller = "123-456-7890";
     String callee = "113-456-7890";
-    String beginTime = "3/15/2022 10:39";
-    String endTime = "03/2/2022 1:03";
-    PhoneCall call = new PhoneCall(caller,callee, beginTime, endTime);
+    String beginTime = "3/15/2022";
+    String endTime = "03/2/2022";
+    String beginDate = "10:39";
+    String endDate = "1:03";
+    PhoneCall call = new PhoneCall(caller,callee, beginTime, beginDate, endTime, endDate);
     assertThat(call.getCaller(), is(caller));
   }
   @Test
   void createPhoneCallGetsCorrectCallee() {
     String caller = "123-456-7890";
     String callee = "113-456-7890";
-    String beginTime = "3/15/2022 10:39";
-    String endTime = "03/2/2022 1:03";
-    PhoneCall call = new PhoneCall(caller,callee, beginTime, endTime);
+    String beginTime = "3/15/2022";
+    String endTime = "03/2/2022";
+    String beginDate = "10:39";
+    String endDate = "1:03";
+    PhoneCall call = new PhoneCall(caller,callee, beginTime, beginDate, endTime, endDate);
     assertThat(call.getCallee(), is(callee));
   }
   @Test
   void createPhoneCallGetsCorrectBeginTime() {
     String caller = "123-456-7890";
     String callee = "113-456-7890";
-    String beginTime = "3/15/2022 10:39";
-    String endTime = "03/2/2022 1:03";
-    PhoneCall call = new PhoneCall(caller,callee, beginTime, endTime);
-    assertThat(call.getBeginTimeString(), is(beginTime));
+    String beginTime = "3/15/2022";
+    String endTime = "03/2/2022";
+    String beginDate = "10:39";
+    String endDate = "1:03";
+    PhoneCall call = new PhoneCall(caller,callee, beginTime, beginDate, endTime, endDate);
+    assertThat(call.getBeginTimeString(), equalTo(beginTime + " " + beginDate));
   }
   @Test
   void createPhoneCallGetsCorrectEndTime() {
     String caller = "123-456-7890";
     String callee = "113-456-7890";
-    String beginTime = "3/15/2022 10:39";
-    String endTime = "03/2/2022 1:03";
-    PhoneCall call = new PhoneCall(caller,callee, beginTime, endTime);
-    assertThat(call.getEndTimeString(), is(endTime));
+    String beginTime = "3/15/2022";
+    String endTime = "03/2/2022";
+    String beginDate = "10:39";
+    String endDate = "1:03";
+    PhoneCall call = new PhoneCall(caller,callee, beginTime, beginDate, endTime, endDate);
+    assertThat(call.getEndTimeString(), equalTo(endTime + " " + endDate));
   }
 
 
