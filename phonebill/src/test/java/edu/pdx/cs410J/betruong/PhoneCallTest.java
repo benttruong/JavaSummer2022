@@ -14,26 +14,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  */
 public class PhoneCallTest {
 
-  /**
-   * This unit test will need to be modified (likely deleted) as you implement
-   * your project.
-   */
-  @Test
-  void getBeginTimeStringNeedsToBeImplemented() {
-    PhoneCall call = new PhoneCall();
-    assertThrows(UnsupportedOperationException.class, call::getBeginTimeString);
-  }
-
-  /**
-   * This unit test will need to be modified (likely deleted) as you implement
-   * your project.
-   */
-  @Test
-  void initiallyAllPhoneCallsHaveTheSameCallee() {
-    PhoneCall call = new PhoneCall();
-    assertThat(call.getCallee(), containsString("not implemented"));
-  }
-
   @Test
   void forProject1ItIsOkayIfGetBeginTimeReturnsNull() {
     PhoneCall call = new PhoneCall();
@@ -41,10 +21,45 @@ public class PhoneCallTest {
   }
 
   // beginning of my own work
-  @Test
-  void testNoArguments(){
 
+  @Test
+  void createPhoneCallGetsCorrectCaller() {
+    String caller = "123-456-7890";
+    String callee = "113-456-7890";
+    String beginTime = "3/15/2022 10:39";
+    String endTime = "03/2/2022 1:03";
+    PhoneCall call = new PhoneCall(caller,callee, beginTime, endTime);
+    assertThat(call.getCaller(), is(caller));
   }
+  @Test
+  void createPhoneCallGetsCorrectCallee() {
+    String caller = "123-456-7890";
+    String callee = "113-456-7890";
+    String beginTime = "3/15/2022 10:39";
+    String endTime = "03/2/2022 1:03";
+    PhoneCall call = new PhoneCall(caller,callee, beginTime, endTime);
+    assertThat(call.getCallee(), is(callee));
+  }
+  @Test
+  void createPhoneCallGetsCorrectBeginTime() {
+    String caller = "123-456-7890";
+    String callee = "113-456-7890";
+    String beginTime = "3/15/2022 10:39";
+    String endTime = "03/2/2022 1:03";
+    PhoneCall call = new PhoneCall(caller,callee, beginTime, endTime);
+    assertThat(call.getBeginTimeString(), is(beginTime));
+  }
+  @Test
+  void createPhoneCallGetsCorrectEndTime() {
+    String caller = "123-456-7890";
+    String callee = "113-456-7890";
+    String beginTime = "3/15/2022 10:39";
+    String endTime = "03/2/2022 1:03";
+    PhoneCall call = new PhoneCall(caller,callee, beginTime, endTime);
+    assertThat(call.getEndTimeString(), is(endTime));
+  }
+
+
 
 
 }
