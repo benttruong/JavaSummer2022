@@ -25,7 +25,7 @@ public class PhoneCallTest {
   // beginning of my own work
 
   @Test
-  void createPhoneCallGetsCorrectCaller() throws PhoneCall.UnrecognizedPhoneNumberException, UnrecognizedDateFormatException {
+  void createPhoneCallGetsCorrectCaller() throws PhoneCall.UnrecognizedPhoneNumberException, UnrecognizedDateFormatException, PhoneCall.UnrecognizedTimeFormatException {
     String caller = "123-456-7890";
     String callee = "113-456-7890";
     String beginTime = "10:39";
@@ -36,7 +36,7 @@ public class PhoneCallTest {
     assertThat(call.getCaller(), is(caller));
   }
   @Test
-  void createPhoneCallGetsCorrectCallee() throws PhoneCall.UnrecognizedPhoneNumberException, UnrecognizedDateFormatException {
+  void createPhoneCallGetsCorrectCallee() throws PhoneCall.UnrecognizedPhoneNumberException, UnrecognizedDateFormatException, PhoneCall.UnrecognizedTimeFormatException {
     String caller = "123-456-7890";
     String callee = "113-456-7890";
     String beginTime = "10:39";
@@ -47,7 +47,7 @@ public class PhoneCallTest {
     assertThat(call.getCallee(), is(callee));
   }
   @Test
-  void createPhoneCallGetsCorrectBeginTime() throws PhoneCall.UnrecognizedPhoneNumberException, UnrecognizedDateFormatException {
+  void createPhoneCallGetsCorrectBeginTime() throws PhoneCall.UnrecognizedPhoneNumberException, UnrecognizedDateFormatException, PhoneCall.UnrecognizedTimeFormatException {
     String caller = "123-456-7890";
     String callee = "113-456-7890";
     String beginTime = "10:39";
@@ -58,7 +58,7 @@ public class PhoneCallTest {
     assertThat(call.getBeginTimeString(), equalTo(beginTime + " " + beginDate));
   }
   @Test
-  void createPhoneCallGetsCorrectEndTime() throws PhoneCall.UnrecognizedPhoneNumberException, UnrecognizedDateFormatException {
+  void createPhoneCallGetsCorrectEndTime() throws PhoneCall.UnrecognizedPhoneNumberException, UnrecognizedDateFormatException, PhoneCall.UnrecognizedTimeFormatException {
     String caller = "123-456-7890";
     String callee = "113-456-7890";
     String beginTime = "10:39";
@@ -75,7 +75,7 @@ public class PhoneCallTest {
     assertThrows(PhoneCall.UnrecognizedPhoneNumberException.class, () -> PhoneCall.validatePhoneNumber(caller));
   }
   @Test
-  void inputCorrectPhoneNumberFormatThrowUnrecognizedPhoneNumberException() throws UnrecognizedPhoneNumberException {
+  void inputCorrectPhoneNumberFormatReturnsSamePhoneNumber() throws UnrecognizedPhoneNumberException {
     String caller = "123-456-7890";
     assertThat(caller, equalTo(PhoneCall.validatePhoneNumber(caller)));
   }
@@ -87,11 +87,22 @@ public class PhoneCallTest {
   }
 
   @Test
-  void inputCorrectDateFormatThrowUnrecognizedDateFormatException() throws UnrecognizedDateFormatException {
+  void inputCorrectDateFormatReturnsSameDate() throws UnrecognizedDateFormatException {
     String date = "03/20/1993";
     assertThat(date, equalTo(PhoneCall.validateDate(date)));
   }
 
+  @Test
+  void inputWrongTimeFormatThrowUnrecognizedTimeFormatException(){
+    String time = "25:61";
+    assertThrows(PhoneCall.UnrecognizedTimeFormatException.class, () -> PhoneCall.validateTime(time));
+  }
+
+  @Test
+  void inputCorrectTimeFormatReturnsSameTime() throws PhoneCall.UnrecognizedTimeFormatException {
+    String time = "10:59";
+    assertThat(time, equalTo(PhoneCall.validateTime(time)));
+  }
 
 
 

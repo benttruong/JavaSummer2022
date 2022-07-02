@@ -17,12 +17,12 @@ public class PhoneCall extends AbstractPhoneCall {
 
   // method to construct PhoneCall with information from command lines:
   @VisibleForTesting
-  public PhoneCall(String caller, String callee, String beginTime, String beginDate, String endTime, String endDate) throws UnrecognizedPhoneNumberException, UnrecognizedDateFormatException {
+  public PhoneCall(String caller, String callee, String beginTime, String beginDate, String endTime, String endDate) throws UnrecognizedPhoneNumberException, UnrecognizedDateFormatException, UnrecognizedTimeFormatException {
     this.caller = validatePhoneNumber(caller);
     this.callee = validatePhoneNumber(callee);
-    this.beginTime = beginTime;
+    this.beginTime = validateTime(beginTime);
     this.beginDate = validateDate(beginDate);
-    this.endTime = endTime;
+    this.endTime = validateTime(endTime);
     this.endDate = validateDate(endDate);
   }
 
@@ -80,6 +80,16 @@ public class PhoneCall extends AbstractPhoneCall {
   @VisibleForTesting
   static class UnrecognizedDateFormatException extends Exception{}
 
-
+  @VisibleForTesting
+  static String validateTime(String time) throws UnrecognizedTimeFormatException {
+    Pattern p = Pattern.compile("^(0?\\d|[1-2][0-4]):(0\\d|[1-5]\\d)$");
+    Matcher m = p.matcher(time);
+    if (!m.matches())
+      throw new UnrecognizedTimeFormatException();
+    else
+      return time;
+  }
+  @VisibleForTesting
+  static class UnrecognizedTimeFormatException extends Exception{}
 
 }
