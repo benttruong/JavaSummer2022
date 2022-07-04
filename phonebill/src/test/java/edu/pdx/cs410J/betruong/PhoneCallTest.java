@@ -31,7 +31,7 @@ public class PhoneCallTest {
     String endTime = "1:03";
     String endDate = "03/2/2022";
     PhoneCall call = new PhoneCall(caller,callee, beginTime, beginDate, endTime, endDate);
-    assertThat(call.getCaller(), is(caller));
+    assertThat(call.getCaller(), containsString("123-456-7890"));
   }
   @Test
   void createPhoneCallGetsCorrectCallee() {
@@ -42,7 +42,7 @@ public class PhoneCallTest {
     String endTime = "1:03";
     String endDate = "03/2/2022";
     PhoneCall call = new PhoneCall(caller,callee, beginTime, beginDate, endTime, endDate);
-    assertThat(call.getCallee(), is(callee));
+    assertThat(call.getCallee(), containsString("113-456-7890"));
   }
   @Test
   void createPhoneCallGetsCorrectBeginTime() {
@@ -53,7 +53,7 @@ public class PhoneCallTest {
     String endTime = "1:03";
     String endDate = "03/2/2022";
     PhoneCall call = new PhoneCall(caller,callee, beginTime, beginDate, endTime, endDate);
-    assertThat(call.getBeginTimeString(), equalTo(beginTime + " " + beginDate));
+    assertThat(call.getBeginTimeString(), equalTo("3/15/2022 10:39"));
   }
   @Test
   void createPhoneCallGetsCorrectEndTime() {
@@ -64,46 +64,7 @@ public class PhoneCallTest {
     String endTime = "1:03";
     String endDate = "03/2/2022";
     PhoneCall call = new PhoneCall(caller,callee, beginTime, beginDate, endTime, endDate);
-    assertThat(call.getEndTimeString(), equalTo(endTime + " " + endDate));
+    assertThat(call.getEndTimeString(), equalTo("03/2/2022 1:03"));
   }
-/*
-
-  @Test
-  void inputWrongPhoneNumberFormatThrowUnrecognizedPhoneNumberException(){
-    String caller = "fdsf";
-    assertThrows(PhoneCall.UnrecognizedPhoneNumberException.class, () -> PhoneCall.validatePhoneNumber(caller));
-  }
-  @Test
-  void inputCorrectPhoneNumberFormatReturnsSamePhoneNumber() throws UnrecognizedPhoneNumberException {
-    String caller = "123-456-7890";
-    assertThat(caller, equalTo(PhoneCall.validatePhoneNumber(caller)));
-  }
-
-  @Test
-  void inputWrongDateFormatThrowUnrecognizedDateFormatException(){
-    String date = "13/31/2023";
-    assertThrows(PhoneCall.UnrecognizedDateFormatException.class, () -> PhoneCall.validateDate(date));
-  }
-
-  @Test
-  void inputCorrectDateFormatReturnsSameDate() throws UnrecognizedDateFormatException {
-    String date = "03/20/1993";
-    assertThat(date, equalTo(PhoneCall.validateDate(date)));
-  }
-
-  @Test
-  void inputWrongTimeFormatThrowUnrecognizedTimeFormatException(){
-    String time = "25:61";
-    assertThrows(PhoneCall.UnrecognizedTimeFormatException.class, () -> PhoneCall.validateTime(time));
-  }
-
-  @Test
-  void inputCorrectTimeFormatReturnsSameTime() throws PhoneCall.UnrecognizedTimeFormatException {
-    String time = "10:59";
-    assertThat(time, equalTo(PhoneCall.validateTime(time)));
-  }
-*/
-
-
 
 }

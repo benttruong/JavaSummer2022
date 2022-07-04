@@ -48,12 +48,12 @@ public class PhoneCall extends AbstractPhoneCall {
 
   @Override
   public String getBeginTimeString() {
-    return this.beginTime + " " + this.beginDate;
+    return this.beginDate + " " + this.beginTime;
   }
 
   @Override
   public String getEndTimeString() {
-    return this.endTime + " " + this.endDate;
+    return this.endDate + " " + this.endTime;
   }
 
 
