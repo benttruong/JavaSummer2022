@@ -60,7 +60,11 @@ public class Project1 {
       boolean beginTime = isValidTime(args[4]);
       boolean endDate = isValidDate(args[5]);
       boolean endTime = isValidTime(args[6]);
-
+      if (caller && callee && beginDate && beginTime && endDate && endTime) {
+        PhoneCall call = new PhoneCall(args[1], args[2], args[3], args[4], args[5], args[6]);
+        System.out.println("Phone Call Created");
+        System.out.println(call);
+      }
 
     }
     for (String arg : args) {

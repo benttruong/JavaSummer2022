@@ -60,9 +60,9 @@ class Project1IT extends InvokeMainTestCase {
         assertThat(result.getTextWrittenToStandardError(), containsString("Missing command line arguments"));
     }
     @Test
-    void provide7ArgumentsReturnNoError(){
+    void provide7CorrectArgumentsReturnsPhoneCallCreated(){
         MainMethodResult result = invokeMain("Brian Griffin", "123-456-7890", "133-456-7890", "3/15/2022", "10:39", "03/2/2022", "1:03");
-        assertThat(result.getTextWrittenToStandardOut(), containsString("Brian Griffin"));
+        assertThat(result.getTextWrittenToStandardOut(), containsString("Phone Call Created"));
     }
     @Test
     void provide8ArgumentsReturnTooManyArguments(){
@@ -101,7 +101,6 @@ class Project1IT extends InvokeMainTestCase {
         MainMethodResult result = invokeMain("Brian Griffin", "123-456-7890", "133-456-7890", "3/15/2022", "10:39", "03/2/2022", "103");
         assertThat(result.getTextWrittenToStandardError(), containsString("Invalid Time"));
     }
-
 
 
 }
