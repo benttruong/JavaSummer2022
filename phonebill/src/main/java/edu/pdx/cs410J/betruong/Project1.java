@@ -2,6 +2,7 @@ package edu.pdx.cs410J.betruong;
 
 import com.google.common.annotations.VisibleForTesting;
 
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -46,12 +47,40 @@ public class Project1 {
     }
   }
 
+
   public static void main(String[] args) {
     // PhoneCall call = new PhoneCall();  // Refer to one of Dave's classes so that we can be sure it is on the classpath
 
-    if (args.length < 7) {
+    int optional = 0;
+
+    if (args.length == 0){System.err.println("Missing command line arguments");}
+    else if (args.length == 1) {
+      if (Objects.equals(args[0], "-print")){
+        System.out.println("Print Command Recognized");
+        ++optional;
+      }
+      else if (Objects.equals(args[0], "-README")) {
+        System.out.println("README Command Recognized");
+        ++optional;
+      }
+      else System.out.println("Missing command line arguments");
+    } else if (args.length ==2) {
+      if (Objects.equals(args[0], "-print") || Objects.equals(args[1], "-print")){
+        System.out.println("Print Command Recognized");
+        ++optional;
+      }
+      if (Objects.equals(args[0], "-README") || Objects.equals(args[1], "-README")) {
+        System.out.println("README Command Recognized");
+        ++optional;
+      }
+      if (optional != 2) System.out.println("Missing command line arguments");
+    }
+
+    int requiredArgCount = args.length - optional;
+
+    if (requiredArgCount < 7) {
       System.err.println("Missing command line arguments");
-    } else if (args.length > 7) {
+    } else if (requiredArgCount > 7) {
       System.err.println("Too many arguments");
     } else {
       boolean caller = isValidPhoneNumber(args[1]);
@@ -65,7 +94,6 @@ public class Project1 {
         System.out.println("Phone Call Created");
         System.out.println(call);
       }
-
     }
     for (String arg : args) {
       System.out.println(arg);

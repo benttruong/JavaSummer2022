@@ -1,6 +1,7 @@
 package edu.pdx.cs410J.betruong;
 
 import edu.pdx.cs410J.InvokeMainTestCase;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.CoreMatchers.containsString;
@@ -100,6 +101,17 @@ class Project1IT extends InvokeMainTestCase {
     void wrongEndTimeFormatReturnsInvalidTimeError(){
         MainMethodResult result = invokeMain("Brian Griffin", "123-456-7890", "133-456-7890", "3/15/2022", "10:39", "03/2/2022", "103");
         assertThat(result.getTextWrittenToStandardError(), containsString("Invalid Time"));
+    }
+
+    @Test
+    void inputOptionalPrintCommandReturnsPrintCommandRecognized(){
+        MainMethodResult result = invokeMain("-print");
+        assertThat(result.getTextWrittenToStandardOut(), containsString("Print Command Recognized"));
+    }
+    @Test
+    void inputOptionalREADMECommandReturnsREADMECommandRecognized(){
+        MainMethodResult result = invokeMain("-README");
+        assertThat(result.getTextWrittenToStandardOut(), containsString("README Command Recognized"));
     }
 
 
