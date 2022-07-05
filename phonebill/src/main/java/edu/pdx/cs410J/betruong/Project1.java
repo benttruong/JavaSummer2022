@@ -78,17 +78,20 @@ public class Project1 {
 
     int requiredArgCount = args.length - optional;
 
+    // optional + 0, representing the first required argument after the optionals
+    int firstArg = optional;
+
     if (requiredArgCount < 7) {
       System.err.println("Missing command line arguments");
     } else if (requiredArgCount > 7) {
       System.err.println("Too many arguments");
     } else {
-      boolean caller = isValidPhoneNumber(args[1]);
-      boolean callee = isValidPhoneNumber(args[2]);
-      boolean beginDate = isValidDate(args[3]);
-      boolean beginTime = isValidTime(args[4]);
-      boolean endDate = isValidDate(args[5]);
-      boolean endTime = isValidTime(args[6]);
+      boolean caller = isValidPhoneNumber(args[firstArg + 1]);
+      boolean callee = isValidPhoneNumber(args[firstArg + 2]);
+      boolean beginDate = isValidDate(args[firstArg + 3]);
+      boolean beginTime = isValidTime(args[firstArg + 4]);
+      boolean endDate = isValidDate(args[firstArg + 5]);
+      boolean endTime = isValidTime(args[firstArg + 6]);
       if (caller && callee && beginDate && beginTime && endDate && endTime) {
         PhoneCall call = new PhoneCall(args[1], args[2], args[3], args[4], args[5], args[6]);
         System.out.println("Phone Call Created");
