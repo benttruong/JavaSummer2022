@@ -111,9 +111,8 @@ class Project1IT extends InvokeMainTestCase {
     @Test
     void inputOptionalREADMECommandReturnsREADMECommandRecognized(){
         MainMethodResult result = invokeMain("-README");
-        assertThat(result.getTextWrittenToStandardOut(), containsString("README Command Recognized"));
+        assertThat(result.getTextWrittenToStandardOut(), containsString("Project1 - Ben Truong"));
     }
-
 
 
 

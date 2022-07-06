@@ -2,6 +2,10 @@ package edu.pdx.cs410J.betruong;
 
 import com.google.common.annotations.VisibleForTesting;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -46,9 +50,18 @@ public class Project1 {
       return false;
     }
   }
+  @VisibleForTesting
+   static void printReadme() throws IOException {
+    // System.out.println("README Command Recognized");
+    InputStream readme = Project1.class.getResourceAsStream("README.txt");
+    assert readme != null;
+    BufferedReader reader = new BufferedReader(new InputStreamReader(readme));
+    String output;
+    while ((output = reader.readLine()) != null)
+      System.out.print(output + '\n');
+  }
 
-
-  public static void main(String[] args) {
+  public static void main(String[] args) throws IOException {
     // PhoneCall call = new PhoneCall();  // Refer to one of Dave's classes so that we can be sure it is on the classpath
 
     if (args.length == 0) {
@@ -61,7 +74,7 @@ public class Project1 {
 
     // variable to check if optional commands provided
     boolean printCommand = false;
-    boolean readMeCommand = false;
+    // boolean readMeCommand = false;
 
     for (String arg:args){
       if (Objects.equals(arg, "-print")) {
@@ -69,28 +82,27 @@ public class Project1 {
         ++firstArg;
       }
       else if (Objects.equals(arg, "-README")) {
-        readMeCommand = true;
-        ++firstArg;
+        printReadme();
+        return;
       }
       else
         break;
     }
 
-    if (readMeCommand){
-      System.out.println("README Command Recognized");
-    }
+
+
+    // expecting a total of 7 required arguments
 
     if (args.length - firstArg < 7){
       System.err.println("Missing command line arguments");
       return;
     }
-
     if (args.length - firstArg > 7) {
       System.err.println("Too many arguments");
       return;
     }
 
-
+    // validating arguments to make sure they are provided in the right order
     boolean caller = isValidPhoneNumber(args[firstArg + 1]);
     boolean callee = isValidPhoneNumber(args[firstArg + 2]);
     boolean beginDate = isValidDate(args[firstArg + 3]);
