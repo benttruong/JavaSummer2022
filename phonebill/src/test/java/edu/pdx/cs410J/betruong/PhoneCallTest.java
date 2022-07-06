@@ -14,6 +14,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  */
 public class PhoneCallTest {
 
+  /**
+   * Test to check that <code>getBeginTime</code> method is currently
+   * return null value
+   */
   @Test
   void forProject1ItIsOkayIfGetBeginTimeReturnsNull() {
     PhoneCall call = new PhoneCall();
@@ -22,6 +26,10 @@ public class PhoneCallTest {
 
   // beginning of my own work
 
+  /**
+   * Test creating a PhoneCall with correct arguments
+   * generating a new phone call with correct caller number
+   */
   @Test
   void createPhoneCallGetsCorrectCaller()  {
     String caller = "123-456-7890";
@@ -33,6 +41,11 @@ public class PhoneCallTest {
     PhoneCall call = new PhoneCall(caller,callee, beginTime, beginDate, endTime, endDate);
     assertThat(call.getCaller(), containsString("123-456-7890"));
   }
+
+  /**
+   * Test creating a PhoneCall with correct arguments
+   * generating a new phone call with correct callee number
+   */
   @Test
   void createPhoneCallGetsCorrectCallee() {
     String caller = "123-456-7890";
@@ -44,6 +57,11 @@ public class PhoneCallTest {
     PhoneCall call = new PhoneCall(caller,callee, beginTime, beginDate, endTime, endDate);
     assertThat(call.getCallee(), containsString("113-456-7890"));
   }
+
+  /**
+   * Test creating a PhoneCall with correct arguments
+   * generating a new phone call with correct begin time
+   */
   @Test
   void createPhoneCallGetsCorrectBeginTime() {
     String caller = "123-456-7890";
@@ -55,6 +73,11 @@ public class PhoneCallTest {
     PhoneCall call = new PhoneCall(caller,callee, beginTime, beginDate, endTime, endDate);
     assertThat(call.getBeginTimeString(), equalTo("3/15/2022 10:39"));
   }
+
+  /**
+   * Test creating a PhoneCall with correct arguments
+   * generating a new phone call with correct end time
+   */
   @Test
   void createPhoneCallGetsCorrectEndTime() {
     String caller = "123-456-7890";

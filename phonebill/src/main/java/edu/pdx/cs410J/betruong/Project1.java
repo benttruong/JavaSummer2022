@@ -12,9 +12,18 @@ import java.util.regex.Pattern;
 
 /**
  * The main class for the CS410J Phone Bill Project
+ * Student: Ben Truong
  */
 public class Project1 {
 
+  /**
+   * Validating phone number has the format nnn-nnn-nnnn using regex
+   * @param phoneNumber
+   *        Phone number to validate
+   * @return <code>boolean</code>
+   *        true if phone number is in the correct format
+   *        false if not in the correct format
+   */
   @VisibleForTesting
   static boolean isValidPhoneNumber(String phoneNumber) {
     Pattern p = Pattern.compile("^\\d{3}-\\d{3}-\\d{4}$");
@@ -27,6 +36,15 @@ public class Project1 {
     }
   }
 
+  /**
+   *
+   * Validating a date has the format mm/dd/yyyy using regex
+   * @param date
+   *        Date to validate
+   * @return <code>boolean</code>
+   *        true if format is correct
+   *        false if format is not correct
+   */
   @VisibleForTesting
   static boolean isValidDate(String date) {
     Pattern p = Pattern.compile("^(0?[1-9]|1[0-2])/([1-9]|[1-2]\\d|3[0-1])/(\\d{4})$");
@@ -39,6 +57,14 @@ public class Project1 {
     }
   }
 
+  /**
+   * Validating time to be in the format hh:mm using regex
+   * @param time
+   *        Time to validate
+   * @return <code>boolean</code>
+   *        true if format is correct
+   *        false if format is not correct
+   */
   @VisibleForTesting
   static boolean isValidTime(String time) {
     Pattern p = Pattern.compile("^(0?\\d|[1-2][0-4]):(0\\d|[1-5]\\d)$");
@@ -50,6 +76,12 @@ public class Project1 {
       return false;
     }
   }
+
+  /**
+   * Print the README file
+   * @throws IOException
+   *          <code>IOException</code>
+   */
   @VisibleForTesting
    static void printReadme() throws IOException {
     // System.out.println("README Command Recognized");
@@ -61,9 +93,19 @@ public class Project1 {
       System.out.print(output + '\n');
   }
 
+  /**
+   * Main program that parses the command line, creates a <code>PhoneCall</code>
+   * and print a description of the phone call to standard out by invoking <code>toString</code>
+   * also provides option to print README file if optional command line <code>-README</code>
+   * is detected
+   * @param args
+   *        Command line arguments
+   * @throws IOException
+   *         <code>IOException</code>
+   */
   public static void main(String[] args) throws IOException {
-    // PhoneCall call = new PhoneCall();  // Refer to one of Dave's classes so that we can be sure it is on the classpath
 
+    // Check if no command line argument is provided
     if (args.length == 0) {
       System.err.println("Missing command line arguments");
       return;
@@ -74,8 +116,8 @@ public class Project1 {
 
     // variable to check if optional commands provided
     boolean printCommand = false;
-    // boolean readMeCommand = false;
 
+    // looking for optional command
     for (String arg:args){
       if (Objects.equals(arg, "-print")) {
         printCommand = true;
@@ -92,7 +134,6 @@ public class Project1 {
 
 
     // expecting a total of 7 required arguments
-
     if (args.length - firstArg < 7){
       System.err.println("Missing command line arguments");
       return;
