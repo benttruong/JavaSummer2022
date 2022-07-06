@@ -93,7 +93,7 @@ public class Project1 {
       boolean endDate = isValidDate(args[firstArg + 5]);
       boolean endTime = isValidTime(args[firstArg + 6]);
       if (caller && callee && beginDate && beginTime && endDate && endTime) {
-        PhoneCall call = new PhoneCall(args[1], args[2], args[3], args[4], args[5], args[6]);
+        PhoneCall call = new PhoneCall(args[firstArg + 1], args[firstArg + 2], args[firstArg + 3], args[firstArg + 4], args[firstArg + 5], args[firstArg + 6]);
         System.out.println("Phone Call Created");
         System.out.println(call);
       }
