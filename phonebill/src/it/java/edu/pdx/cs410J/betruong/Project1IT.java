@@ -104,15 +104,17 @@ class Project1IT extends InvokeMainTestCase {
     }
 
     @Test
-    void inputOptionalPrintCommandReturnsPrintCommandRecognized(){
+    void inputOptionalPrintCommandWithNoOtherArgumentReturnsPrintCommandRecognized(){
         MainMethodResult result = invokeMain("-print");
-        assertThat(result.getTextWrittenToStandardOut(), containsString("Print Command Recognized"));
+        assertThat(result.getTextWrittenToStandardError(), containsString("Missing command line arguments"));
     }
     @Test
     void inputOptionalREADMECommandReturnsREADMECommandRecognized(){
         MainMethodResult result = invokeMain("-README");
         assertThat(result.getTextWrittenToStandardOut(), containsString("README Command Recognized"));
     }
+
+
 
 
 }

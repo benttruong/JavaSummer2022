@@ -51,59 +51,59 @@ public class Project1 {
   public static void main(String[] args) {
     // PhoneCall call = new PhoneCall();  // Refer to one of Dave's classes so that we can be sure it is on the classpath
 
-    int optional = 0;
-
-    if (args.length == 0){System.err.println("Missing command line arguments");}
-    else if (args.length == 1) {
-      if (Objects.equals(args[0], "-print")){
-        System.out.println("Print Command Recognized");
-        ++optional;
-      }
-      else if (Objects.equals(args[0], "-README")) {
-        System.out.println("README Command Recognized");
-        ++optional;
-      }
-      else System.out.println("Missing command line arguments");
-    } else if (args.length ==2) {
-      if (Objects.equals(args[0], "-print") || Objects.equals(args[1], "-print")){
-        System.out.println("Print Command Recognized");
-        ++optional;
-      }
-      if (Objects.equals(args[0], "-README") || Objects.equals(args[1], "-README")) {
-        System.out.println("README Command Recognized");
-        ++optional;
-      }
-      if (optional != 2) System.out.println("Missing command line arguments");
-    }
-
-    int requiredArgCount = args.length - optional;
-
-    // optional + 0, representing the first required argument after the optionals
-    int firstArg = optional;
-
-    if (requiredArgCount < 7) {
+    if (args.length == 0) {
       System.err.println("Missing command line arguments");
-    } else if (requiredArgCount > 7) {
-      System.err.println("Too many arguments");
-    } else {
-      boolean caller = isValidPhoneNumber(args[firstArg + 1]);
-      boolean callee = isValidPhoneNumber(args[firstArg + 2]);
-      boolean beginDate = isValidDate(args[firstArg + 3]);
-      boolean beginTime = isValidTime(args[firstArg + 4]);
-      boolean endDate = isValidDate(args[firstArg + 5]);
-      boolean endTime = isValidTime(args[firstArg + 6]);
-      if (caller && callee && beginDate && beginTime && endDate && endTime) {
-        PhoneCall call = new PhoneCall(args[firstArg + 1], args[firstArg + 2], args[firstArg + 3], args[firstArg + 4], args[firstArg + 5], args[firstArg + 6]);
-        System.out.println("Phone Call Created");
-        System.out.println(call);
+      return;
+    }
+
+    // variable to keep track of position of first required argument
+    int firstArg = 0;
+
+    // variable to check if optional commands provided
+    boolean printCommand = false;
+    boolean readMeCommand = false;
+
+    for (String arg:args){
+      if (Objects.equals(arg, "-print")) {
+        printCommand = true;
+        ++firstArg;
       }
+      else if (Objects.equals(arg, "-README")) {
+        readMeCommand = true;
+        ++firstArg;
+      }
+      else
+        break;
     }
-    for (String arg : args) {
-      System.out.println(arg);
+
+    if (readMeCommand){
+      System.out.println("README Command Recognized");
+    }
+
+    if (args.length - firstArg < 7){
+      System.err.println("Missing command line arguments");
+      return;
+    }
+
+    if (args.length - firstArg > 7) {
+      System.err.println("Too many arguments");
+      return;
     }
 
 
-     //  System.out.println(call.toString());
+    boolean caller = isValidPhoneNumber(args[firstArg + 1]);
+    boolean callee = isValidPhoneNumber(args[firstArg + 2]);
+    boolean beginDate = isValidDate(args[firstArg + 3]);
+    boolean beginTime = isValidTime(args[firstArg + 4]);
+    boolean endDate = isValidDate(args[firstArg + 5]);
+    boolean endTime = isValidTime(args[firstArg + 6]);
+    if (caller && callee && beginDate && beginTime && endDate && endTime) {
+      PhoneCall call = new PhoneCall(args[firstArg + 1], args[firstArg + 2], args[firstArg + 3], args[firstArg + 4], args[firstArg + 5], args[firstArg + 6]);
+      System.out.println("Phone Call Created");
+      if (printCommand)
+        System.out.println(call);
+    }
+
 
   }
 }
