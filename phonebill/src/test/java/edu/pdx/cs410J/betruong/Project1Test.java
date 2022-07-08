@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * A unit test for code in the <code>Project1</code> class.  This is different
@@ -28,4 +29,14 @@ class Project1Test {
       assertThat(line, containsString("Project1 - Ben Truong"));
     }
   }
+  @Test
+  void inputCorrectDate(){
+    Project1 result = new Project1();
+    boolean testDate = result.isValidDate("03/03/2022");
+    boolean testDate2 = result.isValidDate("05/04/2022");
+
+    assertTrue(testDate);
+    assertTrue(testDate2);
+  }
+
 }

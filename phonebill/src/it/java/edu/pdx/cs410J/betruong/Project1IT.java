@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
@@ -188,8 +189,17 @@ class Project1IT extends InvokeMainTestCase {
         MainMethodResult result = invokeMain("-README");
         assertThat(result.getTextWrittenToStandardOut(), containsString("Project1 - Ben Truong"));
     }
+    @Test
+    void inputCorrectArgumentsWithPrintCommand(){
+        MainMethodResult result = invokeMain("-print", "Test8", "123-456-7890", "234-567-8901", "03/03/2022", "12:00", "05/04/2022", "16:00");
+        assertThat(result.getTextWrittenToStandardOut(), containsString("Phone call from"));
+    }
 
+    @Test
+    void unknownCommandLinePrintsUnknownCommandLine(){
+        MainMethodResult result = invokeMain("-unknown", "Test8", "123-456-7890", "234-567-8901", "03/03/2022", "12:00", "05/04/2022", "16:00");
+        assertThat(result.getTextWrittenToStandardError(), containsString("Unknown Command Line"));
 
-
+    }
 
 }

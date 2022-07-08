@@ -47,7 +47,7 @@ public class Project1 {
    */
   @VisibleForTesting
   static boolean isValidDate(String date) {
-    Pattern p = Pattern.compile("^(0?[1-9]|1[0-2])/([1-9]|[1-2]\\d|3[0-1])/(\\d{4})$");
+    Pattern p = Pattern.compile("^(0?[1-9]|1[012])[- /.](0?[1-9]|[12]\\d|3[01])[- /.](19|20)\\d\\d$");
     Matcher m = p.matcher(date);
     if (m.matches())
       return true;
@@ -67,7 +67,7 @@ public class Project1 {
    */
   @VisibleForTesting
   static boolean isValidTime(String time) {
-    Pattern p = Pattern.compile("^(0?\\d|[1-2][0-4]):(0\\d|[1-5]\\d)$");
+    Pattern p = Pattern.compile("^(\\d|[0-1]\\d|2[0-3]):([0-5]\\d)$");
     Matcher m = p.matcher(time);
     if (m.matches())
       return true;
@@ -119,12 +119,20 @@ public class Project1 {
 
     // looking for optional command
     for (String arg:args){
+      // regex logic to look for unknown command line
+      Pattern unknownCommandPattern = Pattern.compile("^-.*$");
+      Matcher m = unknownCommandPattern.matcher(arg);
+
       if (Objects.equals(arg, "-print")) {
         printCommand = true;
         ++firstArg;
       }
       else if (Objects.equals(arg, "-README")) {
         printReadme();
+        return;
+      }
+      else if (m.matches()){
+        System.err.println("Unknown Command Line: " + arg);
         return;
       }
       else
