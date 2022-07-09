@@ -2,7 +2,9 @@ package edu.pdx.cs410J.betruong;
 
 import edu.pdx.cs410J.AbstractPhoneBill;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 
 /**
  * This class represents a <code>PhoneBill</code>
@@ -20,7 +22,7 @@ public class PhoneBill extends AbstractPhoneBill<PhoneCall> {
    */
   public PhoneBill(String customer) {
     this.customer = customer;
-    phoneCalls = null;
+    this.phoneCalls = new ArrayList<>();
   }
 
   /**
@@ -39,7 +41,8 @@ public class PhoneBill extends AbstractPhoneBill<PhoneCall> {
    */
   @Override
   public void addPhoneCall(PhoneCall call) {
-    phoneCalls.add(call);
+
+    this.phoneCalls.add(call);
   }
 
   /**
@@ -48,6 +51,6 @@ public class PhoneBill extends AbstractPhoneBill<PhoneCall> {
    */
   @Override
   public Collection<PhoneCall> getPhoneCalls() {
-    return phoneCalls;
+    return this.phoneCalls;
   }
 }

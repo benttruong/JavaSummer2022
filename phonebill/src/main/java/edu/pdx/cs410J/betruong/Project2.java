@@ -118,7 +118,7 @@ public class Project2 {
     boolean printCommand = false;
 
     // looking for optional command
-    for (String arg:args){
+    for (String arg : args) {
       // regex logic to look for unknown command line
       Pattern unknownCommandPattern = Pattern.compile("^-.*$");
       Matcher m = unknownCommandPattern.matcher(arg);
@@ -126,23 +126,19 @@ public class Project2 {
       if (Objects.equals(arg, "-print")) {
         printCommand = true;
         ++firstArg;
-      }
-      else if (Objects.equals(arg, "-README")) {
+      } else if (Objects.equals(arg, "-README")) {
         printReadme();
         return;
-      }
-      else if (m.matches()){
+      } else if (m.matches()) {
         System.err.println("Unknown Command Line: " + arg);
         return;
-      }
-      else
+      } else
         break;
     }
 
 
-
     // expecting a total of 7 required arguments
-    if (args.length - firstArg < 7){
+    if (args.length - firstArg < 7) {
       System.err.println("Missing command line arguments");
       return;
     }
@@ -158,14 +154,16 @@ public class Project2 {
     boolean beginTime = isValidTime(args[firstArg + 4]);
     boolean endDate = isValidDate(args[firstArg + 5]);
     boolean endTime = isValidTime(args[firstArg + 6]);
+    PhoneCall call = null;
+    PhoneBill bill = new PhoneBill(args[firstArg]);
     if (caller && callee && beginDate && beginTime && endDate && endTime) {
-      PhoneCall call = new PhoneCall(args[firstArg + 1], args[firstArg + 2], args[firstArg + 3], args[firstArg + 4], args[firstArg + 5], args[firstArg + 6]);
-      System.out.println("Phone Call Created");
-      if (printCommand)
-        System.out.println(call);
+      call = new PhoneCall(args[firstArg + 1], args[firstArg + 2], args[firstArg + 3], args[firstArg + 4], args[firstArg + 5], args[firstArg + 6]);
+      bill.addPhoneCall(call);
+      System.out.println(bill);
     }
-
-
+    if (printCommand)
+      System.out.println(call);
   }
+
 }
 

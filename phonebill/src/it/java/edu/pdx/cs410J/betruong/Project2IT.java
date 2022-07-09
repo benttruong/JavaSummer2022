@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Tests the functionality in the {@link Project2} main class.
@@ -89,12 +90,12 @@ class Project2IT extends InvokeMainTestCase {
 
     /**
      * Test that invoking main method with all correct 7 arguments
-     * print "Phone Call Created" to standard out
+     * print PhoneBill details to standard out
      */
     @Test
     void provide7CorrectArgumentsReturnsPhoneCallCreated(){
         MainMethodResult result = invokeMain("Brian Griffin", "123-456-7890", "133-456-7890", "3/15/2022", "10:39", "03/2/2022", "1:03");
-        assertThat(result.getTextWrittenToStandardOut(), containsString("Phone Call Created"));
+        assertThat(result.getTextWrittenToStandardOut(), containsString("Brian Griffin"));
     }
 
     /**
@@ -199,6 +200,30 @@ class Project2IT extends InvokeMainTestCase {
         assertThat(result.getTextWrittenToStandardError(), containsString("Unknown Command Line"));
     }
 
+    @Test
+    void createCorrectPhoneCallReturnsCorrectCustomer(){
+        String name = "Pat Geo";
+        PhoneBill testBill = new PhoneBill(name);
+        assertThat(testBill.getCustomer(), containsString(name));
+    }
 
+    @Test
+    void addNewPhoneCallToPhoneBillReturnsCorrectNumberOfPhoneCall(){
+        PhoneCall testCall = new PhoneCall("123-456-7890", "333-456-7890", "12/15/2022", "10:30", "12/15/2022", "10:35");
+        PhoneBill testBill = new PhoneBill("Customer");
+        testBill.addPhoneCall(testCall);
+        assertEquals(testBill.getPhoneCalls().size(), 1);
+        PhoneCall testCall2 = new PhoneCall();
+        testBill.addPhoneCall(testCall2);
+        assertEquals(testBill.getPhoneCalls().size(), 2);
+    }
+
+    @Test
+    void invokeCorrectCommandLineAddsNewPhoneCallToNewPhoneBill(){
+        String name = "Pat Geo";
+        MainMethodResult result = invokeMain(name, "123-456-7890", "234-567-8901", "03/03/2022", "12:00", "05/04/2022", "16:00");
+        assertThat(result.getTextWrittenToStandardOut(), containsString(name));
+        assertThat(result.getTextWrittenToStandardOut(), containsString("1 phone calls"));
+    }
 
 }

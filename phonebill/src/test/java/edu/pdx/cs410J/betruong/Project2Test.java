@@ -39,4 +39,12 @@ class Project2Test {
     assertTrue(testDate2);
   }
 
+ /* @Test
+  void createCorrectPhoneCallReturnsCorrectPhoneBill(){
+    String name = "Pat Geo";
+    Project2 result = new Project2();
+    PhoneCall callTest = new PhoneCall("123-456-7890", "133-456-7899", "10/12/2022", "15:12", "05/03/2022", "16:25");
+  }*/
+
+
 }
