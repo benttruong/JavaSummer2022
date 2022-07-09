@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
  * The main class for the CS410J Phone Bill Project
  * Student: Ben Truong
  */
-public class Project1 {
+public class Project2 {
 
   /**
    * Validating phone number has the format nnn-nnn-nnnn using regex
@@ -85,7 +85,7 @@ public class Project1 {
   @VisibleForTesting
    static void printReadme() throws IOException {
     // System.out.println("README Command Recognized");
-    InputStream readme = Project1.class.getResourceAsStream("README.txt");
+    InputStream readme = Project2.class.getResourceAsStream("README.txt");
     assert readme != null;
     BufferedReader reader = new BufferedReader(new InputStreamReader(readme));
     String output;

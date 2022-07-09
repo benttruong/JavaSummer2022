@@ -1,23 +1,21 @@
 package edu.pdx.cs410J.betruong;
 
 import edu.pdx.cs410J.InvokeMainTestCase;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
- * Tests the functionality in the {@link Project1} main class.
+ * Tests the functionality in the {@link Project2} main class.
  */
-class Project1IT extends InvokeMainTestCase {
+class Project2IT extends InvokeMainTestCase {
 
     /**
-     * Invokes the main method of {@link Project1} with the given arguments.
+     * Invokes the main method of {@link Project2} with the given arguments.
      */
     private MainMethodResult invokeMain(String... args) {
-        return invokeMain(Project1.class, args);
+        return invokeMain(Project2.class, args);
     }
 
     /**
