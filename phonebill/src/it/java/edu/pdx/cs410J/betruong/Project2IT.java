@@ -180,12 +180,12 @@ class Project2IT extends InvokeMainTestCase {
 
     /**
      * Test that invoking main method with optional <code>-print</code> and no argument
-     * should print the README file to standard out which contains the first line "Project1 - Ben Truong"
+     * should print the README file to standard out which contains the first line "Project2 - Ben Truong"
      */
     @Test
     void inputOptionalREADMECommandReturnsREADMECommandRecognized(){
         MainMethodResult result = invokeMain("-README");
-        assertThat(result.getTextWrittenToStandardOut(), containsString("Project1 - Ben Truong"));
+        assertThat(result.getTextWrittenToStandardOut(), containsString("Project2 - Ben Truong"));
     }
     @Test
     void inputCorrectArgumentsWithPrintCommand(){
@@ -197,7 +197,8 @@ class Project2IT extends InvokeMainTestCase {
     void unknownCommandLinePrintsUnknownCommandLine(){
         MainMethodResult result = invokeMain("-unknown", "Test8", "123-456-7890", "234-567-8901", "03/03/2022", "12:00", "05/04/2022", "16:00");
         assertThat(result.getTextWrittenToStandardError(), containsString("Unknown Command Line"));
-
     }
+
+
 
 }

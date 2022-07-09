@@ -19,7 +19,7 @@ public class PhoneCallTest {
    * return null value
    */
   @Test
-  void forProject1ItIsOkayIfGetBeginTimeReturnsNull() {
+  void forProject2ItIsOkayIfGetBeginTimeReturnsNull() {
     PhoneCall call = new PhoneCall();
     assertThat(call.getBeginTime(), is(nullValue()));
   }

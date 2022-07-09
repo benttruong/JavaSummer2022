@@ -12,8 +12,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * A unit test for code in the <code>Project1</code> class.  This is different
- * from <code>Project1IT</code> which is an integration test (and can capture data
+ * A unit test for code in the <code>Project2</code> class.  This is different
+ * from <code>Project2IT</code> which is an integration test (and can capture data
  * written to {@link System#out} and the like.
  */
 class Project2Test {
@@ -26,7 +26,7 @@ class Project2Test {
       assertThat(readme, not(nullValue()));
       BufferedReader reader = new BufferedReader(new InputStreamReader(readme));
       String line = reader.readLine();
-      assertThat(line, containsString("Project1 - Ben Truong"));
+      assertThat(line, containsString("Project2 - Ben Truong"));
     }
   }
   @Test

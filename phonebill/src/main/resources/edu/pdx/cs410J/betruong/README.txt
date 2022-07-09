@@ -1,4 +1,4 @@
-Project1 - Ben Truong
+Project2 - Ben Truong
 This application will record a new phone call with the information
 provided from command line arguments.
 A phone call is initiated by a person with a given phone
