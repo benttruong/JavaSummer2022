@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -31,20 +32,31 @@ class Project2Test {
   }
   @Test
   void inputCorrectDate(){
-    Project2 result = new Project2();
-    boolean testDate = result.isValidDate("03/03/2022");
-    boolean testDate2 = result.isValidDate("05/04/2022");
+    boolean testDate = Project2.isValidDate("03/03/2022");
+    boolean testDate2 = Project2.isValidDate("05/04/2022");
 
     assertTrue(testDate);
     assertTrue(testDate2);
   }
+  @Test
+  void validFilePathReturnsTrue(){
+    boolean path1 = Project2.isValidFilePath("TestDir/test.com");
+    assertTrue(path1);
+    boolean path2 = Project2.isValidFilePath("test.com");
+    assertTrue(path2);
+    boolean path3 = Project2.isValidFilePath("TestDir/aNotherdir/test.com");
+    assertTrue(path3);
+  }
+  @Test
+  void invalidFilePathReturnsInvalidFilePath(){
+    assertFalse(Project2.isValidFilePath("TestDir/"));
+    assertFalse(Project2.isValidFilePath("/text.csv"));
+    assertFalse(Project2.isValidFilePath("/text.doc"));
+    assertFalse(Project2.isValidFilePath("//text.doc"));
+    assertFalse(Project2.isValidFilePath("text"));
+    assertFalse(Project2.isValidFilePath("text.doc/"));
+  }
 
- /* @Test
-  void createCorrectPhoneCallReturnsCorrectPhoneBill(){
-    String name = "Pat Geo";
-    Project2 result = new Project2();
-    PhoneCall callTest = new PhoneCall("123-456-7890", "133-456-7899", "10/12/2022", "15:12", "05/03/2022", "16:25");
-  }*/
 
 
 }

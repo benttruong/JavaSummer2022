@@ -47,7 +47,7 @@ public class TextParser implements PhoneBillParser<PhoneBill> {
       }
 
       PhoneBill bill = new PhoneBill(customer);
-      while (br.ready()){
+     /* while (br.ready()){
         String caller = br.readLine();
         String callee = br.readLine();
         String beginTimeString = br.readLine();
@@ -57,7 +57,7 @@ public class TextParser implements PhoneBillParser<PhoneBill> {
         String endDate = endTimeString.substring(0, endTimeString.indexOf(" "));
         String endTime = endTimeString.substring(endTimeString.indexOf(" "));
         bill.addPhoneCall(new PhoneCall(caller, callee, beginDate, beginTime, endDate, endTime));
-      }
+      }*/
       return bill;
 
     } catch (IOException e) {

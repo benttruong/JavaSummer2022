@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
@@ -89,5 +90,16 @@ public class PhoneCallTest {
     PhoneCall call = new PhoneCall(caller,callee, beginTime, beginDate, endTime, endDate);
     assertThat(call.getEndTimeString(), equalTo("03/2/2022 1:03"));
   }
-
+  /**
+   * Test that adding phone call to phone bill
+   * returns correct number of phone call
+   */
+  @Test
+  void provide7CorrectArgumentsReturnsPhoneCallCreated(){
+    String customer = "Brian Griffin";
+    PhoneBill bill = new PhoneBill(customer);
+    PhoneCall call = new PhoneCall("123-456-7890", "133-456-7890", "3/15/2022", "10:39", "03/2/2022", "1:03");
+    bill.addPhoneCall(call);
+    assertEquals(bill.getPhoneCalls().size(), 1);
+  }
 }

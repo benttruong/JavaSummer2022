@@ -2,10 +2,7 @@ package edu.pdx.cs410J.betruong;
 
 import com.google.common.annotations.VisibleForTesting;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -92,6 +89,17 @@ public class Project2 {
     while ((output = reader.readLine()) != null)
       System.out.print(output + '\n');
   }
+  @VisibleForTesting
+  static boolean isValidFilePath(String file) {
+    Pattern filePath = Pattern.compile("^([a-zA-Z0-9_-]+/)*[a-zA-Z0-9_-]+\\.[a-z]+$");
+    Matcher m = filePath.matcher(file);
+    if (m.matches())
+      return true;
+    else {
+      System.err.println("Invalid file name");
+      return false;
+    }
+  }
 
   /**
    * Main program that parses the command line, creates a <code>PhoneCall</code>
@@ -116,6 +124,8 @@ public class Project2 {
 
     // variable to check if optional commands provided
     boolean printCommand = false;
+    String file = "";
+    boolean textFileCommand = false;
 
     // looking for optional command
     for (String arg : args) {
@@ -129,6 +139,21 @@ public class Project2 {
       } else if (Objects.equals(arg, "-README")) {
         printReadme();
         return;
+      } else if (Objects.equals(arg, "-textFile")) {
+        // not a very good check but can do for now
+        /*if (args[firstArg + 1] == null) {
+          System.err.println("Missing file name");
+          return;*/
+        if (args.length - firstArg + 1 < 8) {
+          System.err.println("Missing command line argument");
+          return;
+        }
+        int filePath = firstArg + 1;
+        if (isValidFilePath(args[filePath])) {
+          textFileCommand = true;
+          file = args[firstArg + 1];
+          firstArg += 2;
+        }
       } else if (m.matches()) {
         System.err.println("Unknown Command Line: " + arg);
         return;
@@ -159,10 +184,21 @@ public class Project2 {
     if (caller && callee && beginDate && beginTime && endDate && endTime) {
       call = new PhoneCall(args[firstArg + 1], args[firstArg + 2], args[firstArg + 3], args[firstArg + 4], args[firstArg + 5], args[firstArg + 6]);
       bill.addPhoneCall(call);
-      System.out.println(bill);
     }
     if (printCommand)
       System.out.println(call);
+    if (textFileCommand) {
+      TextDumper dumper = null;
+      try {
+        dumper = new TextDumper(new FileWriter(file));
+      } catch (IOException e) {
+        System.err.println("Something wrong while writing files");
+        return;
+      }
+      dumper.dump(bill);
+      System.out.println("New file written at: " + file);
+    }
+
   }
 
 }

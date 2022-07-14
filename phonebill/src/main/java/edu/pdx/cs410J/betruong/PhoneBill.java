@@ -5,6 +5,7 @@ import edu.pdx.cs410J.AbstractPhoneBill;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
 /**
  * This class represents a <code>PhoneBill</code>
@@ -12,7 +13,7 @@ import java.util.HashSet;
 public class PhoneBill extends AbstractPhoneBill<PhoneCall> {
   private final String customer;
 
-  private Collection<PhoneCall> phoneCalls;
+  private ArrayList<PhoneCall> phoneCalls;
 
   /**
    * Creates a new <code>PhoneBill</code>

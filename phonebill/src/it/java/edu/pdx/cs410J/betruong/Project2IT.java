@@ -88,15 +88,7 @@ class Project2IT extends InvokeMainTestCase {
         assertThat(result.getTextWrittenToStandardError(), containsString("Missing command line arguments"));
     }
 
-    /**
-     * Test that invoking main method with all correct 7 arguments
-     * print PhoneBill details to standard out
-     */
-    @Test
-    void provide7CorrectArgumentsReturnsPhoneCallCreated(){
-        MainMethodResult result = invokeMain("Brian Griffin", "123-456-7890", "133-456-7890", "3/15/2022", "10:39", "03/2/2022", "1:03");
-        assertThat(result.getTextWrittenToStandardOut(), containsString("Brian Griffin"));
-    }
+
 
     /**
      * Test that invoking main method with only 8 arguments
@@ -202,7 +194,7 @@ class Project2IT extends InvokeMainTestCase {
 
     @Test
     void createCorrectPhoneCallReturnsCorrectCustomer(){
-        String name = "Pat Geo";
+        String name = "Pat Gel";
         PhoneBill testBill = new PhoneBill(name);
         assertThat(testBill.getCustomer(), containsString(name));
     }
@@ -220,10 +212,21 @@ class Project2IT extends InvokeMainTestCase {
 
     @Test
     void invokeCorrectCommandLineAddsNewPhoneCallToNewPhoneBill(){
-        String name = "Pat Geo";
-        MainMethodResult result = invokeMain(name, "123-456-7890", "234-567-8901", "03/03/2022", "12:00", "05/04/2022", "16:00");
-        assertThat(result.getTextWrittenToStandardOut(), containsString(name));
-        assertThat(result.getTextWrittenToStandardOut(), containsString("1 phone calls"));
+        String name = "Pat Gel";
+        String caller = "123-456-7890";
+        MainMethodResult result = invokeMain("-print", name, caller, "234-567-8901", "03/03/2022", "12:00", "05/04/2022", "16:00");
+        assertThat(result.getTextWrittenToStandardOut(), containsString(caller));
+    }
+    @Test
+    void textFileCommandWithoutPathReturnsMissingFileName(){
+        MainMethodResult result = invokeMain("-textFile");
+        assertThat(result.getTextWrittenToStandardError(), containsString("Missing command line"));
+    }
+
+    @Test
+    void textFileCommandwithFilePathCreatesNewFile(){
+        MainMethodResult result = invokeMain("-textFile", "TestDir/newfile.test", "Brian Nguyen","123-456-7890", "234-567-8901", "03/03/2022", "12:00", "05/04/2022", "16:00");
+        assertThat(result.getTextWrittenToStandardOut(), containsString("New file written"));
     }
 
 
