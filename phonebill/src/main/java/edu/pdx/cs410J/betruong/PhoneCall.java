@@ -75,6 +75,24 @@ public class PhoneCall extends AbstractPhoneCall {
     return this.callee;
   }
 
+
+  public String getBeginDate(){
+    return this.beginDate;
+  }
+
+  public String getEndDate(){
+    return this.endDate;
+  }
+
+  public String getBeginTimeLiterals(){
+    return this.beginTime;
+  }
+
+
+  public String getEndTimeLiterals(){
+    return this.endTime;
+  }
+
   /**
    * Starting date and time of the phone call
    * @return <code>String</code> date and time

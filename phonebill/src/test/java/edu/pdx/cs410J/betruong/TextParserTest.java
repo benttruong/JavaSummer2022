@@ -3,7 +3,6 @@ package edu.pdx.cs410J.betruong;
 import edu.pdx.cs410J.ParserException;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -48,9 +47,14 @@ public class TextParserTest {
     }
     PhoneBill bill = parser.parse();
     assertThat(bill.getCustomer(), containsString("Test Phone Bill"));
-    ArrayList<PhoneCall> calls = (ArrayList<PhoneCall>) bill.getPhoneCalls();
-    PhoneCall call = calls.get(0);
-    assertThat(call.getCaller(), containsString("123-456-789"));
+    PhoneCall[] calls = bill.getPhoneCalls().toArray(new PhoneCall[0]);
+    PhoneCall call = calls[0];
+    assertThat(call.getCaller(), equalTo("123-456-7890"));
+    assertThat(call.getCallee(), equalTo("333-456-7890"));
+    assertThat(call.getBeginTimeLiterals(), equalTo("16:00"));
+    assertThat(call.getEndTimeLiterals(), equalTo("17:15"));
+    assertThat(call.getBeginDate(), equalTo("12/15/2022"));
+    assertThat(call.getEndDate(), equalTo("12/16/2022"));
   }
 
 

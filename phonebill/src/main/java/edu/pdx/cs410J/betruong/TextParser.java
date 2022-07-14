@@ -14,26 +14,7 @@ public class TextParser implements PhoneBillParser<PhoneBill> {
     this.reader = reader;
   }
 
-  /*@Override
-  public PhoneBill parse() throws ParserException {
-    try (
-      BufferedReader br = new BufferedReader(this.reader)
-    ) {
 
-      String customer = br.readLine();
-
-      if (customer == null) {
-        throw new ParserException("Missing customer");
-      }
-
-      return new PhoneBill(customer);
-
-    } catch (IOException e) {
-      throw new ParserException("While parsing phone bill text", e);
-    }
-  }*/
-
-  // a new parse method to test functionality of reading phonebills
   @Override
   public PhoneBill parse() throws ParserException {
     try (
@@ -47,17 +28,16 @@ public class TextParser implements PhoneBillParser<PhoneBill> {
       }
 
       PhoneBill bill = new PhoneBill(customer);
-     /* while (br.ready()){
-        String caller = br.readLine();
-        String callee = br.readLine();
-        String beginTimeString = br.readLine();
-        String beginDate = beginTimeString.substring(0, beginTimeString.indexOf(" "));
-        String beginTime = beginTimeString.substring(beginTimeString.indexOf(" "));
-        String endTimeString = br.readLine();
-        String endDate = endTimeString.substring(0, endTimeString.indexOf(" "));
-        String endTime = endTimeString.substring(endTimeString.indexOf(" "));
-        bill.addPhoneCall(new PhoneCall(caller, callee, beginDate, beginTime, endDate, endTime));
-      }*/
+
+      String callDetails = br.readLine();
+
+      while (callDetails != null){
+        String [] values = callDetails.split("Phone call from | to | from | ");
+
+        bill.addPhoneCall(new PhoneCall(values[1], values[2], values[3], values[4], values[5], values[6]));
+
+        callDetails = br.readLine();
+      }
       return bill;
 
     } catch (IOException e) {

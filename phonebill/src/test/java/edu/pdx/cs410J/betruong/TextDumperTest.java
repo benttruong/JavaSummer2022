@@ -62,17 +62,16 @@ public class TextDumperTest {
     TextParser parser = new TextParser(new FileReader(textFile));
     PhoneBill readBill = parser.parse();
     assertThat(readBill.getCustomer(), containsString(customer));
-    /*PhoneCall readCall = (PhoneCall) readBill.getPhoneCalls().toArray()[0];
+    PhoneCall readCall = (PhoneCall) readBill.getPhoneCalls().toArray()[0];
     assertThat(readCall.getCaller(), equalTo(caller));
     assertThat(readCall.getCallee(), equalTo(callee));
     assertThat(readCall.getBeginTimeString(), containsString(beginDate));
     assertThat(readCall.getBeginTimeString(), containsString(beginTime));
     assertThat(readCall.getEndTimeString(), containsString(endDate));
-    assertThat(readCall.getEndTimeString(), containsString(endTime));*/
+    assertThat(readCall.getEndTimeString(), containsString(endTime));
   }
 
   @Test
-  @Disabled
   void createNewDirParserCanFindDir() throws ParserException {
     String customer = "Test Phone Bill";
     PhoneBill bill = new PhoneBill(customer);
@@ -140,13 +139,13 @@ public class TextDumperTest {
 
     PhoneBill readBill = parser.parse();
     assertThat(readBill.getCustomer(), containsString(customer));
-    /*PhoneCall readCall = (PhoneCall) readBill.getPhoneCalls().toArray()[0];
+    PhoneCall readCall = (PhoneCall) readBill.getPhoneCalls().toArray()[0];
     assertThat(readCall.getCaller(), equalTo(caller));
     assertThat(readCall.getCallee(), equalTo(callee));
     assertThat(readCall.getBeginTimeString(), containsString(beginDate));
     assertThat(readCall.getBeginTimeString(), containsString(beginTime));
     assertThat(readCall.getEndTimeString(), containsString(endDate));
-    assertThat(readCall.getEndTimeString(), containsString(endTime));*/
+    assertThat(readCall.getEndTimeString(), containsString(endTime));
   }
 
 
