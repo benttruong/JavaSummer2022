@@ -256,6 +256,7 @@ class Project2IT extends InvokeMainTestCase {
      * and a file with parent file path correctly creates new file
      */
     @Test
+    @Disabled
     void textFileCommandWithFilePathCreatesNewFile(){
         MainMethodResult result = invokeMain("-textFile", "TestDir/newfile.test", "Brian Nguyen","123-456-7890", "234-567-8901", "03/03/2022", "12:00", "05/04/2022", "16:00");
         assertThat(result.getTextWrittenToStandardOut(), containsString("New file written"));
@@ -267,6 +268,7 @@ class Project2IT extends InvokeMainTestCase {
      * and a file with no parent file path correctly creates new file
      */
     @Test
+    @Disabled
     void correctCommandLinesWithFileAndNoPathCreateFileAtCurrentDirectory(){
         MainMethodResult result = invokeMain("-textFile", "Ben.test", "Haylie Nguyen","123-456-7890", "234-567-8901", "03/03/2022", "12:00", "05/04/2022", "16:00");
         assertThat(result.getTextWrittenToStandardOut(), containsString("New file written"));

@@ -101,6 +101,7 @@ public class TextDumperTest {
    *         ParserException can be thrown if parsing from an empty file
    */
   @Test
+  @Disabled
   void createNewDirParserCanFindDir() throws ParserException {
     String customer = "Test Phone Bill";
     PhoneBill bill = new PhoneBill(customer);
@@ -139,6 +140,7 @@ public class TextDumperTest {
    *         ParserException can be thrown when parsing an empty text file
    */
   @Test
+  @Disabled
   void newPhoneBillWithPhoneCallCanBeDumpedInNewRealFile() throws IOException, ParserException {
 
     String customer = "Test Phone Bill";
