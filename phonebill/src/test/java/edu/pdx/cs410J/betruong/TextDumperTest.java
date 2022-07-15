@@ -75,7 +75,7 @@ public class TextDumperTest {
     String beginTime = "16:00";
     String endDate = "12/16/2022";
     String endTime = "17:15";
-    PhoneCall call = new PhoneCall(caller, callee, beginDate, beginTime, endDate, endTime);
+    PhoneCall call = new PhoneCall(caller, callee, beginDate, beginTime, "AM", endDate, endTime, "PM");
     bill.addPhoneCall(call);
 
     File textFile = new File(tempDir, "test.txt");
@@ -151,7 +151,7 @@ public class TextDumperTest {
     String beginTime = "16:00";
     String endDate = "12/16/2022";
     String endTime = "17:15";
-    PhoneCall call = new PhoneCall(caller, callee, beginDate, beginTime, endDate, endTime);
+    PhoneCall call = new PhoneCall(caller, callee, beginDate, beginTime, "AM", endDate, endTime, "PM");
     bill.addPhoneCall(call);
 
     String tempDir = "TestDir/AnotherDir";

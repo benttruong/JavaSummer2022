@@ -96,11 +96,7 @@ public class Project2 {
   static boolean isValidFilePath(String file) {
     Pattern filePath = Pattern.compile("^([a-zA-Z0-9_-]+/)*[a-zA-Z0-9_-]+\\.[a-z]+$");
     Matcher m = filePath.matcher(file);
-    if (m.matches())
-      return true;
-    else {
-      return false;
-    }
+    return m.matches();
   }
 
   @VisibleForTesting
@@ -179,7 +175,19 @@ public class Project2 {
             System.err.println(args[firstArg + 1] + " is not a valid file");
             return;
           }
-        } else if (m.matches()) {
+        } else if (Objects.equals(args[i], "-pretty")){
+          if (args.length - 1 == 1){
+            System.err.println("Command is missing file");
+            return;
+          }
+          if (isValidFilePath(args[i+1]) || Objects.equals(args[i+1], '-')){
+            
+          } else {
+            System.err.println("Pretty Command is missing output destination");
+            return;
+          }
+
+        }else if (m.matches()) {
           System.err.println("Unknown Command Line: " + args[i]);
           return;
         } else{
@@ -190,11 +198,11 @@ public class Project2 {
 
 
       // expecting a total of 7 required arguments
-      if (args.length - firstArg < 7) {
+      if (args.length - firstArg < 9) {
         System.err.println("Missing command line arguments");
         return;
       }
-      if (args.length - firstArg > 7) {
+      if (args.length - firstArg > 9) {
         System.err.println("Too many arguments");
         return;
       }
@@ -204,12 +212,13 @@ public class Project2 {
       boolean callee = isValidPhoneNumber(args[firstArg + 2]);
       boolean beginDate = isValidDate(args[firstArg + 3]);
       boolean beginTime = isValidTime(args[firstArg + 4]);
+
       boolean endDate = isValidDate(args[firstArg + 5]);
       boolean endTime = isValidTime(args[firstArg + 6]);
 
       PhoneCall call = null;
       if (caller && callee && beginDate && beginTime && endDate && endTime) {
-        call = new PhoneCall(args[firstArg + 1], args[firstArg + 2], args[firstArg + 3], args[firstArg + 4], args[firstArg + 5], args[firstArg + 6]);
+        call = new PhoneCall(args[firstArg + 1], args[firstArg + 2], args[firstArg + 3], args[firstArg + 4], args[firstArg + 5], args[firstArg + 6], args[firstArg + 7], args[firstArg + 8]);
       }
       else{
         System.err.println("Program terminated because of the info for phone call is malformed");
@@ -220,62 +229,8 @@ public class Project2 {
       PhoneBill bill = null;
       boolean fileFound = true;
       if (textFileCommand) {
-
-        String filename = getFileName(file);
-        String path = getPath(file);
-        File textFile;
-        if (path == null){
-          textFile = new File(filename);
-        }
-        else {
-          textFile = new File(path, filename);
-        }
-
-        TextParser parser = null;
-        try {
-          parser = new TextParser(new FileReader(textFile));
-        } catch (FileNotFoundException FNFe) {
-          // if file not found, we are creating a new phone bill
-          fileFound = false;
-          bill = new PhoneBill(customer);
-        }
-        if (fileFound) {
-          try {
-            // when file is found, we parse the file into phone bill
-            bill = parser.parse();
-          } catch (ParserException Pe) {
-            System.err.println("Something wrong happened while loading file");
-            return;
-          }
-          // then check if the customer name from bill match with one from file
-          if (!Objects.equals(bill.getCustomer(), customer)) {
-            System.err.println("Provided customer name does not match with existing bill");
-            return;
-          }
-
-          // unless the customer names are not matching
-          // we are adding the new phone call to the bill here
-         // bill.addPhoneCall(call);
-        }
-
-        TextDumper dumper = null;
-        if (path != null) {
-          File folder = new File(path);
-          folder.mkdirs();
-        }
-        try {
-          dumper = new TextDumper(new FileWriter(textFile));
-        } catch (IOException e) {
-          System.err.println("Something wrong while writing files");
-          return;
-        }
-        bill.addPhoneCall(call);
-        dumper.dump(bill);
-        if (fileFound){
-          System.out.println(file + " updated.");
-        }else {
-          System.out.println("New file written at " + file);
-        }
+        printTextFile(file, call, customer, bill, fileFound);
+        return;
       }
 
 
@@ -283,5 +238,64 @@ public class Project2 {
         System.out.println(call);
       }
     }
+
+  private static void printTextFile(String file, PhoneCall call, String customer, PhoneBill bill, boolean fileFound) {
+    String filename = getFileName(file);
+    String path = getPath(file);
+    File textFile;
+    if (path == null){
+      textFile = new File(filename);
+    }
+    else {
+      textFile = new File(path, filename);
+    }
+
+    TextParser parser = null;
+    try {
+      parser = new TextParser(new FileReader(textFile));
+    } catch (FileNotFoundException FNFe) {
+      // if file not found, we are creating a new phone bill
+      fileFound = false;
+      bill = new PhoneBill(customer);
+    }
+    if (fileFound) {
+      try {
+        // when file is found, we parse the file into phone bill
+        bill = parser.parse();
+      } catch (ParserException Pe) {
+        System.err.println("Something wrong happened while loading file");
+        return;
+      }
+      // then check if the customer name from bill match with one from file
+      if (!Objects.equals(bill.getCustomer(), customer)) {
+        System.err.println("Provided customer name does not match with existing bill");
+        return;
+      }
+
+      // unless the customer names are not matching
+      // we are adding the new phone call to the bill here
+     // bill.addPhoneCall(call);
+    }
+
+    TextDumper dumper = null;
+    if (path != null) {
+      File folder = new File(path);
+      folder.mkdirs();
+    }
+    try {
+      dumper = new TextDumper(new FileWriter(textFile));
+    } catch (IOException e) {
+      System.err.println("Something wrong while writing files");
+      return;
+    }
+    bill.addPhoneCall(call);
+    dumper.dump(bill);
+    if (fileFound){
+      System.out.println(file + " updated.");
+    }else {
+      System.out.println("New file written at " + file);
+    }
+    return;
+  }
 }
 

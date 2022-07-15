@@ -35,11 +35,13 @@ public class PhoneCallTest {
   void createPhoneCallGetsCorrectCaller()  {
     String caller = "123-456-7890";
     String callee = "113-456-7890";
-    String beginTime = "10:39";
     String beginDate = "3/15/2022";
-    String endTime = "1:03";
+    String beginTime = "10:39";
+    String beginMeridiem = "am";
     String endDate = "03/2/2022";
-    PhoneCall call = new PhoneCall(caller,callee, beginTime, beginDate, endTime, endDate);
+    String endTime = "1:03";
+    String endMeridiem = "pm";
+    PhoneCall call = new PhoneCall(caller,callee, beginDate, beginTime, beginMeridiem, endTime, endDate, endMeridiem);
     assertThat(call.getCaller(), containsString("123-456-7890"));
   }
 
@@ -55,7 +57,7 @@ public class PhoneCallTest {
     String beginDate = "3/15/2022";
     String endTime = "1:03";
     String endDate = "03/2/2022";
-    PhoneCall call = new PhoneCall(caller,callee, beginTime, beginDate, endTime, endDate);
+    PhoneCall call = new PhoneCall(caller,callee, beginDate, beginTime, "AM", endDate, endTime, "PM");
     assertThat(call.getCallee(), containsString("113-456-7890"));
   }
 
@@ -71,7 +73,7 @@ public class PhoneCallTest {
     String beginDate = "3/15/2022";
     String endTime = "1:03";
     String endDate = "03/2/2022";
-    PhoneCall call = new PhoneCall(caller,callee, beginTime, beginDate, endTime, endDate);
+    PhoneCall call = new PhoneCall(caller,callee, beginDate, beginTime, "AM", endDate, endTime, "PM");
     assertThat(call.getBeginTimeString(), equalTo("3/15/2022 10:39"));
   }
 
@@ -87,7 +89,7 @@ public class PhoneCallTest {
     String beginDate = "3/15/2022";
     String endTime = "1:03";
     String endDate = "03/2/2022";
-    PhoneCall call = new PhoneCall(caller,callee, beginTime, beginDate, endTime, endDate);
+    PhoneCall call = new PhoneCall(caller,callee, beginDate, beginTime, "AM", endDate, endTime, "PM");
     assertThat(call.getEndTimeString(), equalTo("03/2/2022 1:03"));
   }
   /**
@@ -98,8 +100,10 @@ public class PhoneCallTest {
   void provide7CorrectArgumentsReturnsPhoneCallCreated(){
     String customer = "Brian Griffin";
     PhoneBill bill = new PhoneBill(customer);
-    PhoneCall call = new PhoneCall("123-456-7890", "133-456-7890", "3/15/2022", "10:39", "03/2/2022", "1:03");
+    PhoneCall call = new PhoneCall("123-456-7890", "133-456-7890", "3/15/2022", "10:39", "PM", "03/2/2022", "1:03", "PM");
     bill.addPhoneCall(call);
     assertEquals(bill.getPhoneCalls().size(), 1);
   }
+
+
 }

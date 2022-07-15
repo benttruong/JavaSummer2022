@@ -13,10 +13,13 @@ public class PhoneCall extends AbstractPhoneCall {
 
   private final String caller;
   private final String callee;
-  private final String beginTime;
   private final String beginDate;
-  private final String endTime;
+  private final String beginTime;
+  private final String beginMeridiem;
+
   private final String endDate;
+  private final String endTime;
+  private final String endMeridiem;
 
   /**
    * Creates a new <code>PhoneCall</code>
@@ -33,16 +36,22 @@ public class PhoneCall extends AbstractPhoneCall {
    *        The time when this phone ends
    * @param endDate
    *        The date when this phone call ends
+   * @param beginMeridiem
+   *        The Meridiem Indicator of the beginning time (AM/PM)
+   * @param endMeridiem
+   *        The Meridiem Indicator of the ending time (AM/PM)
    */
   // method to construct PhoneCall with information from command lines:
   @VisibleForTesting
-  public PhoneCall(String caller, String callee, String beginTime, String beginDate, String endTime, String endDate) {
+  public PhoneCall(String caller, String callee, String beginDate, String beginTime, String beginMeridiem, String endDate, String endTime, String endMeridiem) {
     this.caller = caller;
     this.callee = callee;
-    this.beginTime = beginTime;
     this.beginDate = beginDate;
-    this.endTime = endTime;
+    this.beginTime = beginTime;
+    this.beginMeridiem = beginMeridiem;
     this.endDate = endDate;
+    this.endTime = endTime;
+    this.endMeridiem = endMeridiem;
   }
 
   /**
@@ -51,10 +60,12 @@ public class PhoneCall extends AbstractPhoneCall {
   public PhoneCall() {
     this.caller = null;
     this.callee = null;
-    this.beginTime = null;
     this.beginDate = null;
-    this.endTime = null;
+    this.beginTime = null;
+    this.beginMeridiem = null;
     this.endDate = null;
+    this.endTime = null;
+    this.endMeridiem = null;
   }
 
   /**

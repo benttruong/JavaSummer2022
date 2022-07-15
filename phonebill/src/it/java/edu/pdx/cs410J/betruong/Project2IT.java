@@ -220,7 +220,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void addNewPhoneCallToPhoneBillReturnsCorrectNumberOfPhoneCall(){
-        PhoneCall testCall = new PhoneCall("123-456-7890", "333-456-7890", "12/15/2022", "10:30", "12/15/2022", "10:35");
+        PhoneCall testCall = new PhoneCall("123-456-7890", "333-456-7890", "12/15/2022", "10:30", "AM", "12/15/2022", "10:35", "PM");
         PhoneBill testBill = new PhoneBill("Customer");
         testBill.addPhoneCall(testCall);
         assertEquals(testBill.getPhoneCalls().size(), 1);
@@ -319,4 +319,11 @@ class Project2IT extends InvokeMainTestCase {
         MainMethodResult result = invokeMain("-textFile", "Ben.test", "Haylie Nguyen","123-456-7890", "234-567-8901", "03/03/2022", "12:00", "05/04/2022", "1600");
         assertThat(result.getTextWrittenToStandardError(), containsString("Program terminated"));
     }
+
+    @Test
+    void prettyCommandRecognizedFromCommandLine() {
+        MainMethodResult result = invokeMain("-pretty", "Haylie Nguyen", "123-456-7890", "234-567-8901", "03/03/2022", "12:00", "05/04/2022", "1600");
+        assertThat(result.getTextWrittenToStandardError(), containsString("Pretty Command is missing output destination"));
+    }
+
 }

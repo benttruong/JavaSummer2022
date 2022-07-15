@@ -38,7 +38,7 @@ public class TextParser implements PhoneBillParser<PhoneBill> {
       while (callDetails != null){
         String [] values = callDetails.split("Phone call from | to | from | ");
 
-        bill.addPhoneCall(new PhoneCall(values[1], values[2], values[3], values[4], values[5], values[6]));
+        bill.addPhoneCall(new PhoneCall(values[1], values[2], values[3], values[4], values[5], values[6], values[7], values[8]));
 
         callDetails = br.readLine();
       }
