@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
 
+/**
+ *
+ */
 public class TextDumper implements PhoneBillDumper<PhoneBill> {
   private final Writer writer;
 

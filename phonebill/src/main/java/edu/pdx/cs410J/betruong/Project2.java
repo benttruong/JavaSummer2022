@@ -133,6 +133,7 @@ public class Project2 {
      * @param args Command line arguments
      * @throws IOException <code>IOException</code>
      */
+
     public static void main(String[] args) throws IOException {
 
       // Check if no command line argument is provided
