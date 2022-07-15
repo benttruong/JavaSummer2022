@@ -11,8 +11,16 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+/**
+ * A unit test for code in the <code>TextParserTest</code> class.
+ */
 public class TextParserTest {
 
+  /**
+   * Test a valid-phonebill.txt from resource with customer's name "Test Phone Bill"
+   * correctly parse the phone bill with matching name
+   * @throws ParserException
+   */
   @Test
   void validTextFileCanBeParsed() throws ParserException {
     InputStream resource = getClass().getResourceAsStream("valid-phonebill.txt");
@@ -23,6 +31,10 @@ public class TextParserTest {
     assertThat(bill.getCustomer(), equalTo("Test Phone Bill"));
   }
 
+  /**
+   * Test that parsing an empty phone bill would
+   * @throws ParserException for missing customer
+   */
   @Test
   void invalidTextFileThrowsParserException() {
     InputStream resource = getClass().getResourceAsStream("empty-phonebill.txt");
@@ -30,31 +42,6 @@ public class TextParserTest {
 
     TextParser parser = new TextParser(new InputStreamReader(resource));
     assertThrows(ParserException.class, parser::parse);
-  }
-
-  @Test
-  @Disabled
-  void validNon_ReSourceTextFileReturnsCorrectValues() throws ParserException {
-    String tempDir = "TestDir/AnotherDir";
-    String fileName = "newfile.txt";
-
-    File textFile = new File(tempDir, fileName);
-    TextParser parser = null;
-    try {
-      parser = new TextParser(new FileReader(textFile));
-    } catch (FileNotFoundException e) {
-      throw new RuntimeException(e);
-    }
-    PhoneBill bill = parser.parse();
-    assertThat(bill.getCustomer(), containsString("Test Phone Bill"));
-    PhoneCall[] calls = bill.getPhoneCalls().toArray(new PhoneCall[0]);
-    PhoneCall call = calls[0];
-    assertThat(call.getCaller(), equalTo("123-456-7890"));
-    assertThat(call.getCallee(), equalTo("333-456-7890"));
-    assertThat(call.getBeginTimeLiterals(), equalTo("16:00"));
-    assertThat(call.getEndTimeLiterals(), equalTo("17:15"));
-    assertThat(call.getBeginDate(), equalTo("12/15/2022"));
-    assertThat(call.getEndDate(), equalTo("12/16/2022"));
   }
 
 

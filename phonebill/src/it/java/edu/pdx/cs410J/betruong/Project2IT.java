@@ -1,11 +1,14 @@
 package edu.pdx.cs410J.betruong;
 
 import edu.pdx.cs410J.InvokeMainTestCase;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+
+import java.io.InputStream;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests the functionality in the {@link Project2} main class.
@@ -166,7 +169,7 @@ class Project2IT extends InvokeMainTestCase {
      * issues error for missing command line arguments
      */
     @Test
-    void inputOptionalPrintCommandWithNoOtherArgumentReturnsPrintCommandRecognized(){
+    void inputOptionalPrintCommandWithNoOtherArgumentReturnsMissingCommandLine(){
         MainMethodResult result = invokeMain("-print");
         assertThat(result.getTextWrittenToStandardError(), containsString("Missing command line arguments"));
     }
@@ -180,18 +183,30 @@ class Project2IT extends InvokeMainTestCase {
         MainMethodResult result = invokeMain("-README");
         assertThat(result.getTextWrittenToStandardOut(), containsString("Project2 - Ben Truong"));
     }
+    /**
+     * Test that invoking main method with optional <code>-print</code> and correct arguments
+     * should print to standard out phone call details
+     */
     @Test
     void inputCorrectArgumentsWithPrintCommand(){
         MainMethodResult result = invokeMain("-print", "Test8", "123-456-7890", "234-567-8901", "03/03/2022", "12:00", "05/04/2022", "16:00");
         assertThat(result.getTextWrittenToStandardOut(), containsString("Phone call from"));
     }
 
+    /**
+     * Test that invoking main method with unknown optional command <code>-unknown</code>
+     * should print to standard error Unknown Command Line
+     */
     @Test
     void unknownCommandLinePrintsUnknownCommandLine(){
         MainMethodResult result = invokeMain("-unknown", "Test8", "123-456-7890", "234-567-8901", "03/03/2022", "12:00", "05/04/2022", "16:00");
         assertThat(result.getTextWrittenToStandardError(), containsString("Unknown Command Line"));
     }
 
+    /**
+     * Test <code>PhoneBill</code> constructor with customer name <code>String</code>
+     * initializes correct customer's name
+     */
     @Test
     void createCorrectPhoneCallReturnsCorrectCustomer(){
         String name = "Pat Gel";
@@ -199,6 +214,10 @@ class Project2IT extends InvokeMainTestCase {
         assertThat(testBill.getCustomer(), containsString(name));
     }
 
+    /**
+     * Test that <code>addPhoneCall(String customer)</code> correctly add phone call to phone bill
+     * and increment the number of phone calls in list
+     */
     @Test
     void addNewPhoneCallToPhoneBillReturnsCorrectNumberOfPhoneCall(){
         PhoneCall testCall = new PhoneCall("123-456-7890", "333-456-7890", "12/15/2022", "10:30", "12/15/2022", "10:35");
@@ -210,6 +229,10 @@ class Project2IT extends InvokeMainTestCase {
         assertEquals(testBill.getPhoneCalls().size(), 2);
     }
 
+    /**
+     * Test that invoking main method with optional <code>-print</code> and correct arguments
+     * should print to standard out phone call details with correct caller number
+     */
     @Test
     void invokeCorrectCommandLineAddsNewPhoneCallToNewPhoneBill(){
         String name = "Pat Gel";
@@ -217,18 +240,81 @@ class Project2IT extends InvokeMainTestCase {
         MainMethodResult result = invokeMain("-print", name, caller, "234-567-8901", "03/03/2022", "12:00", "05/04/2022", "16:00");
         assertThat(result.getTextWrittenToStandardOut(), containsString(caller));
     }
+
+    /**
+     * Test that invoking main method with optional <code>-textFile</code> and no argument
+     * should print to standard error command is missing file
+     */
     @Test
     void textFileCommandWithoutPathReturnsMissingFileName(){
         MainMethodResult result = invokeMain("-textFile");
-        assertThat(result.getTextWrittenToStandardError(), containsString("Missing command line"));
+        assertThat(result.getTextWrittenToStandardError(), containsString("Command is missing file"));
     }
 
+    /**
+     * Test that invoking main method with optional <code>-textFile</code>
+     * and a file with parent file path correctly creates new file
+     */
     @Test
-    void textFileCommandwithFilePathCreatesNewFile(){
+    void textFileCommandWithFilePathCreatesNewFile(){
         MainMethodResult result = invokeMain("-textFile", "TestDir/newfile.test", "Brian Nguyen","123-456-7890", "234-567-8901", "03/03/2022", "12:00", "05/04/2022", "16:00");
         assertThat(result.getTextWrittenToStandardOut(), containsString("New file written"));
     }
 
 
+    /**
+     * Test that invoking main method with optional <code>-textFile</code>
+     * and a file with no parent file path correctly creates new file
+     */
+    @Test
+    void correctCommandLinesWithFileAndNoPathCreateFileAtCurrentDirectory(){
+        MainMethodResult result = invokeMain("-textFile", "Ben.test", "Haylie Nguyen","123-456-7890", "234-567-8901", "03/03/2022", "12:00", "05/04/2022", "16:00");
+        assertThat(result.getTextWrittenToStandardOut(), containsString("New file written"));
+    }
 
+
+    /**
+     * Test that invoking main method with correct optional <code>-textFile</code>
+     * and <code>-README</code> command correctly print README and issue no error
+     */
+    @Test
+    void inputOptionalREADMECommandAfterTextFileReturnsREADMEPrinted(){
+        MainMethodResult result = invokeMain("-textFile", "Ben.doc", "-README");
+        assertThat(result.getTextWrittenToStandardOut(), containsString("Project2 - Ben Truong"));
+    }
+
+    /**
+     * Tests with different file names returns expected values
+     */
+    @Test
+    void isValidFilePathReturnsCorrectValues(){
+        assertTrue(Project2.isValidFilePath("Ben.doc"));
+        assertTrue(Project2.isValidFilePath("Temp/Ben.doc"));
+        assertTrue(Project2.isValidFilePath("Temp_1/Temp2/Ben.doc"));
+        assertFalse(Project2.isValidFilePath("/Ben.doc"));
+        assertFalse(Project2.isValidFilePath("//Ben.doc"));
+        assertFalse(Project2.isValidFilePath("/Temp/Ben.doc"));
+        assertFalse(Project2.isValidFilePath("/Temp//Ben.doc"));
+    }
+
+    /**
+     * Test that invoking main method with optional <code>-textFile</code>
+     * with <code>-print</code> command recognizes the command and issues error of missing command lines
+     *
+     */
+    @Test
+    void inputOptionalPrintCommandAfterTextFileReturnsMissingCommandLines(){
+        MainMethodResult result = invokeMain("-textFile", "Ben.doc", "-print");
+        assertThat(result.getTextWrittenToStandardError(), containsString("Missing command line"));
+    }
+
+    /**
+     * Test that invoking main method with correct optional <code>-textFile</code>
+     * but malformed data for phone call would issue standard error and terminates program
+     */
+    @Test
+    void correctCommandLinesWithMalformedDataPrintsError(){
+        MainMethodResult result = invokeMain("-textFile", "Ben.test", "Haylie Nguyen","123-456-7890", "234-567-8901", "03/03/2022", "12:00", "05/04/2022", "1600");
+        assertThat(result.getTextWrittenToStandardError(), containsString("Program terminated"));
+    }
 }

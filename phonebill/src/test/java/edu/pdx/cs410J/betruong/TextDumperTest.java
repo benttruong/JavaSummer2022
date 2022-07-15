@@ -11,9 +11,15 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
+/**
+ * A unit test for code in the <code>TextDumperTest</code> class.
+ */
 public class TextDumperTest {
 
+  /**
+   * Test that the <code>TextDumper</code> would correctly
+   * dump files in correct text format
+   */
   @Test
   void appointmentBookOwnerIsDumpedInTextFormat() {
     String customer = "Test Phone Bill";
@@ -27,6 +33,13 @@ public class TextDumperTest {
     assertThat(text, containsString(customer));
   }
 
+  /**
+   * Test that the <code>TextParser</code> can
+   * correctly parse text files generate by <code>TextDumper</code>
+   * @param tempDir
+   * @throws IOException
+   * @throws ParserException
+   */
   @Test
   void canParseTextWrittenByTextDumper(@TempDir File tempDir) throws IOException, ParserException {
     String customer = "Test Phone Bill";
@@ -41,6 +54,16 @@ public class TextDumperTest {
     assertThat(read.getCustomer(), equalTo(customer));
   }
 
+  /**
+   * Test that a newly created phone bill can be dumped by <code>TextDumper</code>
+   * and its member fields would be correctly parsed by <code>TextParser</code>
+   * @param tempDir
+   *        is used as a new file path to dump phone bill
+   * @throws IOException
+   *        IOException can be thrown when creating new <code>FileWriter</code>
+   * @throws ParserException
+   *        ParserException can be thrown when parsing an empty text file
+   */
   @Test
   void newPhoneBillWithPhoneCallCanBeDumpedInNewFile(@TempDir File tempDir) throws IOException, ParserException {
 
@@ -71,6 +94,12 @@ public class TextDumperTest {
     assertThat(readCall.getEndTimeString(), containsString(endTime));
   }
 
+  /**
+   * Test that a new phone bill can be dumped by <code>TextDumper</code>
+   * in a specific directory and can be correctly parsed by <code>TextParser</code>
+   * @throws ParserException
+   *         ParserException can be thrown if parsing from an empty file
+   */
   @Test
   void createNewDirParserCanFindDir() throws ParserException {
     String customer = "Test Phone Bill";
@@ -101,6 +130,14 @@ public class TextDumperTest {
     assertThat(read.getCustomer(), equalTo(customer));
   }
 
+  /**
+   * More tests when a newly created phone bill can be correctly dumped
+   * and parsed and file is not in memory
+   * @throws IOException
+   *         IOException can be thrown when creating new <code>FileWriter</code>
+   * @throws ParserException
+   *         ParserException can be thrown when parsing an empty text file
+   */
   @Test
   void newPhoneBillWithPhoneCallCanBeDumpedInNewRealFile() throws IOException, ParserException {
 
