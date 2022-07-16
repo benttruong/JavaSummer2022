@@ -99,7 +99,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void provide8ArgumentsReturnTooManyArguments(){
-        MainMethodResult result = invokeMain("Brian Griffin", "123-456-7890", "133-456-7890", "3/15/2022", "10:39", "03/2/2022", "1:03", "an extra argument");
+        MainMethodResult result = invokeMain("Brian Griffin", "123-456-7890", "133-456-7890", "3/15/2022", "10:39", "PM", "03/2/2022", "1:03", "AM", "an extra argument");
         assertThat(result.getTextWrittenToStandardError(), containsString("Too many arguments"));
     }
 
@@ -109,7 +109,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void wrongCallerNumberFormatReturnsInvalidPhoneNumberError(){
-        MainMethodResult result = invokeMain("Brian Griffin", "1234567890", "133-456-7890", "3/15/2022", "10:39", "03/2/2022", "1:03");
+        MainMethodResult result = invokeMain("Brian Griffin", "1234567890", "133-456-7890", "3/15/2022", "10:39", "AM", "03/2/2022", "1:03", "PM");
         assertThat(result.getTextWrittenToStandardError(), containsString("Invalid Phone Number"));
     }
 
@@ -119,7 +119,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void wrongCalleeNumberFormatReturnsInvalidPhoneNumberError(){
-        MainMethodResult result = invokeMain("Brian Griffin", "123-456-7890", "1334567890", "3/15/2022", "10:39", "03/2/2022", "1:03");
+        MainMethodResult result = invokeMain("Brian Griffin", "123-456-7890", "1334567890", "3/15/2022", "10:39", "AM", "03/2/2022", "1:03", "PM");
         assertThat(result.getTextWrittenToStandardError(), containsString("Invalid Phone Number"));
     }
 
@@ -129,7 +129,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void wrongBeginDateFormatReturnsInvalidDateError(){
-        MainMethodResult result = invokeMain("Brian Griffin", "123-456-7890", "133-456-7890", "3152022", "10:39", "03/2/2022", "1:03");
+        MainMethodResult result = invokeMain("Brian Griffin", "123-456-7890", "133-456-7890", "3152022", "10:39", "AM", "03/2/2022", "1:03", "PM");
         assertThat(result.getTextWrittenToStandardError(), containsString("Invalid Date"));
     }
 
@@ -139,7 +139,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void wrongEndDateFormatReturnsInvalidDateError(){
-        MainMethodResult result = invokeMain("Brian Griffin", "123-456-7890", "133-456-7890", "3/15/2022", "10:39", "0322022", "1:03");
+        MainMethodResult result = invokeMain("Brian Griffin", "123-456-7890", "133-456-7890", "3/15/2022", "10:39", "AM", "0322022", "1:03", "PM");
         assertThat(result.getTextWrittenToStandardError(), containsString("Invalid Date"));
     }
 
@@ -149,7 +149,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void wrongBeginTimeFormatReturnsInvalidTimeError(){
-        MainMethodResult result = invokeMain("Brian Griffin", "123-456-7890", "133-456-7890", "3/15/2022", "1039", "03/2/2022", "1:03");
+        MainMethodResult result = invokeMain("Brian Griffin", "123-456-7890", "133-456-7890", "3/15/2022", "1039", "AM", "03/2/2022", "1:03", "PM");
         assertThat(result.getTextWrittenToStandardError(), containsString("Invalid Time"));
     }
 
@@ -159,7 +159,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void wrongEndTimeFormatReturnsInvalidTimeError(){
-        MainMethodResult result = invokeMain("Brian Griffin", "123-456-7890", "133-456-7890", "3/15/2022", "10:39", "03/2/2022", "103");
+        MainMethodResult result = invokeMain("Brian Griffin", "123-456-7890", "133-456-7890", "3/15/2022", "10:39", "AM", "03/2/2022", "103", "PM");
         assertThat(result.getTextWrittenToStandardError(), containsString("Invalid Time"));
     }
 
@@ -189,7 +189,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void inputCorrectArgumentsWithPrintCommand(){
-        MainMethodResult result = invokeMain("-print", "Test8", "123-456-7890", "234-567-8901", "03/03/2022", "12:00", "05/04/2022", "16:00");
+        MainMethodResult result = invokeMain("-print", "Test8", "123-456-7890", "234-567-8901", "03/03/2022", "12:00", "PM", "05/04/2022", "16:00", "PM");
         assertThat(result.getTextWrittenToStandardOut(), containsString("Phone call from"));
     }
 
@@ -237,7 +237,7 @@ class Project2IT extends InvokeMainTestCase {
     void invokeCorrectCommandLineAddsNewPhoneCallToNewPhoneBill(){
         String name = "Pat Gel";
         String caller = "123-456-7890";
-        MainMethodResult result = invokeMain("-print", name, caller, "234-567-8901", "03/03/2022", "12:00", "05/04/2022", "16:00");
+        MainMethodResult result = invokeMain("-print", name, caller, "234-567-8901", "03/03/2022", "12:00", "PM", "05/04/2022", "16:00", "PM");
         assertThat(result.getTextWrittenToStandardOut(), containsString(caller));
     }
 
@@ -316,7 +316,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void correctCommandLinesWithMalformedDataPrintsError(){
-        MainMethodResult result = invokeMain("-textFile", "Ben.test", "Haylie Nguyen","123-456-7890", "234-567-8901", "03/03/2022", "12:00", "05/04/2022", "1600");
+        MainMethodResult result = invokeMain("-textFile", "Ben.test", "Haylie Nguyen","123-456-7890", "234-567-8901", "03/03/2022", "12:00", "PM", "05/04/2022", "1600", "PM");
         assertThat(result.getTextWrittenToStandardError(), containsString("Program terminated"));
     }
 

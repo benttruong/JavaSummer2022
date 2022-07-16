@@ -125,7 +125,7 @@ public class PhoneCall extends AbstractPhoneCall {
    */
   @Override
   public String getBeginTimeString() {
-    return this.beginDate + " " + this.beginTime;
+    return this.beginDate + " " + this.beginTime + " " + this.beginMeridiem;
   }
 
   /**
@@ -134,7 +134,7 @@ public class PhoneCall extends AbstractPhoneCall {
    */
   @Override
   public String getEndTimeString() {
-    return this.endDate + " " + this.endTime;
+    return this.endDate + " " + this.endTime + " " + this.endMeridiem;
   }
 
 

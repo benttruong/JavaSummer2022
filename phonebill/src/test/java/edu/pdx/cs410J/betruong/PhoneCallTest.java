@@ -74,7 +74,7 @@ public class PhoneCallTest {
     String endTime = "1:03";
     String endDate = "03/2/2022";
     PhoneCall call = new PhoneCall(caller,callee, beginDate, beginTime, "AM", endDate, endTime, "PM");
-    assertThat(call.getBeginTimeString(), equalTo("3/15/2022 10:39"));
+    assertThat(call.getBeginTimeString(), equalTo("3/15/2022 10:39 AM"));
   }
 
   /**
@@ -90,7 +90,7 @@ public class PhoneCallTest {
     String endTime = "1:03";
     String endDate = "03/2/2022";
     PhoneCall call = new PhoneCall(caller,callee, beginDate, beginTime, "AM", endDate, endTime, "PM");
-    assertThat(call.getEndTimeString(), equalTo("03/2/2022 1:03"));
+    assertThat(call.getEndTimeString(), equalTo("03/2/2022 1:03 PM"));
   }
   /**
    * Test that adding phone call to phone bill

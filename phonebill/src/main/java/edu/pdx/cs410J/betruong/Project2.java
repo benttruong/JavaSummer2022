@@ -4,6 +4,7 @@ import com.google.common.annotations.VisibleForTesting;
 import edu.pdx.cs410J.ParserException;
 
 import java.io.*;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -212,12 +213,13 @@ public class Project2 {
       boolean callee = isValidPhoneNumber(args[firstArg + 2]);
       boolean beginDate = isValidDate(args[firstArg + 3]);
       boolean beginTime = isValidTime(args[firstArg + 4]);
-
-      boolean endDate = isValidDate(args[firstArg + 5]);
-      boolean endTime = isValidTime(args[firstArg + 6]);
+      boolean beginMeridiem = isValidMeridiem(args[firstArg + 5]);
+      boolean endDate = isValidDate(args[firstArg + 6]);
+      boolean endTime = isValidTime(args[firstArg + 7]);
+      boolean endMeridiem = isValidMeridiem(args[firstArg + 8]);
 
       PhoneCall call = null;
-      if (caller && callee && beginDate && beginTime && endDate && endTime) {
+      if (caller && callee && beginDate && beginTime && beginMeridiem && endDate && endTime && endMeridiem) {
         call = new PhoneCall(args[firstArg + 1], args[firstArg + 2], args[firstArg + 3], args[firstArg + 4], args[firstArg + 5], args[firstArg + 6], args[firstArg + 7], args[firstArg + 8]);
       }
       else{
@@ -238,6 +240,13 @@ public class Project2 {
         System.out.println(call);
       }
     }
+
+  private static boolean isValidMeridiem(String arg) {
+      if (Objects.equals(arg.toLowerCase(Locale.ROOT), "am") || Objects.equals(arg.toLowerCase(Locale.ROOT), "pm")){
+          return true;
+      }
+      return false;
+  }
 
   private static void printTextFile(String file, PhoneCall call, String customer, PhoneBill bill, boolean fileFound) {
     String filename = getFileName(file);
