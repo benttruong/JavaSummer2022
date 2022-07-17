@@ -258,7 +258,7 @@ class Project2IT extends InvokeMainTestCase {
     @Test
     @Disabled
     void textFileCommandWithFilePathCreatesNewFile(){
-        MainMethodResult result = invokeMain("-textFile", "TestDir/newfile.test", "Brian Nguyen","123-456-7890", "234-567-8901", "03/03/2022", "12:00", "05/04/2022", "16:00");
+        MainMethodResult result = invokeMain("-textFile", "TestDir/newfile.test", "Brian Nguyen","123-456-7890", "234-567-8901", "03/03/2022", "12:00", "PM", "05/04/2022", "4:00", "PM");
         assertThat(result.getTextWrittenToStandardOut(), containsString("New file written"));
     }
 
@@ -270,7 +270,7 @@ class Project2IT extends InvokeMainTestCase {
     @Test
     @Disabled
     void correctCommandLinesWithFileAndNoPathCreateFileAtCurrentDirectory(){
-        MainMethodResult result = invokeMain("-textFile", "Ben.test", "Haylie Nguyen","123-456-7890", "234-567-8901", "03/03/2022", "12:00", "05/04/2022", "16:00");
+        MainMethodResult result = invokeMain("-textFile", "Ben.test", "Haylie Nguyen","123-456-7890", "234-567-8901", "03/03/2022", "12:00", "PM", "05/04/2022", "16:00", "PM");
         assertThat(result.getTextWrittenToStandardOut(), containsString("New file written"));
     }
 
@@ -316,7 +316,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void correctCommandLinesWithMalformedDataPrintsError(){
-        MainMethodResult result = invokeMain("-textFile", "Ben.test", "Haylie Nguyen","123-456-7890", "234-567-8901", "03/03/2022", "12:00", "PM", "05/04/2022", "1600", "PM");
+        MainMethodResult result = invokeMain("-textFile", "Ben.test", "Haylie Nguyen","123-456-7890", "234-567-8901", "03/03/2022", "12:00", "PM", "05/04/2022", "400", "PM");
         assertThat(result.getTextWrittenToStandardError(), containsString("Program terminated"));
     }
 

@@ -1,7 +1,13 @@
 package edu.pdx.cs410J.betruong;
 
 import edu.pdx.cs410J.InvokeMainTestCase;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -14,16 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * You'll need to update these unit tests as you build out your program.
  */
 public class PhoneCallTest {
-
-  /**
-   * Test to check that <code>getBeginTime</code> method is currently
-   * return null value
-   */
-  @Test
-  void forProject2ItIsOkayIfGetBeginTimeReturnsNull() {
-    PhoneCall call = new PhoneCall();
-    assertThat(call.getBeginTime(), is(nullValue()));
-  }
 
   // beginning of my own work
 
@@ -74,24 +70,10 @@ public class PhoneCallTest {
     String endTime = "1:03";
     String endDate = "03/2/2022";
     PhoneCall call = new PhoneCall(caller,callee, beginDate, beginTime, "AM", endDate, endTime, "PM");
-    assertThat(call.getBeginTimeString(), equalTo("3/15/2022 10:39 AM"));
+    assertThat(call.getBeginTimeString(), containsString("10:39 AM"));
   }
 
-  /**
-   * Test creating a PhoneCall with correct arguments
-   * generating a new phone call with correct end time
-   */
-  @Test
-  void createPhoneCallGetsCorrectEndTime() {
-    String caller = "123-456-7890";
-    String callee = "113-456-7890";
-    String beginTime = "10:39";
-    String beginDate = "3/15/2022";
-    String endTime = "1:03";
-    String endDate = "03/2/2022";
-    PhoneCall call = new PhoneCall(caller,callee, beginDate, beginTime, "AM", endDate, endTime, "PM");
-    assertThat(call.getEndTimeString(), equalTo("03/2/2022 1:03 PM"));
-  }
+
   /**
    * Test that adding phone call to phone bill
    * returns correct number of phone call
@@ -105,5 +87,30 @@ public class PhoneCallTest {
     assertEquals(bill.getPhoneCalls().size(), 1);
   }
 
+  @Test
+  void beginTimeFromPhoneCallUsingConstructorIsCorrectlyParsed(){
+    String input = "12/05/2022 11:15 AM";
+    SimpleDateFormat sdf = new SimpleDateFormat("M/d/yyyy H:mm a");
+    Date time = null;
+    try {
+      time = sdf.parse(input);
+    } catch (ParseException e) {
+      throw new RuntimeException(e);
+    }
+    PhoneCall call = new PhoneCall("123", "456", "12/5/2022", "11:15", "AM", "12/16/2022", "12:30", "PM");
+    assertEquals(call.getBeginTime(), time);
+  }
+
+  /**
+   * Test creating a PhoneCall with correct arguments
+   * generating a new phone call with correct end time
+   */
+  @Test
+  void getEndTimeStringReturnsCorrectTime(){
+    PhoneCall call = new PhoneCall("123", "456", "12/5/2022", "11:15", "AM", "12/16/2022", "12:30", "PM");
+    assertThat(call.getEndTimeString(), containsString("12:30 PM"));
+    System.out.println(call.getEndTimeString());
+    System.out.println(call);
+  }
 
 }

@@ -3,12 +3,17 @@ package edu.pdx.cs410J.betruong;
 import com.google.common.annotations.VisibleForTesting;
 import edu.pdx.cs410J.AbstractPhoneCall;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Month;
+import java.util.Date;
 import java.util.regex.*;
 
 /**
  * This call represents a <code>PhoneCall</code>
  */
-public class PhoneCall extends AbstractPhoneCall {
+public class PhoneCall extends AbstractPhoneCall implements Comparable{
 
 
   private final String caller;
@@ -20,6 +25,8 @@ public class PhoneCall extends AbstractPhoneCall {
   private final String endDate;
   private final String endTime;
   private final String endMeridiem;
+
+
 
   /**
    * Creates a new <code>PhoneCall</code>
@@ -107,7 +114,7 @@ public class PhoneCall extends AbstractPhoneCall {
    * @return <code>String</code> begin time
    */
   public String getBeginTimeLiterals(){
-    return this.beginTime;
+    return this.beginDate + " " + this.beginTime + " " + this.beginMeridiem;
   }
 
 
@@ -116,7 +123,7 @@ public class PhoneCall extends AbstractPhoneCall {
    * @return <code>String</code> end time
    */
   public String getEndTimeLiterals(){
-    return this.endTime;
+    return this.endDate + " " + this.endTime + " " + this.endMeridiem;
   }
 
   /**
@@ -125,7 +132,24 @@ public class PhoneCall extends AbstractPhoneCall {
    */
   @Override
   public String getBeginTimeString() {
-    return this.beginDate + " " + this.beginTime + " " + this.beginMeridiem;
+    Date date = this.getBeginTime();
+    int f = DateFormat.SHORT;
+    DateFormat df = DateFormat.getDateTimeInstance(f, f);
+    return df.format(date);
+  }
+
+  @Override
+  public Date getBeginTime () {
+    String time = beginDate + " " + beginTime + " " + beginMeridiem;
+    SimpleDateFormat sdf = new SimpleDateFormat("M/d/yyyy H:mm a");
+    Date result = null;
+    try {
+      result = sdf.parse(time);
+    } catch (ParseException e) {
+      System.err.println("Could not parse the time: " + time);
+      System.exit(1);
+    }
+    return result;
   }
 
   /**
@@ -134,8 +158,28 @@ public class PhoneCall extends AbstractPhoneCall {
    */
   @Override
   public String getEndTimeString() {
-    return this.endDate + " " + this.endTime + " " + this.endMeridiem;
+    Date date = this.getEndTime();
+    int f = DateFormat.SHORT;
+    DateFormat df = DateFormat.getDateTimeInstance(f, f);
+    return df.format(date);
   }
 
+  @Override
+  public Date getEndTime(){
+    String time = endDate + " " + endTime + " " + endMeridiem;
+    SimpleDateFormat sdf = new SimpleDateFormat("M/d/yyyy H:mm a");
+    Date result = null;
+    try {
+      result = sdf.parse(time);
+    } catch (ParseException e) {
+      System.err.println("Could not parse the time: " + time);
+      // System.exit(1);
+    }
+    return result;
+  }
 
+  @Override
+  public int compareTo(Object o) {
+    return 0;
+  }
 }

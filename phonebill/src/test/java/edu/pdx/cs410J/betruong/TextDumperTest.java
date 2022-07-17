@@ -88,10 +88,10 @@ public class TextDumperTest {
     PhoneCall readCall = (PhoneCall) readBill.getPhoneCalls().toArray()[0];
     assertThat(readCall.getCaller(), equalTo(caller));
     assertThat(readCall.getCallee(), equalTo(callee));
-    assertThat(readCall.getBeginTimeString(), containsString(beginDate));
-    assertThat(readCall.getBeginTimeString(), containsString(beginTime));
-    assertThat(readCall.getEndTimeString(), containsString(endDate));
-    assertThat(readCall.getEndTimeString(), containsString(endTime));
+    assertThat(readCall.getBeginTimeLiterals(), containsString(beginDate));
+    assertThat(readCall.getBeginTimeLiterals(), containsString(beginTime));
+    assertThat(readCall.getEndTimeLiterals(), containsString(endDate));
+    assertThat(readCall.getEndTimeLiterals(), containsString(endTime));
   }
 
   /**
@@ -148,7 +148,7 @@ public class TextDumperTest {
     String caller = "123-456-7890";
     String callee = "333-456-7890";
     String beginDate = "12/15/2022";
-    String beginTime = "16:00";
+    String beginTime = "6:00";
     String endDate = "12/16/2022";
     String endTime = "17:15";
     PhoneCall call = new PhoneCall(caller, callee, beginDate, beginTime, "AM", endDate, endTime, "PM");

@@ -17,110 +17,6 @@ import java.util.regex.Pattern;
  */
 public class Project2 {
 
-  /**
-   * Validating phone number has the format nnn-nnn-nnnn using regex
-   *
-   * @param phoneNumber Phone number to validate
-   * @return <code>boolean</code>
-   * true if phone number is in the correct format
-   * false if not in the correct format
-   */
-  @VisibleForTesting
-  static boolean isValidPhoneNumber(String phoneNumber) {
-    Pattern p = Pattern.compile("^\\d{3}-\\d{3}-\\d{4}$");
-    Matcher m = p.matcher(phoneNumber);
-    if (m.matches())
-      return true;
-    else {
-      System.err.println(phoneNumber + " is an Invalid Phone Number");
-      return false;
-    }
-  }
-
-  /**
-   * Validating a date has the format mm/dd/yyyy using regex
-   *
-   * @param date Date to validate
-   * @return <code>boolean</code>
-   * true if format is correct
-   * false if format is not correct
-   */
-  @VisibleForTesting
-  static boolean isValidDate(String date) {
-    Pattern p = Pattern.compile("^(0?[1-9]|1[012])[- /.](0?[1-9]|[12]\\d|3[01])[- /.](19|20)\\d\\d$");
-    Matcher m = p.matcher(date);
-    if (m.matches())
-      return true;
-    else {
-      System.err.println(date + " is an Invalid Date");
-      return false;
-    }
-  }
-
-  /**
-   * Validating time to be in the format hh:mm using regex
-   *
-   * @param time Time to validate
-   * @return <code>boolean</code>
-   * true if format is correct
-   * false if format is not correct
-   */
-  @VisibleForTesting
-  static boolean isValidTime(String time) {
-    Pattern p = Pattern.compile("^(\\d|[0-1]\\d|2[0-3]):([0-5]\\d)$");
-    Matcher m = p.matcher(time);
-    if (m.matches())
-      return true;
-    else {
-      System.err.println(time + " is an Invalid Time");
-      return false;
-    }
-  }
-
-  /**
-   * Print the README file
-   *
-   * @throws IOException <code>IOException</code>
-   */
-  @VisibleForTesting
-  static void printReadme() throws IOException {
-    // System.out.println("README Command Recognized");
-    InputStream readme = Project2.class.getResourceAsStream("README.txt");
-    assert readme != null;
-    BufferedReader reader = new BufferedReader(new InputStreamReader(readme));
-    String output;
-    while ((output = reader.readLine()) != null)
-      System.out.print(output + '\n');
-  }
-
-  @VisibleForTesting
-  static boolean isValidFilePath(String file) {
-    Pattern filePath = Pattern.compile("^([a-zA-Z0-9_-]+/)*[a-zA-Z0-9_-]+\\.[a-z]+$");
-    Matcher m = filePath.matcher(file);
-    return m.matches();
-  }
-
-  @VisibleForTesting
-  static String getFileName(String file) {
-    int beginningIndexOfFileName = file.lastIndexOf('/') + 1;
-    if (beginningIndexOfFileName < 0)
-      return file;
-    else
-      return file.substring(beginningIndexOfFileName);
-  }
-
-  @VisibleForTesting
-  static String getPath(String file) {
-    int endingIndexOfPath = file.lastIndexOf('/');
-    if (endingIndexOfPath < 0)
-      return null;
-    else
-      return file.substring(0, endingIndexOfPath);
-  }
-
-
-
-
     /**
      * Main program that parses the command line, creates a <code>PhoneCall</code>
      * and print a description of the phone call to standard out by invoking <code>toString</code>
@@ -182,7 +78,7 @@ public class Project2 {
             return;
           }
           if (isValidFilePath(args[i+1]) || Objects.equals(args[i+1], '-')){
-            
+
           } else {
             System.err.println("Pretty Command is missing output destination");
             return;
@@ -241,6 +137,107 @@ public class Project2 {
       }
     }
 
+  /**
+   * Validating time to be in the format hh:mm using regex
+   *
+   * @param time Time to validate
+   * @return <code>boolean</code>
+   * true if format is correct
+   * false if format is not correct
+   */
+  @VisibleForTesting
+  static boolean isValidTime(String time) {
+    Pattern p = Pattern.compile("^(\\d|[0-1]\\d|2[0-3]):([0-5]\\d)$");
+    Matcher m = p.matcher(time);
+    if (m.matches())
+      return true;
+    else {
+      System.err.println(time + " is an Invalid Time");
+      return false;
+    }
+  }
+
+  /**
+   * Validating a date has the format mm/dd/yyyy using regex
+   *
+   * @param date Date to validate
+   * @return <code>boolean</code>
+   * true if format is correct
+   * false if format is not correct
+   */
+  @VisibleForTesting
+  static boolean isValidDate(String date) {
+    Pattern p = Pattern.compile("^(0?[1-9]|1[012])[- /.](0?[1-9]|[12]\\d|3[01])[- /.](19|20)\\d\\d$");
+    Matcher m = p.matcher(date);
+    if (m.matches())
+      return true;
+    else {
+      System.err.println(date + " is an Invalid Date");
+      return false;
+    }
+  }
+
+  /**
+   * Validating phone number has the format nnn-nnn-nnnn using regex
+   *
+   * @param phoneNumber Phone number to validate
+   * @return <code>boolean</code>
+   * true if phone number is in the correct format
+   * false if not in the correct format
+   */
+  @VisibleForTesting
+  static boolean isValidPhoneNumber(String phoneNumber) {
+    Pattern p = Pattern.compile("^\\d{3}-\\d{3}-\\d{4}$");
+    Matcher m = p.matcher(phoneNumber);
+    if (m.matches())
+      return true;
+    else {
+      System.err.println(phoneNumber + " is an Invalid Phone Number");
+      return false;
+    }
+  }
+
+  /**
+   * Print the README file
+   *
+   * @throws IOException <code>IOException</code>
+   */
+  @VisibleForTesting
+  static void printReadme() throws IOException {
+    // System.out.println("README Command Recognized");
+    InputStream readme = Project2.class.getResourceAsStream("README.txt");
+    assert readme != null;
+    BufferedReader reader = new BufferedReader(new InputStreamReader(readme));
+    String output;
+    while ((output = reader.readLine()) != null)
+      System.out.print(output + '\n');
+  }
+
+  @VisibleForTesting
+  static boolean isValidFilePath(String file) {
+    Pattern filePath = Pattern.compile("^([a-zA-Z0-9_-]+/)*[a-zA-Z0-9_-]+\\.[a-z]+$");
+    Matcher m = filePath.matcher(file);
+    return m.matches();
+  }
+
+  @VisibleForTesting
+  static String getFileName(String file) {
+    int beginningIndexOfFileName = file.lastIndexOf('/') + 1;
+    if (beginningIndexOfFileName < 0)
+      return file;
+    else
+      return file.substring(beginningIndexOfFileName);
+  }
+
+  @VisibleForTesting
+  static String getPath(String file) {
+    int endingIndexOfPath = file.lastIndexOf('/');
+    if (endingIndexOfPath < 0)
+      return null;
+    else
+      return file.substring(0, endingIndexOfPath);
+  }
+
   private static boolean isValidMeridiem(String arg) {
       if (Objects.equals(arg.toLowerCase(Locale.ROOT), "am") || Objects.equals(arg.toLowerCase(Locale.ROOT), "pm")){
           return true;
@@ -280,10 +277,6 @@ public class Project2 {
         System.err.println("Provided customer name does not match with existing bill");
         return;
       }
-
-      // unless the customer names are not matching
-      // we are adding the new phone call to the bill here
-     // bill.addPhoneCall(call);
     }
 
     TextDumper dumper = null;
