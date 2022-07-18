@@ -187,7 +187,7 @@ public class PhoneCall extends AbstractPhoneCall implements Comparable{
 
   @VisibleForTesting
   static boolean isValidTime(String time) {
-    Pattern p = Pattern.compile("^(\\d|[0-1]\\d|2[0-3]):([0-5]\\d)$");
+    Pattern p = Pattern.compile("^(\\d|[0-1][0-2]|):([0-5]\\d)$");
     Matcher m = p.matcher(time);
     if (m.matches())
       return true;

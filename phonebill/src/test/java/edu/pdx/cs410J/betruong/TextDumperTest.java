@@ -72,9 +72,9 @@ public class TextDumperTest {
     String caller = "123-456-7890";
     String callee = "333-456-7890";
     String beginDate = "12/15/2022";
-    String beginTime = "16:00";
+    String beginTime = "6:00";
     String endDate = "12/16/2022";
-    String endTime = "17:15";
+    String endTime = "7:15";
     PhoneCall call = new PhoneCall(caller, callee, beginDate, beginTime, "AM", endDate, endTime, "PM");
     bill.addPhoneCall(call);
 

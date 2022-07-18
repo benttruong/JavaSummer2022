@@ -189,7 +189,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void inputCorrectArgumentsWithPrintCommand(){
-        MainMethodResult result = invokeMain("-print", "Test8", "123-456-7890", "234-567-8901", "03/03/2022", "12:00", "PM", "05/04/2022", "16:00", "PM");
+        MainMethodResult result = invokeMain("-print", "Test8", "123-456-7890", "234-567-8901", "03/03/2022", "11:00", "PM", "05/04/2022", "12:00", "PM");
         assertThat(result.getTextWrittenToStandardOut(), containsString("Phone call from"));
     }
 
@@ -237,7 +237,7 @@ class Project2IT extends InvokeMainTestCase {
     void invokeCorrectCommandLineAddsNewPhoneCallToNewPhoneBill(){
         String name = "Pat Gel";
         String caller = "123-456-7890";
-        MainMethodResult result = invokeMain("-print", name, caller, "234-567-8901", "03/03/2022", "12:00", "PM", "05/04/2022", "16:00", "PM");
+        MainMethodResult result = invokeMain("-print", name, caller, "234-567-8901", "03/03/2022", "10:00", "PM", "05/04/2022", "11:00", "PM");
         assertThat(result.getTextWrittenToStandardOut(), containsString(caller));
     }
 
