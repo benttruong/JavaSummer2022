@@ -8,6 +8,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Month;
 import java.util.Date;
+import java.util.Locale;
+import java.util.Objects;
 import java.util.regex.*;
 
 /**
@@ -182,4 +184,67 @@ public class PhoneCall extends AbstractPhoneCall implements Comparable{
   public int compareTo(Object o) {
     return 0;
   }
+
+  @VisibleForTesting
+  static boolean isValidTime(String time) {
+    Pattern p = Pattern.compile("^(\\d|[0-1]\\d|2[0-3]):([0-5]\\d)$");
+    Matcher m = p.matcher(time);
+    if (m.matches())
+      return true;
+    else {
+      System.err.println(time + " is an Invalid Time");
+      return false;
+    }
+  }
+
+  /**
+   * Validating a date has the format mm/dd/yyyy using regex
+   *
+   * @param date Date to validate
+   * @return <code>boolean</code>
+   * true if format is correct
+   * false if format is not correct
+   */
+  @VisibleForTesting
+  static boolean isValidDate(String date) {
+    Pattern p = Pattern.compile("^(0?[1-9]|1[012])[- /.](0?[1-9]|[12]\\d|3[01])[- /.](19|20)\\d\\d$");
+    Matcher m = p.matcher(date);
+    if (m.matches())
+      return true;
+    else {
+      System.err.println(date + " is an Invalid Date");
+      return false;
+    }
+  }
+
+  /**
+   * Validating phone number has the format nnn-nnn-nnnn using regex
+   *
+   * @param phoneNumber Phone number to validate
+   * @return <code>boolean</code>
+   * true if phone number is in the correct format
+   * false if not in the correct format
+   */
+  @VisibleForTesting
+  static boolean isValidPhoneNumber(String phoneNumber) {
+    Pattern p = Pattern.compile("^\\d{3}-\\d{3}-\\d{4}$");
+    Matcher m = p.matcher(phoneNumber);
+    if (m.matches())
+      return true;
+    else {
+      System.err.println(phoneNumber + " is an Invalid Phone Number");
+      return false;
+    }
+
+  }
+
+  static boolean isValidMeridiem(String arg) {
+    if (Objects.equals(arg.toLowerCase(Locale.ROOT), "am") || Objects.equals(arg.toLowerCase(Locale.ROOT), "pm")){
+      return true;
+    }
+    return false;
+  }
+
+
+
 }

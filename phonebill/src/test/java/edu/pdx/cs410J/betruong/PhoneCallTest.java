@@ -11,8 +11,8 @@ import java.util.Date;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Unit tests for the {@link PhoneCall} class.
@@ -111,6 +111,40 @@ public class PhoneCallTest {
     assertThat(call.getEndTimeString(), containsString("12:30 PM"));
     System.out.println(call.getEndTimeString());
     System.out.println(call);
+  }
+  /**
+   * Tests <code>isValidDate</code> with different dates returns expected values
+   */
+  @Test
+  void inputCorrectDate(){
+    boolean testDate = PhoneCall.isValidDate("03/03/2022");
+    boolean testDate2 = PhoneCall.isValidDate("05/04/2022");
+
+    assertTrue(testDate);
+    assertTrue(testDate2);
+  }
+
+  /**
+   * Tests <code>isValidDate</code> with different dates formats returns expected values
+   */
+  @Test
+  void isValidDateReturnsCorrectValues(){
+    assertFalse(PhoneCall.isValidDate("13/01/1993"));
+    assertFalse(PhoneCall.isValidDate("12/35/1993"));
+    assertFalse(PhoneCall.isValidDate("14/3/51993"));
+    assertTrue(PhoneCall.isValidDate("1/3/2022"));
+    assertTrue(PhoneCall.isValidDate("07/08/2022"));
+  }
+
+  /**
+   * Tests <code>isValidTime</code> with different time formats returns expected values
+   */
+  @Test
+  void isValidTimeReturnsCorrecValues(){
+    assertTrue(PhoneCall.isValidTime("12:59"));
+    assertTrue(PhoneCall.isValidTime("1:09"));
+    assertFalse(PhoneCall.isValidTime("25:1"));
+    assertFalse(PhoneCall.isValidTime("1:60"));
   }
 
 }

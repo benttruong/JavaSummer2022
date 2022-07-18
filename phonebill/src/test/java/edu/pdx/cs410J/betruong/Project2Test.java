@@ -33,17 +33,7 @@ class Project2Test {
     }
   }
 
-  /**
-   * Tests <code>isValidDate</code> with different dates returns expected values
-   */
-  @Test
-  void inputCorrectDate(){
-    boolean testDate = Project2.isValidDate("03/03/2022");
-    boolean testDate2 = Project2.isValidDate("05/04/2022");
 
-    assertTrue(testDate);
-    assertTrue(testDate2);
-  }
 
   /**
    * Tests <code>isValidFilePath</code> with different correct files returns true values
@@ -71,28 +61,9 @@ class Project2Test {
     assertFalse(Project2.isValidFilePath("text.doc/"));
   }
 
-  /**
-   * Tests <code>isValidDate</code> with different dates formats returns expected values
-   */
-  @Test
-  void isValidDateReturnsCorrectValues(){
-    assertFalse(Project2.isValidDate("13/01/1993"));
-    assertFalse(Project2.isValidDate("12/35/1993"));
-    assertFalse(Project2.isValidDate("14/3/51993"));
-    assertTrue(Project2.isValidDate("1/3/2022"));
-    assertTrue(Project2.isValidDate("07/08/2022"));
-  }
 
-  /**
-   * Tests <code>isValidTime</code> with different time formats returns expected values
-   */
-  @Test
-  void isValidTimeReturnsCorrecValues(){
-    assertTrue(Project2.isValidTime("12:59"));
-    assertTrue(Project2.isValidTime("1:09"));
-    assertFalse(Project2.isValidTime("25:1"));
-    assertFalse(Project2.isValidTime("1:60"));
-  }
+
+
 
   /**
    * Tests <code>getPath</code> with different files returns expected values

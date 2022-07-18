@@ -44,6 +44,14 @@ public class TextParserTest {
     assertThrows(ParserException.class, parser::parse);
   }
 
+  @Test
+  void badYearTextFileThrowsParserException() throws ParserException {
+    InputStream resource = getClass().getResourceAsStream("bad-year.txt");
+    assertThat(resource, notNullValue());
+
+    TextParser parser = new TextParser(new InputStreamReader(resource));
+    assertThrows(ParserException.class, parser::parse);
+  }
 
 
 }

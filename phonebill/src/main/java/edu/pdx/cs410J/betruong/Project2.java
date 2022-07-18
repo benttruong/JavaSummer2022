@@ -104,17 +104,17 @@ public class Project2 {
         return;
       }
 
-      // validating arguments to make sure they are provided in the right order
-      boolean caller = isValidPhoneNumber(args[firstArg + 1]);
-      boolean callee = isValidPhoneNumber(args[firstArg + 2]);
-      boolean beginDate = isValidDate(args[firstArg + 3]);
-      boolean beginTime = isValidTime(args[firstArg + 4]);
-      boolean beginMeridiem = isValidMeridiem(args[firstArg + 5]);
-      boolean endDate = isValidDate(args[firstArg + 6]);
-      boolean endTime = isValidTime(args[firstArg + 7]);
-      boolean endMeridiem = isValidMeridiem(args[firstArg + 8]);
-
       PhoneCall call = null;
+      // validating arguments to make sure they are provided in the right order
+      boolean caller = PhoneCall.isValidPhoneNumber(args[firstArg + 1]);
+      boolean callee = PhoneCall.isValidPhoneNumber(args[firstArg + 2]);
+      boolean beginDate = PhoneCall.isValidDate(args[firstArg + 3]);
+      boolean beginTime = PhoneCall.isValidTime(args[firstArg + 4]);
+      boolean beginMeridiem = PhoneCall.isValidMeridiem(args[firstArg + 5]);
+      boolean endDate = PhoneCall.isValidDate(args[firstArg + 6]);
+      boolean endTime = PhoneCall.isValidTime(args[firstArg + 7]);
+      boolean endMeridiem = PhoneCall.isValidMeridiem(args[firstArg + 8]);
+
       if (caller && callee && beginDate && beginTime && beginMeridiem && endDate && endTime && endMeridiem) {
         call = new PhoneCall(args[firstArg + 1], args[firstArg + 2], args[firstArg + 3], args[firstArg + 4], args[firstArg + 5], args[firstArg + 6], args[firstArg + 7], args[firstArg + 8]);
       }
@@ -145,6 +145,7 @@ public class Project2 {
    * true if format is correct
    * false if format is not correct
    */
+/*
   @VisibleForTesting
   static boolean isValidTime(String time) {
     Pattern p = Pattern.compile("^(\\d|[0-1]\\d|2[0-3]):([0-5]\\d)$");
@@ -156,6 +157,7 @@ public class Project2 {
       return false;
     }
   }
+*/
 
   /**
    * Validating a date has the format mm/dd/yyyy using regex
@@ -165,7 +167,7 @@ public class Project2 {
    * true if format is correct
    * false if format is not correct
    */
-  @VisibleForTesting
+ /* @VisibleForTesting
   static boolean isValidDate(String date) {
     Pattern p = Pattern.compile("^(0?[1-9]|1[012])[- /.](0?[1-9]|[12]\\d|3[01])[- /.](19|20)\\d\\d$");
     Matcher m = p.matcher(date);
@@ -175,7 +177,7 @@ public class Project2 {
       System.err.println(date + " is an Invalid Date");
       return false;
     }
-  }
+  }*/
 
   /**
    * Validating phone number has the format nnn-nnn-nnnn using regex
@@ -185,7 +187,7 @@ public class Project2 {
    * true if phone number is in the correct format
    * false if not in the correct format
    */
-  @VisibleForTesting
+/*  @VisibleForTesting
   static boolean isValidPhoneNumber(String phoneNumber) {
     Pattern p = Pattern.compile("^\\d{3}-\\d{3}-\\d{4}$");
     Matcher m = p.matcher(phoneNumber);
@@ -195,7 +197,7 @@ public class Project2 {
       System.err.println(phoneNumber + " is an Invalid Phone Number");
       return false;
     }
-  }
+  }*/
 
   /**
    * Print the README file
@@ -238,13 +240,13 @@ public class Project2 {
       return file.substring(0, endingIndexOfPath);
   }
 
-  private static boolean isValidMeridiem(String arg) {
+  /*private static boolean isValidMeridiem(String arg) {
       if (Objects.equals(arg.toLowerCase(Locale.ROOT), "am") || Objects.equals(arg.toLowerCase(Locale.ROOT), "pm")){
           return true;
       }
       return false;
   }
-
+*/
   private static void printTextFile(String file, PhoneCall call, String customer, PhoneBill bill, boolean fileFound) {
     String filename = getFileName(file);
     String path = getPath(file);
