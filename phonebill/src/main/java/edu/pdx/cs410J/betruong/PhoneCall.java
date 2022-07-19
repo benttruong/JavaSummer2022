@@ -6,7 +6,7 @@ import edu.pdx.cs410J.AbstractPhoneCall;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Month;
+import java.time.DateTimeException;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
@@ -66,6 +66,7 @@ public class PhoneCall extends AbstractPhoneCall implements Comparable{
   /**
    * Creates a new <code>PhoneCall</code> with no arguments
    */
+  @VisibleForTesting
   public PhoneCall() {
     this.caller = null;
     this.callee = null;
@@ -81,6 +82,7 @@ public class PhoneCall extends AbstractPhoneCall implements Comparable{
    * Get phone number of caller
    * @return <code>String</code> phone number
    */
+  @VisibleForTesting
   @Override
   public String getCaller() {
     return this.caller;
@@ -90,6 +92,7 @@ public class PhoneCall extends AbstractPhoneCall implements Comparable{
    * Get phone number of receiver
    * @return <code>String</code> phone number
    */
+  @VisibleForTesting
   @Override
   public String getCallee() {
     return this.callee;
@@ -99,6 +102,7 @@ public class PhoneCall extends AbstractPhoneCall implements Comparable{
    * Get begin date of the phone call
    * @return <code>String</code> begin date
    */
+  @VisibleForTesting
   public String getBeginDate(){
     return this.beginDate;
   }
@@ -107,6 +111,7 @@ public class PhoneCall extends AbstractPhoneCall implements Comparable{
    * Get end date of the phone call
    * @return <code>String</code> end date
    */
+  @VisibleForTesting
   public String getEndDate(){
     return this.endDate;
   }
@@ -115,6 +120,7 @@ public class PhoneCall extends AbstractPhoneCall implements Comparable{
    * Get begin time of the phone call
    * @return <code>String</code> begin time
    */
+  @VisibleForTesting
   public String getBeginTimeLiterals(){
     return this.beginDate + " " + this.beginTime + " " + this.beginMeridiem;
   }
@@ -124,6 +130,7 @@ public class PhoneCall extends AbstractPhoneCall implements Comparable{
    * Get end time of the phone call
    * @return <code>String</code> end time
    */
+  @VisibleForTesting
   public String getEndTimeLiterals(){
     return this.endDate + " " + this.endTime + " " + this.endMeridiem;
   }
@@ -132,6 +139,7 @@ public class PhoneCall extends AbstractPhoneCall implements Comparable{
    * Starting date and time of the phone call
    * @return <code>String</code> date and time
    */
+  @VisibleForTesting
   @Override
   public String getBeginTimeString() {
     Date date = this.getBeginTime();
@@ -140,9 +148,10 @@ public class PhoneCall extends AbstractPhoneCall implements Comparable{
     return df.format(date);
   }
 
+  @VisibleForTesting
   @Override
-  public Date getBeginTime () {
-    String time = beginDate + " " + beginTime + " " + beginMeridiem;
+  public Date getBeginTime() {
+    String time = this.beginDate + " " + this.beginTime + " " + this.beginMeridiem;
     SimpleDateFormat sdf = new SimpleDateFormat("M/d/yyyy H:mm a");
     Date result = null;
     try {
@@ -158,6 +167,7 @@ public class PhoneCall extends AbstractPhoneCall implements Comparable{
    * Ending date and time of the phone call
    * @return <code>String</code> date and time
    */
+  @VisibleForTesting
   @Override
   public String getEndTimeString() {
     Date date = this.getEndTime();
@@ -166,9 +176,10 @@ public class PhoneCall extends AbstractPhoneCall implements Comparable{
     return df.format(date);
   }
 
+  @VisibleForTesting
   @Override
   public Date getEndTime(){
-    String time = endDate + " " + endTime + " " + endMeridiem;
+    String time = this.endDate + " " + this.endTime + " " + this.endMeridiem;
     SimpleDateFormat sdf = new SimpleDateFormat("M/d/yyyy H:mm a");
     Date result = null;
     try {
@@ -180,6 +191,7 @@ public class PhoneCall extends AbstractPhoneCall implements Comparable{
     return result;
   }
 
+  @VisibleForTesting
   @Override
   public int compareTo(Object o) {
     PhoneCall call = (PhoneCall) o;
@@ -261,6 +273,7 @@ public class PhoneCall extends AbstractPhoneCall implements Comparable{
 
   }
 
+  @VisibleForTesting
   static boolean isValidMeridiem(String arg) {
     if (Objects.equals(arg.toLowerCase(Locale.ROOT), "am") || Objects.equals(arg.toLowerCase(Locale.ROOT), "pm")){
       return true;
@@ -268,5 +281,36 @@ public class PhoneCall extends AbstractPhoneCall implements Comparable{
     return false;
   }
 
+  @VisibleForTesting
+  public long getDuration() {
+    Date begin = getBeginTime();
+    Date end = getEndTime();
+    long duration = end.getTime() - begin.getTime();
+    if (duration < 0){
+      throw new DateTimeException("Phone call error: begin time happens after end time");
+    }
+    return duration;
+  }
+  @VisibleForTesting
+  public String getDurationString() {
+    long duration = getDuration();
+    long day = duration/(1000*60*60*24);
+    long durationLeft = duration - day * 1000*60*60*24;
+    long hour = durationLeft/(1000*60*60);
+    durationLeft -= hour * 1000*60*60;
+    long minute = durationLeft/(1000*60);
+    durationLeft -= minute * 1000*60;
+    long second = durationLeft/(1000);
 
+    String result = String.valueOf(new StringBuilder());
+    if (day != 0)
+      result += day + " days";
+    if (hour != 0)
+      result += hour + " hours";
+    if (minute != 0)
+      result += minute + " minutes";
+    if (second != 0)
+      result += second + " second";
+    return result + '.';
+  }
 }

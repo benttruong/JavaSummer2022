@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.DateTimeException;
 import java.util.Date;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -163,6 +164,34 @@ public class PhoneCallTest {
     assertEquals(0, call3.compareTo(call3));
     assertTrue(call2.compareTo(call1) > 0);
     assertTrue(call3.compareTo(call2) > 0);
-
   }
+
+  @Test
+  void getDurationForPhoneCallReturnsCorrectDuration(){
+    String caller = "111-111-1111";
+    String beginDate = "7/19/2022";
+    String beginTime = "10:30";
+    String beginMeridiem = "AM";
+    String endDate = "7/19/2022";
+    String endTime = "11:00";
+    String endMeridiem = "AM";
+    PhoneCall call = new PhoneCall(caller, caller, beginDate, beginTime, beginMeridiem, endDate, endTime, endMeridiem);
+    long duration = 30*60*1000;
+    assertEquals(call.getDuration(), duration);
+    assertEquals(call.getDurationString(), "30 minutes.");
+  }
+
+  @Test
+  void getDurationThrowsDateTimeExceptionWhenBeginTimeIsAfterEndTime(){
+    String caller = "111-111-1111";
+    String beginDate = "7/19/2022";
+    String beginTime = "11:30";
+    String beginMeridiem = "AM";
+    String endDate = "7/19/2022";
+    String endTime = "11:00";
+    String endMeridiem = "AM";
+    PhoneCall call = new PhoneCall(caller, caller, beginDate, beginTime, beginMeridiem, endDate, endTime, endMeridiem);
+    assertThrows(DateTimeException.class, call::getDuration);
+  }
+
 }
