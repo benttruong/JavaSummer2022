@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * from <code>Project2IT</code> which is an integration test (and can capture data
  * written to {@link System#out} and the like.
  */
-class Project2Test {
+class Project3Test {
 
   /**
    * Test reading README as Resource prints README to standard out
@@ -24,7 +24,7 @@ class Project2Test {
   @Test
   void readmeCanBeReadAsResource() throws IOException {
     try (
-      InputStream readme = Project2.class.getResourceAsStream("README.txt")
+      InputStream readme = Project3.class.getResourceAsStream("README.txt")
     ) {
       assertThat(readme, not(nullValue()));
       BufferedReader reader = new BufferedReader(new InputStreamReader(readme));
@@ -40,11 +40,11 @@ class Project2Test {
    */
   @Test
   void validFilePathReturnsTrue(){
-    boolean path1 = Project2.isValidFilePath("TestDir/test.com");
+    boolean path1 = Project3.isValidFilePath("TestDir/test.com");
     assertTrue(path1);
-    boolean path2 = Project2.isValidFilePath("test.com");
+    boolean path2 = Project3.isValidFilePath("test.com");
     assertTrue(path2);
-    boolean path3 = Project2.isValidFilePath("TestDir/aNotherdir/test.com");
+    boolean path3 = Project3.isValidFilePath("TestDir/aNotherdir/test.com");
     assertTrue(path3);
   }
 
@@ -53,12 +53,12 @@ class Project2Test {
    */
   @Test
   void invalidFilePathReturnsInvalidFilePath(){
-    assertFalse(Project2.isValidFilePath("TestDir/"));
-    assertFalse(Project2.isValidFilePath("/text.csv"));
-    assertFalse(Project2.isValidFilePath("/text.doc"));
-    assertFalse(Project2.isValidFilePath("//text.doc"));
-    assertFalse(Project2.isValidFilePath("text"));
-    assertFalse(Project2.isValidFilePath("text.doc/"));
+    assertFalse(Project3.isValidFilePath("TestDir/"));
+    assertFalse(Project3.isValidFilePath("/text.csv"));
+    assertFalse(Project3.isValidFilePath("/text.doc"));
+    assertFalse(Project3.isValidFilePath("//text.doc"));
+    assertFalse(Project3.isValidFilePath("text"));
+    assertFalse(Project3.isValidFilePath("text.doc/"));
   }
 
 
@@ -70,8 +70,8 @@ class Project2Test {
    */
   @Test
   void fileReturnsCorrectFilePath(){
-    assertEquals(Project2.getPath("TestDir/AnotherDir/Ben.doc"), "TestDir/AnotherDir");
-    assertNull(Project2.getPath("Ben.doc"));
+    assertEquals(Project3.getPath("TestDir/AnotherDir/Ben.doc"), "TestDir/AnotherDir");
+    assertNull(Project3.getPath("Ben.doc"));
   }
 
   /**
@@ -79,8 +79,8 @@ class Project2Test {
    */
   @Test
   void fileReturnsCorrectFileName(){
-    assertEquals(Project2.getFileName("TestDir/AnotherDir/Ben.doc"), "Ben.doc");
-    assertEquals(Project2.getFileName("Ben.doc"), "Ben.doc");
+    assertEquals(Project3.getFileName("TestDir/AnotherDir/Ben.doc"), "Ben.doc");
+    assertEquals(Project3.getFileName("Ben.doc"), "Ben.doc");
   }
 
 

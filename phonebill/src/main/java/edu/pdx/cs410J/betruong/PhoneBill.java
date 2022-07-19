@@ -40,7 +40,7 @@ public class PhoneBill extends AbstractPhoneBill<PhoneCall> {
   @Override
   public void addPhoneCall(PhoneCall call) {
     this.phoneCalls.add(call);
-    Collections.sort(phoneCalls);
+    // Collections.sort(phoneCalls);
   }
 
   /**

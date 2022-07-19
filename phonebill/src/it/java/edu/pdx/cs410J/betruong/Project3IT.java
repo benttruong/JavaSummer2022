@@ -4,22 +4,20 @@ import edu.pdx.cs410J.InvokeMainTestCase;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import java.io.InputStream;
-
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Tests the functionality in the {@link Project2} main class.
+ * Tests the functionality in the {@link Project3} main class.
  */
-class Project2IT extends InvokeMainTestCase {
+class Project3IT extends InvokeMainTestCase {
 
     /**
-     * Invokes the main method of {@link Project2} with the given arguments.
+     * Invokes the main method of {@link Project3} with the given arguments.
      */
     private MainMethodResult invokeMain(String... args) {
-        return invokeMain(Project2.class, args);
+        return invokeMain(Project3.class, args);
     }
 
     /**
@@ -290,13 +288,13 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void isValidFilePathReturnsCorrectValues(){
-        assertTrue(Project2.isValidFilePath("Ben.doc"));
-        assertTrue(Project2.isValidFilePath("Temp/Ben.doc"));
-        assertTrue(Project2.isValidFilePath("Temp_1/Temp2/Ben.doc"));
-        assertFalse(Project2.isValidFilePath("/Ben.doc"));
-        assertFalse(Project2.isValidFilePath("//Ben.doc"));
-        assertFalse(Project2.isValidFilePath("/Temp/Ben.doc"));
-        assertFalse(Project2.isValidFilePath("/Temp//Ben.doc"));
+        assertTrue(Project3.isValidFilePath("Ben.doc"));
+        assertTrue(Project3.isValidFilePath("Temp/Ben.doc"));
+        assertTrue(Project3.isValidFilePath("Temp_1/Temp2/Ben.doc"));
+        assertFalse(Project3.isValidFilePath("/Ben.doc"));
+        assertFalse(Project3.isValidFilePath("//Ben.doc"));
+        assertFalse(Project3.isValidFilePath("/Temp/Ben.doc"));
+        assertFalse(Project3.isValidFilePath("/Temp//Ben.doc"));
     }
 
     /**
