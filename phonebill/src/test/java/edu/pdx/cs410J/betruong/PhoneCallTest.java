@@ -91,7 +91,7 @@ public class PhoneCallTest {
   void beginTimeFromPhoneCallUsingConstructorIsCorrectlyParsed(){
     String input = "12/05/2022 11:15 AM";
     SimpleDateFormat sdf = new SimpleDateFormat("M/d/yyyy H:mm a");
-    Date time = null;
+    Date time;
     try {
       time = sdf.parse(input);
     } catch (ParseException e) {
@@ -147,4 +147,21 @@ public class PhoneCallTest {
     assertFalse(PhoneCall.isValidTime("1:60"));
   }
 
+  @Test
+  void comparingPhoneCalls(){
+    String callee = "111-111-1111";
+    String endDate = "1/1/2025";
+    String endTime = "1:00";
+    String endMeridiem = "AM";
+
+    PhoneCall call1 = new PhoneCall("123-456-7890", callee, "7/18/2022", "7:00", "AM", endDate, endTime, endMeridiem);
+    PhoneCall call2 = new PhoneCall("123-456-7890", callee, "7/18/2022", "8:00", "AM", endDate, endTime, endMeridiem);
+    PhoneCall call3 = new PhoneCall("234-456-7890", callee, "7/18/2022", "8:00", "AM", endDate, endTime, endMeridiem);
+
+    assertTrue(call1.compareTo(call2) < 0);
+    assertTrue(call2.compareTo(call3) < 0);
+    assertEquals(0, call3.compareTo(call3));
+    assertTrue(call2.compareTo(call1) > 0);
+    assertTrue(call3.compareTo(call2) > 0);
+  }
 }

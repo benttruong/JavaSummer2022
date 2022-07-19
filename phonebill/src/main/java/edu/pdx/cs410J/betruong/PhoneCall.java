@@ -182,7 +182,30 @@ public class PhoneCall extends AbstractPhoneCall implements Comparable{
 
   @Override
   public int compareTo(Object o) {
-    return 0;
+    PhoneCall call = (PhoneCall) o;
+    // we first compare the begin time for the 2 calls
+    Date beginTime1 = this.getBeginTime();
+    Date beginTime2 = call.getBeginTime();
+    int dateCompared = this.getBeginTime().compareTo(call.getBeginTime());
+    if (dateCompared == 0){
+      // if begin time is the same, we look at the caller's number
+      // by converting them to integers
+      String caller1String = this.getCaller().replaceAll("[-]", "");
+      String caller2String = call.getCaller().replaceAll("[-]", "");
+      long caller1 = Long.parseLong(caller1String);
+      long caller2 = Long.parseLong(caller2String);
+
+      if (caller1 == caller2){
+        return 0;
+      } else if (caller1 < caller2){
+        return -1;
+      } else {
+        return 1;
+      }
+    } else if (dateCompared < 0) {
+      return -1;
+    } else
+      return 1;
   }
 
   @VisibleForTesting
@@ -244,7 +267,6 @@ public class PhoneCall extends AbstractPhoneCall implements Comparable{
     }
     return false;
   }
-
 
 
 }
