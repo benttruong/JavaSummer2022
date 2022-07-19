@@ -163,5 +163,6 @@ public class PhoneCallTest {
     assertEquals(0, call3.compareTo(call3));
     assertTrue(call2.compareTo(call1) > 0);
     assertTrue(call3.compareTo(call2) > 0);
+
   }
 }
