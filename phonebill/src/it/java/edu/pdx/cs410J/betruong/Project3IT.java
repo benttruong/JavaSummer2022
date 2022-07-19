@@ -197,7 +197,7 @@ class Project3IT extends InvokeMainTestCase {
      */
     @Test
     void unknownCommandLinePrintsUnknownCommandLine(){
-        MainMethodResult result = invokeMain("-unknown", "Test8", "123-456-7890", "234-567-8901", "03/03/2022", "12:00", "05/04/2022", "16:00");
+        MainMethodResult result = invokeMain("-unknown", "Test8", "123-456-7890", "234-567-8901", "03/03/2022", "12:00", "05/04/2022", "6:00");
         assertThat(result.getTextWrittenToStandardError(), containsString("Unknown Command Line"));
     }
 
@@ -222,7 +222,7 @@ class Project3IT extends InvokeMainTestCase {
         PhoneBill testBill = new PhoneBill("Customer");
         testBill.addPhoneCall(testCall);
         assertEquals(testBill.getPhoneCalls().size(), 1);
-        PhoneCall testCall2 = new PhoneCall();
+        PhoneCall testCall2 = new PhoneCall("123-456-7890", "333-456-7890", "12/15/2022", "10:30", "AM", "12/15/2022", "10:35", "PM");
         testBill.addPhoneCall(testCall2);
         assertEquals(testBill.getPhoneCalls().size(), 2);
     }
@@ -268,7 +268,7 @@ class Project3IT extends InvokeMainTestCase {
     @Test
     @Disabled
     void correctCommandLinesWithFileAndNoPathCreateFileAtCurrentDirectory(){
-        MainMethodResult result = invokeMain("-textFile", "Ben.test", "Haylie Nguyen","123-456-7890", "234-567-8901", "03/03/2022", "12:00", "PM", "05/04/2022", "16:00", "PM");
+        MainMethodResult result = invokeMain("-textFile", "Ben.test", "Haylie Nguyen","123-456-7890", "234-567-8901", "03/03/2022", "12:00", "PM", "05/04/2022", "6:00", "PM");
         assertThat(result.getTextWrittenToStandardOut(), containsString("New file written"));
     }
 
