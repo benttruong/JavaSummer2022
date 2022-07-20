@@ -217,7 +217,7 @@ class Project3IT extends InvokeMainTestCase {
      * and increment the number of phone calls in list
      */
     @Test
-    void addNewPhoneCallToPhoneBillReturnsCorrectNumberOfPhoneCall(){
+    void addNewPhoneCallToPhoneBillReturnsCorrectNumberOfPhoneCall() throws PhoneCall.PhoneCallException {
         PhoneCall testCall = new PhoneCall("123-456-7890", "333-456-7890", "12/15/2022", "10:30", "AM", "12/15/2022", "10:35", "PM");
         PhoneBill testBill = new PhoneBill("Customer");
         testBill.addPhoneCall(testCall);
@@ -323,5 +323,18 @@ class Project3IT extends InvokeMainTestCase {
         MainMethodResult result = invokeMain("-pretty", "Haylie Nguyen", "123-456-7890", "234-567-8901", "03/03/2022", "12:00", "05/04/2022", "1600");
         assertThat(result.getTextWrittenToStandardError(), containsString("Pretty Command is missing output destination"));
     }
+
+    @Test
+    void prettyCommandWithStdOutRecognizedFromCommandLine() {
+        MainMethodResult result = invokeMain("-textFile", "betruong/betruong-x.txt", "-print", "-pretty", "-", "Project3", "123-456-7890", "234-567-8901", "03/03/2022", "12:00", "AM", "05/04/2022", "6:00", "AM");
+        assertThat(result.getTextWrittenToStandardOut(), containsString("Customer's name"));
+    }
+
+    @Test
+    void phoneCallWithBeginTimeAfterEndTimePrintErrorInvalidTime(){
+        MainMethodResult result = invokeMain("Ben Truong", "123-456-7890", "234-567-8901", "7/20/2022", "11:00", "AM", "7/20/2022", "6:00", "AM");
+        assertThat(result.getTextWrittenToStandardError(), containsString("Phone call error"));
+    }
+
 
 }

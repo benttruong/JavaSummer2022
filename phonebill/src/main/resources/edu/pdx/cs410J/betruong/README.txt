@@ -1,4 +1,4 @@
-Project2 - Ben Truong
+Project3 - Ben Truong
 This application will record a new phone call and assign
 that phone call to a phone bill with a customer name
 with information provided from command line arguments.
@@ -14,14 +14,17 @@ args are (in this order):
     customer        : Person whose phone bill we’re modeling
     callerNumber    : Phone number of caller
     calleeNumber    : Phone number of person who was called
-    begin           : Date and time call began (24-hour time)
-    end             : Date and time call ended (24-hour time)
+    begin           : Date and time (am/pm) call began
+    end             : Date and time (am/pm) call ended
 
 options are (options may appear in any order):
+    -pretty file    : Pretty print the phone bill to a text file
+                      or standard out (file -).
     -textFile file  : could be just a file name or
                       a path with a file name included
                       where to read/write the phone bill
     -print          : Prints a description of the new phone call
     -README         : Prints a README for this project and exits
 
-Date and time should be in the format: mm/dd/yyyy hh:mm
+Date and time should be in the format: mm/dd/yyyy hh:mm aa
+aa: could be AM or PM

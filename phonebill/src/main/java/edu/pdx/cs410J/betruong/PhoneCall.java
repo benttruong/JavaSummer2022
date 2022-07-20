@@ -6,7 +6,6 @@ import edu.pdx.cs410J.AbstractPhoneCall;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.DateTimeException;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
@@ -27,6 +26,7 @@ public class PhoneCall extends AbstractPhoneCall implements Comparable{
   private final String endDate;
   private final String endTime;
   private final String endMeridiem;
+  private final long duration;
 
 
 
@@ -52,7 +52,7 @@ public class PhoneCall extends AbstractPhoneCall implements Comparable{
    */
   // method to construct PhoneCall with information from command lines:
   @VisibleForTesting
-  public PhoneCall(String caller, String callee, String beginDate, String beginTime, String beginMeridiem, String endDate, String endTime, String endMeridiem) {
+  public PhoneCall(String caller, String callee, String beginDate, String beginTime, String beginMeridiem, String endDate, String endTime, String endMeridiem) throws PhoneCallException {
     this.caller = caller;
     this.callee = callee;
     this.beginDate = beginDate;
@@ -61,6 +61,8 @@ public class PhoneCall extends AbstractPhoneCall implements Comparable{
     this.endDate = endDate;
     this.endTime = endTime;
     this.endMeridiem = endMeridiem;
+    this.duration = getDuration();
+
   }
 
   /**
@@ -76,6 +78,7 @@ public class PhoneCall extends AbstractPhoneCall implements Comparable{
     this.endDate = null;
     this.endTime = null;
     this.endMeridiem = null;
+    this.duration = 0;
   }
 
   /**
@@ -180,13 +183,12 @@ public class PhoneCall extends AbstractPhoneCall implements Comparable{
   @Override
   public Date getEndTime(){
     String time = this.endDate + " " + this.endTime + " " + this.endMeridiem;
-    SimpleDateFormat sdf = new SimpleDateFormat("M/d/yyyy H:mm a");
+    SimpleDateFormat sdf = new SimpleDateFormat("M/d/yyyy hh:mm aa");
     Date result = null;
     try {
       result = sdf.parse(time);
     } catch (ParseException e) {
       System.err.println("Could not parse the time: " + time);
-      // System.exit(1);
     }
     return result;
   }
@@ -282,18 +284,17 @@ public class PhoneCall extends AbstractPhoneCall implements Comparable{
   }
 
   @VisibleForTesting
-  public long getDuration() {
+  public long getDuration() throws PhoneCallException {
     Date begin = getBeginTime();
     Date end = getEndTime();
     long duration = end.getTime() - begin.getTime();
     if (duration < 0){
-      throw new DateTimeException("Phone call error: begin time happens after end time");
+      throw new PhoneCallException ();
     }
     return duration;
   }
   @VisibleForTesting
   public String getDurationString() {
-    long duration = getDuration();
     long day = duration/(1000*60*60*24);
     long durationLeft = duration - day * 1000*60*60*24;
     long hour = durationLeft/(1000*60*60);
@@ -318,5 +319,10 @@ public class PhoneCall extends AbstractPhoneCall implements Comparable{
   public String getPrettyCallString(){
     return "Phone call from " + this.getCaller() + " to " + this.getCallee() + " from " + this.getBeginTimeString() + " to " + this.getEndTimeString()
             + "\n\tDuration: " + this.getDurationString();
+  }
+
+  public static class PhoneCallException extends Throwable {
+    public PhoneCallException() {
+    }
   }
 }

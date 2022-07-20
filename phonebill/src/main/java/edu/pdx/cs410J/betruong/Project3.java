@@ -4,6 +4,7 @@ import com.google.common.annotations.VisibleForTesting;
 import edu.pdx.cs410J.ParserException;
 
 import java.io.*;
+import java.time.DateTimeException;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -30,7 +31,28 @@ public class Project3 {
 
       // Check if no command line argument is provided
       if (args.length == 0) {
-        System.err.println("Missing command line arguments");
+        System.err.println("Missing command line arguments\n" +
+                "This is how you use it from the command line:\n" +
+                "java -jar target/phonebill-2022.0.0.jar [options] <args>\n" +
+                "\n" +
+                "args are (in this order):\n" +
+                "    customer        : Person whose phone bill we’re modeling\n" +
+                "    callerNumber    : Phone number of caller\n" +
+                "    calleeNumber    : Phone number of person who was called\n" +
+                "    begin           : Date and time (am/pm) call began\n" +
+                "    end             : Date and time (am/pm) call ended\n" +
+                "\n" +
+                "options are (options may appear in any order):\n" +
+                "    -pretty file    : Pretty print the phone bill to a text file\n" +
+                "                      or standard out (file -).\n" +
+                "    -textFile file  : could be just a file name or\n" +
+                "                      a path with a file name included\n" +
+                "                      where to read/write the phone bill\n" +
+                "    -print          : Prints a description of the new phone call\n" +
+                "    -README         : Prints a README for this project and exits\n" +
+                "\n" +
+                "Date and time should be in the format: mm/dd/yyyy hh:mm aa\n" +
+                "aa: could be AM or PM");
         return;
       }
 
@@ -80,7 +102,8 @@ public class Project3 {
             System.err.println("Command is missing file");
             return;
           }
-          if (isValidFilePath(args[i+1]) || Objects.equals(args[i+1], '-')){
+          prettyCommand = true;
+          if (isValidFilePath(args[i+1]) || Objects.equals(args[i+1], "-")){
             if (isValidFilePath(args[i+1])){
               prettyFile = true;
               prettyFileDesination = args[i + 1];
@@ -116,6 +139,7 @@ public class Project3 {
       }
 
       PhoneCall call = null;
+      PhoneBill bill = null;
       // validating arguments to make sure they are provided in the right order
       boolean caller = PhoneCall.isValidPhoneNumber(args[firstArg + 1]);
       boolean callee = PhoneCall.isValidPhoneNumber(args[firstArg + 2]);
@@ -127,31 +151,40 @@ public class Project3 {
       boolean endMeridiem = PhoneCall.isValidMeridiem(args[firstArg + 8]);
 
       if (caller && callee && beginDate && beginTime && beginMeridiem && endDate && endTime && endMeridiem) {
-        call = new PhoneCall(args[firstArg + 1], args[firstArg + 2], args[firstArg + 3], args[firstArg + 4], args[firstArg + 5], args[firstArg + 6], args[firstArg + 7], args[firstArg + 8]);
+        bill = new PhoneBill(args[firstArg]);
+        try {
+            call = new PhoneCall(args[firstArg + 1], args[firstArg + 2], args[firstArg + 3], args[firstArg + 4], args[firstArg + 5], args[firstArg + 6], args[firstArg + 7], args[firstArg + 8]);
+        } catch (PhoneCall.PhoneCallException e) {
+            System.err.println("Phone call error: begin time happens after end time");
+            return;
+        }
+
       }
       else{
         System.err.println("Program terminated because of the info for phone call is malformed");
         return;
       }
 
+      boolean textFileCommandExecuted = false;
       String customer = args[firstArg];
-      PhoneBill bill = null;
       boolean fileFound = true;
       if (textFileCommand) {
-        printTextFile(file, call, customer, bill, fileFound);
-        return;
+        printTextFile(file, call, customer, bill, fileFound, prettyCommand, prettyStdOut, prettyFile, prettyFileDesination);
+        textFileCommandExecuted = true;
       }
 
       if (printCommand) {
         System.out.println(call);
       }
 
-      if (prettyCommand) {
+
+      if (prettyCommand && !textFileCommandExecuted) {
+        bill.addPhoneCall(call);
         if (prettyStdOut){
           System.out.println(bill.getPrettyBillString());
         }
         if (prettyFile){
-          printPrettyFile(file, bill);
+          printPrettyFile(prettyFileDesination, bill);
         }
       }
     }
@@ -223,7 +256,7 @@ public class Project3 {
     return;
   }
 
-  private static void printTextFile(String file, PhoneCall call, String customer, PhoneBill bill, boolean fileFound) {
+  private static void printTextFile(String file, PhoneCall call, String customer, PhoneBill bill, boolean fileFound, boolean prettyCommand, boolean prettyStdOut, boolean prettyFile, String prettyFileDesination) {
     String filename = getFileName(file);
     String path = getPath(file);
     File textFile;
@@ -275,7 +308,34 @@ public class Project3 {
     }else {
       System.out.println("New file written at " + file);
     }
-    return;
+
+    if (prettyCommand) {
+
+      if (prettyStdOut){
+        System.out.println(bill.getPrettyBillString());
+      }
+      if (prettyFile){
+        String prettyFilename = getFileName(prettyFileDesination);
+        String prettyPath = getPath(prettyFileDesination);
+        File file_for_pretty;
+        if (path == null){
+          file_for_pretty = new File(prettyFilename);
+        }
+        else {
+          file_for_pretty = new File(prettyPath, prettyFilename);
+        }
+        try {
+          dumper = new TextDumper(new FileWriter(file_for_pretty));
+        } catch (IOException e) {
+          System.err.println("Something wrong while writing files");
+          return;
+        }
+        bill.addPhoneCall(call);
+        dumper.dumpPretty(bill);
+      }
+    }
+
+
   }
 }
 

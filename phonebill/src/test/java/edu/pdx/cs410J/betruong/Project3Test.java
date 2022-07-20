@@ -29,7 +29,7 @@ class Project3Test {
       assertThat(readme, not(nullValue()));
       BufferedReader reader = new BufferedReader(new InputStreamReader(readme));
       String line = reader.readLine();
-      assertThat(line, containsString("Project2 - Ben Truong"));
+      assertThat(line, containsString("Project3 - Ben Truong"));
     }
   }
 
@@ -84,7 +84,7 @@ class Project3Test {
   }
 
   @Test
-  void testPrettyPhoneBillGetsCorrectFormat(){
+  void testPrettyPhoneBillGetsCorrectFormat() throws PhoneCall.PhoneCallException {
     PhoneBill bill = new PhoneBill("Ben Truong");
     String caller = "111-111-1111";
     String beginDate = "7/19/2022";

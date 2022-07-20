@@ -29,16 +29,16 @@ public class PhoneCallTest {
    * generating a new phone call with correct caller number
    */
   @Test
-  void createPhoneCallGetsCorrectCaller()  {
+  void createPhoneCallGetsCorrectCaller() throws PhoneCall.PhoneCallException {
     String caller = "123-456-7890";
     String callee = "113-456-7890";
     String beginDate = "3/15/2022";
     String beginTime = "10:39";
-    String beginMeridiem = "am";
-    String endDate = "03/2/2022";
+    String beginMeridiem = "AM";
+    String endDate = "03/22/2022";
     String endTime = "1:03";
-    String endMeridiem = "pm";
-    PhoneCall call = new PhoneCall(caller,callee, beginDate, beginTime, beginMeridiem, endTime, endDate, endMeridiem);
+    String endMeridiem = "PM";
+    PhoneCall call = new PhoneCall(caller,callee, beginDate, beginTime, beginMeridiem, endDate, endTime, endMeridiem);
     assertThat(call.getCaller(), containsString("123-456-7890"));
   }
 
@@ -47,13 +47,13 @@ public class PhoneCallTest {
    * generating a new phone call with correct callee number
    */
   @Test
-  void createPhoneCallGetsCorrectCallee() {
+  void createPhoneCallGetsCorrectCallee() throws PhoneCall.PhoneCallException {
     String caller = "123-456-7890";
     String callee = "113-456-7890";
     String beginTime = "10:39";
     String beginDate = "3/15/2022";
     String endTime = "1:03";
-    String endDate = "03/2/2022";
+    String endDate = "03/22/2022";
     PhoneCall call = new PhoneCall(caller,callee, beginDate, beginTime, "AM", endDate, endTime, "PM");
     assertThat(call.getCallee(), containsString("113-456-7890"));
   }
@@ -63,13 +63,13 @@ public class PhoneCallTest {
    * generating a new phone call with correct begin time
    */
   @Test
-  void createPhoneCallGetsCorrectBeginTime() {
+  void createPhoneCallGetsCorrectBeginTime() throws PhoneCall.PhoneCallException {
     String caller = "123-456-7890";
     String callee = "113-456-7890";
-    String beginTime = "10:39";
     String beginDate = "3/15/2022";
+    String beginTime = "10:39";
+    String endDate = "03/22/2022";
     String endTime = "1:03";
-    String endDate = "03/2/2022";
     PhoneCall call = new PhoneCall(caller,callee, beginDate, beginTime, "AM", endDate, endTime, "PM");
     assertThat(call.getBeginTimeString(), containsString("10:39 AM"));
   }
@@ -80,16 +80,16 @@ public class PhoneCallTest {
    * returns correct number of phone call
    */
   @Test
-  void provide7CorrectArgumentsReturnsPhoneCallCreated(){
+  void provide7CorrectArgumentsReturnsPhoneCallCreated() throws PhoneCall.PhoneCallException {
     String customer = "Brian Griffin";
     PhoneBill bill = new PhoneBill(customer);
-    PhoneCall call = new PhoneCall("123-456-7890", "133-456-7890", "3/15/2022", "10:39", "PM", "03/2/2022", "1:03", "PM");
+    PhoneCall call = new PhoneCall("123-456-7890", "133-456-7890", "3/15/2022", "10:39", "PM", "03/22/2022", "1:03", "AM");
     bill.addPhoneCall(call);
     assertEquals(bill.getPhoneCalls().size(), 1);
   }
 
   @Test
-  void beginTimeFromPhoneCallUsingConstructorIsCorrectlyParsed(){
+  void beginTimeFromPhoneCallUsingConstructorIsCorrectlyParsed() throws PhoneCall.PhoneCallException {
     String input = "12/05/2022 11:15 AM";
     SimpleDateFormat sdf = new SimpleDateFormat("M/d/yyyy H:mm a");
     Date time;
@@ -107,7 +107,7 @@ public class PhoneCallTest {
    * generating a new phone call with correct end time
    */
   @Test
-  void getEndTimeStringReturnsCorrectTime(){
+  void getEndTimeStringReturnsCorrectTime() throws PhoneCall.PhoneCallException {
     PhoneCall call = new PhoneCall("123", "456", "12/5/2022", "11:15", "AM", "12/16/2022", "12:30", "PM");
     assertThat(call.getEndTimeString(), containsString("12:30 PM"));
     System.out.println(call.getEndTimeString());
@@ -149,7 +149,7 @@ public class PhoneCallTest {
   }
 
   @Test
-  void comparingPhoneCalls(){
+  void comparingPhoneCalls() throws PhoneCall.PhoneCallException {
     String callee = "111-111-1111";
     String endDate = "1/1/2025";
     String endTime = "1:00";
@@ -167,7 +167,7 @@ public class PhoneCallTest {
   }
 
   @Test
-  void getDurationForPhoneCallReturnsCorrectDuration(){
+  void getDurationForPhoneCallReturnsCorrectDuration() throws PhoneCall.PhoneCallException {
     String caller = "111-111-1111";
     String beginDate = "7/19/2022";
     String beginTime = "10:30";
@@ -181,21 +181,10 @@ public class PhoneCallTest {
     assertEquals(call.getDurationString(), "30 minute(s) ");
   }
 
-  @Test
-  void getDurationThrowsDateTimeExceptionWhenBeginTimeIsAfterEndTime(){
-    String caller = "111-111-1111";
-    String beginDate = "7/19/2022";
-    String beginTime = "11:30";
-    String beginMeridiem = "AM";
-    String endDate = "7/19/2022";
-    String endTime = "11:00";
-    String endMeridiem = "AM";
-    PhoneCall call = new PhoneCall(caller, caller, beginDate, beginTime, beginMeridiem, endDate, endTime, endMeridiem);
-    assertThrows(DateTimeException.class, call::getDuration);
-  }
+
 
   @Test
-  void testPhoneCallPrintingPrettyCallWithDuration(){
+  void testPhoneCallPrintingPrettyCallWithDuration() throws PhoneCall.PhoneCallException {
     String caller = "111-111-1111";
     String beginDate = "7/19/2022";
     String beginTime = "10:30";
@@ -208,4 +197,5 @@ public class PhoneCallTest {
     assertThat(call.getPrettyCallString(), containsString("7/20/22"));
     System.out.println(call.getPrettyCallString());
   }
+
 }

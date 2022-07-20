@@ -37,6 +37,9 @@ public class TextParser implements PhoneBillParser<PhoneBill> {
 
       while (callDetails != null){
         String [] values = callDetails.split("Phone call from | to | from | ");
+        if (values.length != 9){
+          throw new ParserException("Data is malformed");
+        }
         if (PhoneCall.isValidPhoneNumber(values[1]) &&
             PhoneCall.isValidPhoneNumber(values[2]) &&
             PhoneCall.isValidDate(values[3]) &&
@@ -45,7 +48,12 @@ public class TextParser implements PhoneBillParser<PhoneBill> {
             PhoneCall.isValidDate(values[6]) &&
             PhoneCall.isValidTime(values[7]) &&
             PhoneCall.isValidMeridiem(values[8])){
-          bill.addPhoneCall(new PhoneCall(values[1], values[2], values[3], values[4], values[5], values[6], values[7], values[8]));
+          try {
+            bill.addPhoneCall(new PhoneCall(values[1], values[2], values[3], values[4], values[5], values[6], values[7], values[8]));
+          } catch (PhoneCall.PhoneCallException e) {
+            System.err.println(e.getMessage());
+            throw new PhoneCall.PhoneCallException();
+          }
         }
         else {
           throw new ParserException("Phone call from file has malformed data");
@@ -54,7 +62,7 @@ public class TextParser implements PhoneBillParser<PhoneBill> {
       }
       return bill;
 
-    } catch (IOException e) {
+    } catch (IOException | PhoneCall.PhoneCallException e) {
       throw new ParserException("While parsing phone bill text", e);
     }
   }

@@ -65,7 +65,7 @@ public class TextDumperTest {
    *        ParserException can be thrown when parsing an empty text file
    */
   @Test
-  void newPhoneBillWithPhoneCallCanBeDumpedInNewFile(@TempDir File tempDir) throws IOException, ParserException {
+  void newPhoneBillWithPhoneCallCanBeDumpedInNewFile(@TempDir File tempDir) throws IOException, ParserException, PhoneCall.PhoneCallException {
 
     String customer = "Test Phone Bill";
     PhoneBill bill = new PhoneBill(customer);
@@ -101,7 +101,6 @@ public class TextDumperTest {
    *         ParserException can be thrown if parsing from an empty file
    */
   @Test
-  @Disabled
   void createNewDirParserCanFindDir() throws ParserException {
     String customer = "Test Phone Bill";
     PhoneBill bill = new PhoneBill(customer);
@@ -140,8 +139,7 @@ public class TextDumperTest {
    *         ParserException can be thrown when parsing an empty text file
    */
   @Test
-  @Disabled
-  void newPhoneBillWithPhoneCallCanBeDumpedInNewRealFile() throws IOException, ParserException {
+  void newPhoneBillWithPhoneCallCanBeDumpedInNewRealFile() throws IOException, ParserException, PhoneCall.PhoneCallException {
 
     String customer = "Test Phone Bill";
     PhoneBill bill = new PhoneBill(customer);
@@ -189,7 +187,7 @@ public class TextDumperTest {
 
 
   @Test
-  void phoneBillIsPrettyDumpedInTextFormat() {
+  void phoneBillIsPrettyDumpedInTextFormat() throws PhoneCall.PhoneCallException {
     String customer = "Test Phone Bill";
     PhoneBill bill = new PhoneBill(customer);
     String caller = "123-456-7890";
