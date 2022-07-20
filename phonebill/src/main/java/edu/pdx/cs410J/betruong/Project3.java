@@ -37,10 +37,14 @@ public class Project3 {
       // variable to keep track of position of first required argument
       int firstArg = 0;
 
-      // variable to check if optional commands provided
+      // variables to check if optional commands provided
       boolean printCommand = false;
       boolean textFileCommand = false;
+      boolean prettyCommand = false;
+      boolean prettyFile = false;
+      boolean prettyStdOut = false;
       String file = "";
+      String prettyFileDesination = "";
 
 
       // looking for optional command
@@ -72,12 +76,20 @@ public class Project3 {
             return;
           }
         } else if (Objects.equals(args[i], "-pretty")){
-          if (args.length - 1 == 1){
+          if (args.length - i == 1){
             System.err.println("Command is missing file");
             return;
           }
           if (isValidFilePath(args[i+1]) || Objects.equals(args[i+1], '-')){
-
+            if (isValidFilePath(args[i+1])){
+              prettyFile = true;
+              prettyFileDesination = args[i + 1];
+              ++ i;
+            }
+            else{
+              prettyStdOut = true;
+              ++ i;
+            }
           } else {
             System.err.println("Pretty Command is missing output destination");
             return;
@@ -130,9 +142,17 @@ public class Project3 {
         return;
       }
 
-
       if (printCommand) {
         System.out.println(call);
+      }
+
+      if (prettyCommand) {
+        if (prettyStdOut){
+          System.out.println(bill.getPrettyBillString());
+        }
+        if (prettyFile){
+          printPrettyFile(file, bill);
+        }
       }
     }
 
@@ -176,6 +196,31 @@ public class Project3 {
       return null;
     else
       return file.substring(0, endingIndexOfPath);
+  }
+
+  private static void printPrettyFile(String file, PhoneBill bill) {
+    String filename = getFileName(file);
+    String path = getPath(file);
+    File textFile;
+    if (path == null){
+      textFile = new File(filename);
+    }
+    else {
+      textFile = new File(path, filename);
+    }
+    TextDumper dumper = null;
+    if (path != null) {
+      File folder = new File(path);
+      folder.mkdirs();
+    }
+    try {
+      dumper = new TextDumper(new FileWriter(textFile));
+    } catch (IOException e) {
+      System.err.println("Something wrong while writing files");
+      return;
+    }
+    dumper.dumpPretty(bill);
+    return;
   }
 
   private static void printTextFile(String file, PhoneCall call, String customer, PhoneBill bill, boolean fileFound) {

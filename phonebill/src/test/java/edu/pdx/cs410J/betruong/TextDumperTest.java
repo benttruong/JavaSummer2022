@@ -188,4 +188,32 @@ public class TextDumperTest {
   }
 
 
+  @Test
+  void phoneBillIsPrettyDumpedInTextFormat() {
+    String customer = "Test Phone Bill";
+    PhoneBill bill = new PhoneBill(customer);
+    String caller = "123-456-7890";
+    String callee = "333-456-7890";
+    String beginDate = "12/15/2022";
+    String beginTime = "6:00";
+    String endDate = "12/16/2022";
+    String endTime = "7:15";
+    PhoneCall call = new PhoneCall(caller, callee, beginDate, beginTime, "AM", endDate, endTime, "PM");
+    bill.addPhoneCall(call);
+
+    String tempDir = "TestDir/AnotherDir";
+    String fileName = "newfile.txt";
+    File folder = new File(tempDir);
+
+    folder.mkdirs();
+    File textFile = new File(tempDir, fileName);
+    TextDumper dumper = null;
+    try {
+      dumper = new TextDumper(new FileWriter(textFile));
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+    dumper.dumpPretty(bill);
+  }
 }
+

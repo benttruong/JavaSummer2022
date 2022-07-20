@@ -304,13 +304,19 @@ public class PhoneCall extends AbstractPhoneCall implements Comparable{
 
     String result = String.valueOf(new StringBuilder());
     if (day != 0)
-      result += day + " days";
+      result += day + " day(s) ";
     if (hour != 0)
-      result += hour + " hours";
+      result += hour + " hour(s) ";
     if (minute != 0)
-      result += minute + " minutes";
+      result += minute + " minute(s) ";
     if (second != 0)
-      result += second + " second";
-    return result + '.';
+      result += second + " second(s)";
+    return result;
+  }
+
+  @VisibleForTesting
+  public String getPrettyCallString(){
+    return "Phone call from " + this.getCaller() + " to " + this.getCallee() + " from " + this.getBeginTimeString() + " to " + this.getEndTimeString()
+            + "\n\tDuration: " + this.getDurationString();
   }
 }

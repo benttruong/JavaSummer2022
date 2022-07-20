@@ -178,7 +178,7 @@ public class PhoneCallTest {
     PhoneCall call = new PhoneCall(caller, caller, beginDate, beginTime, beginMeridiem, endDate, endTime, endMeridiem);
     long duration = 30*60*1000;
     assertEquals(call.getDuration(), duration);
-    assertEquals(call.getDurationString(), "30 minutes.");
+    assertEquals(call.getDurationString(), "30 minute(s) ");
   }
 
   @Test
@@ -194,4 +194,18 @@ public class PhoneCallTest {
     assertThrows(DateTimeException.class, call::getDuration);
   }
 
+  @Test
+  void testPhoneCallPrintingPrettyCallWithDuration(){
+    String caller = "111-111-1111";
+    String beginDate = "7/19/2022";
+    String beginTime = "10:30";
+    String beginMeridiem = "AM";
+    String endDate = "7/20/2022";
+    String endTime = "11:00";
+    String endMeridiem = "AM";
+    PhoneCall call = new PhoneCall(caller, caller, beginDate, beginTime, beginMeridiem, endDate, endTime, endMeridiem);
+    assertThat(call.getPrettyCallString(), containsString("7/19/22"));
+    assertThat(call.getPrettyCallString(), containsString("7/20/22"));
+    System.out.println(call.getPrettyCallString());
+  }
 }

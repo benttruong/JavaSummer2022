@@ -83,6 +83,26 @@ class Project3Test {
     assertEquals(Project3.getFileName("Ben.doc"), "Ben.doc");
   }
 
+  @Test
+  void testPrettyPhoneBillGetsCorrectFormat(){
+    PhoneBill bill = new PhoneBill("Ben Truong");
+    String caller = "111-111-1111";
+    String beginDate = "7/19/2022";
+    String beginTime = "10:30";
+    String beginMeridiem = "AM";
+    String endDate = "7/20/2022";
+    String endTime = "11:00";
+    String endMeridiem = "AM";
+    PhoneCall call = new PhoneCall(caller, caller, beginDate, beginTime, beginMeridiem, endDate, endTime, endMeridiem);
+    bill.addPhoneCall(call);
+    bill.addPhoneCall(call);
+
+    assertThat(bill.getPrettyBillString(), containsString("Customer's name: "));
+    assertThat(bill.getPrettyBillString(), containsString("This phone bill contains "));
+  }
+
+
+
 
 
 }

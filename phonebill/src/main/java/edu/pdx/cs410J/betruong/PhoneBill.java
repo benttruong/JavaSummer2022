@@ -1,5 +1,6 @@
 package edu.pdx.cs410J.betruong;
 
+import com.google.common.annotations.VisibleForTesting;
 import edu.pdx.cs410J.AbstractPhoneBill;
 
 import java.util.*;
@@ -50,5 +51,21 @@ public class PhoneBill extends AbstractPhoneBill<PhoneCall> {
   @Override
   public Collection<PhoneCall> getPhoneCalls() {
     return this.phoneCalls;
+  }
+
+
+  @VisibleForTesting
+  public String getPrettyBillString() {
+    String result = "=====================================================\n"
+      + "Customer's name: " + this.getCustomer()
+      + "\n" + "This phone bill contains " + this.phoneCalls.size() + " phone call(s)."
+      + "\n----------------------";
+    int count = 1;
+    for (PhoneCall call:phoneCalls){
+      result += "\n" + count + ". " + call.getPrettyCallString();
+      ++count;
+    }
+    result += "\n=====================================================\n";
+    return result;
   }
 }
