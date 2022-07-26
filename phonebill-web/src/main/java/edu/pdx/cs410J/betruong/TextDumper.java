@@ -22,4 +22,18 @@ public class TextDumper {
       pw.flush();
     }
   }
+
+  public void billdump(Map<String, PhoneBill> bills){
+    try (
+            PrintWriter pw = new PrintWriter(this.writer)
+    ) {
+      for (Map.Entry<String, PhoneBill> bill: bills.entrySet()){
+        for (PhoneCall call: bill.getValue().getPhoneCalls())
+        pw.println("Phone call from " + call.getCaller() + " to " + call.getCallee() + " from " + call.getBeginTimeString() + " to " + call.getEndTimeString());
+      }
+      pw.flush();
+    }
+  }
+
+
 }

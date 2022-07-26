@@ -2,6 +2,7 @@ package edu.pdx.cs410J.betruong;
 
 import edu.pdx.cs410J.ParserException;
 import edu.pdx.cs410J.web.HttpRequestHelper.RestException;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer.MethodName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -41,6 +42,7 @@ class PhoneBillRestClientIT {
   }
 
   @Test
+  @Disabled
   void test2DefineOneWord() throws IOException, ParserException {
     PhoneBillRestClient client = newPhoneBillRestClient();
     String testWord = "TEST WORD";
@@ -52,6 +54,7 @@ class PhoneBillRestClientIT {
   }
 
   @Test
+  @Disabled
   void test4EmptyWordThrowsException() {
     PhoneBillRestClient client = newPhoneBillRestClient();
     String emptyString = "";

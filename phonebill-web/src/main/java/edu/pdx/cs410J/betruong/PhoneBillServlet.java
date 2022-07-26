@@ -18,11 +18,11 @@ import java.util.Map;
  */
 public class PhoneBillServlet extends HttpServlet
 {
-    static final String WORD_PARAMETER = "word";
+    static final String CUSTOMER_PARAMETER = "customer";
     static final String DEFINITION_PARAMETER = "definition";
 
     private final Map<String, String> dictionary = new HashMap<>();
-
+    private final Map<String, PhoneBill> bills = new HashMap<>();
     /**
      * Handles an HTTP GET request from a client by writing the definition of the
      * word specified in the "word" HTTP parameter to the HTTP response.  If the
@@ -33,13 +33,13 @@ public class PhoneBillServlet extends HttpServlet
     protected void doGet( HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
         response.setContentType( "text/plain" );
-
-        String word = getParameter( WORD_PARAMETER, request );
-        if (word != null) {
-            writeDefinition(word, response);
+        String customer = getParameter( CUSTOMER_PARAMETER, request );
+        if (customer != null) {
+            writeCalls(customer, response);
 
         } else {
-            writeAllDictionaryEntries(response);
+            response.setStatus( HttpServletResponse.SC_OK );
+            // writeAllDictionaryEntries(response);
         }
     }
 
@@ -53,9 +53,9 @@ public class PhoneBillServlet extends HttpServlet
     {
         response.setContentType( "text/plain" );
 
-        String word = getParameter(WORD_PARAMETER, request );
-        if (word == null) {
-            missingRequiredParameter(response, WORD_PARAMETER);
+        String calls = getParameter(CUSTOMER_PARAMETER, request );
+        if (calls == null) {
+            missingRequiredParameter(response, CUSTOMER_PARAMETER);
             return;
         }
 
@@ -65,10 +65,10 @@ public class PhoneBillServlet extends HttpServlet
             return;
         }
 
-        this.dictionary.put(word, definition);
+        this.dictionary.put(calls, definition);
 
         PrintWriter pw = response.getWriter();
-        pw.println(Messages.definedWordAs(word, definition));
+        pw.println(Messages.definedWordAs(calls, definition));
         pw.flush();
 
         response.setStatus( HttpServletResponse.SC_OK);
@@ -110,18 +110,26 @@ public class PhoneBillServlet extends HttpServlet
      *
      * The text of the message is formatted with {@link TextDumper}
      */
-    private void writeDefinition(String word, HttpServletResponse response) throws IOException {
-        String definition = this.dictionary.get(word);
+    private void writeCalls(String customer, HttpServletResponse response) throws IOException {
+        PhoneBill bill = this.bills.get(customer);
+       /* PhoneBill bill = new PhoneBill(customer);
+        PhoneCall dummycall;
+        try {
+            dummycall = new PhoneCall("123-456-7890", "111-456-7890", "07/25/2022", "9:10", "AM", "07/25/2022", "9:15", "AM");
+        } catch (PhoneCall.PhoneCallException e) {
+            throw new RuntimeException(e);
+        }
+        bill.addPhoneCall(dummycall);*/
 
-        if (definition == null) {
+        if (bill == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 
         } else {
             PrintWriter pw = response.getWriter();
 
-            Map<String, String> wordDefinition = Map.of(word, definition);
+            Map<String, PhoneBill> billDetail = Map.of(customer, bill);
             TextDumper dumper = new TextDumper(pw);
-            dumper.dump(wordDefinition);
+            dumper.billdump(billDetail);
 
             response.setStatus(HttpServletResponse.SC_OK);
         }
