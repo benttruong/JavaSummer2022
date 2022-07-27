@@ -62,10 +62,24 @@ public class PhoneBillRestClient {
     return parser.parse().get(word);
   }
 
+  /**
+   * Returns the phone bill for the given customer
+   */
+ /* public PhoneCall getCall(String customer) throws IOException, ParserException {
+    Response response = http.get(Map.of("customer", customer));
+    throwExceptionIfNotOkayHttpStatus(response);
+    String content = response.getContent();
+
+    TextParser parser = new TextParser(new StringReader(content));
+    return parser.parse().get(word);
+  }*/
+
     public void addDictionaryEntry(String word, String definition) throws IOException {
       Response response = http.post(Map.of("word", word, "definition", definition));
       throwExceptionIfNotOkayHttpStatus(response);
     }
+
+
 
   public void removeAllDictionaryEntries() throws IOException {
       Response response = http.delete(Map.of());

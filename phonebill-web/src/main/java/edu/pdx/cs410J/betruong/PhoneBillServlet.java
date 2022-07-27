@@ -7,6 +7,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,8 +21,13 @@ import java.util.Map;
  */
 public class PhoneBillServlet extends HttpServlet
 {
-    static final String CUSTOMER_PARAMETER = "customer";
+
     static final String DEFINITION_PARAMETER = "definition";
+    static final String CUSTOMER_PARAMETER = "customer";
+    static final String CALLER_PARAMETER = "caller";
+    static final String CALLEE_PARAMETER = "callee";
+    static final String BEGIN_PARAMETER = "begin";
+    static final String END_PARAMETER = "end";
 
     private final Map<String, String> dictionary = new HashMap<>();
     private final Map<String, PhoneBill> bills = new HashMap<>();
@@ -34,13 +42,26 @@ public class PhoneBillServlet extends HttpServlet
     {
         response.setContentType( "text/plain" );
         String customer = getParameter( CUSTOMER_PARAMETER, request );
+        String begin = getParameter( BEGIN_PARAMETER, request );
+        String end = getParameter( END_PARAMETER, request );
+
         if (customer != null) {
-            writeCalls(customer, response);
+            if (begin != null && end != null){
+                Date beginTime = getTime(begin);
+                Date endTime = getTime(end);
+                writeCalls(customer, beginTime, endTime, response);
+            } else if (begin != null){
+               missingRequiredParameter(response, END_PARAMETER);
+            } else if (end != null) {
+                missingRequiredParameter(response, BEGIN_PARAMETER);
+            } else{
+                writeBill(customer, response);
+            }
 
         } else {
-            response.setStatus( HttpServletResponse.SC_OK );
-            // writeAllDictionaryEntries(response);
+            missingRequiredParameter(response, CUSTOMER_PARAMETER);
         }
+        response.setStatus( HttpServletResponse.SC_OK );
     }
 
     /**
@@ -52,24 +73,40 @@ public class PhoneBillServlet extends HttpServlet
     protected void doPost( HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
         response.setContentType( "text/plain" );
-
-        String calls = getParameter(CUSTOMER_PARAMETER, request );
-        if (calls == null) {
+        String customer = getParameter( CUSTOMER_PARAMETER, request );
+        if (customer == null){
             missingRequiredParameter(response, CUSTOMER_PARAMETER);
-            return;
+        }
+        String caller = getParameter( CALLER_PARAMETER, request);
+        if (caller == null){
+            missingRequiredParameter(response, CALLER_PARAMETER);
+        }
+        String callee = getParameter( CALLEE_PARAMETER, request);
+        if (callee == null){
+            missingRequiredParameter(response, CALLEE_PARAMETER);
+        }
+        String begin = getParameter( BEGIN_PARAMETER, request);
+        if (begin == null){
+            missingRequiredParameter(response, BEGIN_PARAMETER);
+        }
+        String end = getParameter( END_PARAMETER, request);
+        if (end == null){
+            missingRequiredParameter(response, END_PARAMETER);
         }
 
-        String definition = getParameter(DEFINITION_PARAMETER, request );
-        if ( definition == null) {
-            missingRequiredParameter( response, DEFINITION_PARAMETER );
-            return;
+       /* POST creates a new call from the HTTP request parameters customer, callerNumber,
+        calleeNumber, begin, and end. If the phone bill does not exist, a new one should be
+        created.*/
+
+
+        PhoneBill bill = this.bills.get(customer);
+        if (bill == null){
+            this.bills.put(customer, new PhoneBill(customer));
         }
 
-        this.dictionary.put(calls, definition);
+        PhoneCall call = new PhoneCall(caller, callee, begin, end);
 
-        PrintWriter pw = response.getWriter();
-        pw.println(Messages.definedWordAs(calls, definition));
-        pw.flush();
+        this.bills.get(customer).addPhoneCall(call);
 
         response.setStatus( HttpServletResponse.SC_OK);
     }
@@ -106,20 +143,12 @@ public class PhoneBillServlet extends HttpServlet
     }
 
     /**
-     * Writes the definition of the given word to the HTTP response.
+     * Writes all the phone calls of the phone bill given customer to the HTTP response.
      *
      * The text of the message is formatted with {@link TextDumper}
      */
-    private void writeCalls(String customer, HttpServletResponse response) throws IOException {
+    private void writeBill(String customer, HttpServletResponse response) throws IOException {
         PhoneBill bill = this.bills.get(customer);
-       /* PhoneBill bill = new PhoneBill(customer);
-        PhoneCall dummycall;
-        try {
-            dummycall = new PhoneCall("123-456-7890", "111-456-7890", "07/25/2022", "9:10", "AM", "07/25/2022", "9:15", "AM");
-        } catch (PhoneCall.PhoneCallException e) {
-            throw new RuntimeException(e);
-        }
-        bill.addPhoneCall(dummycall);*/
 
         if (bill == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -130,6 +159,34 @@ public class PhoneBillServlet extends HttpServlet
             Map<String, PhoneBill> billDetail = Map.of(customer, bill);
             TextDumper dumper = new TextDumper(pw);
             dumper.billdump(billDetail);
+
+            response.setStatus(HttpServletResponse.SC_OK);
+        }
+    }
+
+    /**
+     * Writes all the phone calls that started within a window of time
+     * of the phone bill given customer to the HTTP response.
+     *
+     * The text of the message is formatted with {@link TextDumper}
+     */
+    private void writeCalls(String customer, Date begin, Date end, HttpServletResponse response) throws IOException {
+        PhoneBill bill = this.bills.get(customer);
+
+        if (bill == null) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+
+        } else {
+            PrintWriter pw = response.getWriter();
+            TextDumper dumper = new TextDumper(pw);
+            for (PhoneCall call : bill.getPhoneCalls()){
+                Date startedTime = getTime(call.getBeginTimeLiterals());
+                if (startedTime.compareTo(begin) >= 0 && startedTime.compareTo(end) <= 0){
+                    dumper.calldump(call);
+                }
+            }
+            // Map<String, PhoneBill> billDetail = Map.of(customer, bill);
+            // dumper.billdump(billDetail);
 
             response.setStatus(HttpServletResponse.SC_OK);
         }
@@ -168,6 +225,17 @@ public class PhoneBillServlet extends HttpServlet
     @VisibleForTesting
     String getDefinition(String word) {
         return this.dictionary.get(word);
+    }
+
+    public Date getTime(String time){
+        SimpleDateFormat sdf = new SimpleDateFormat("M/d/yyyy hh:mm aa");
+        Date result = null;
+        try {
+            result = sdf.parse(time);
+        } catch (ParseException e) {
+            System.err.println("Could not parse the time: " + time);
+        }
+        return result;
     }
 
 }

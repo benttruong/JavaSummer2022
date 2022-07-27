@@ -1,5 +1,6 @@
 package edu.pdx.cs410J.betruong;
 
+
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.Map;
@@ -36,4 +37,12 @@ public class TextDumper {
   }
 
 
+  public void calldump(PhoneCall call) {
+    try (
+            PrintWriter pw = new PrintWriter(this.writer)
+    ) {
+        pw.println(call.getPrettyCallString());
+        pw.flush();
+    }
+  }
 }

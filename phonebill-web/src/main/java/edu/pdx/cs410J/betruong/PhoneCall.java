@@ -20,14 +20,14 @@ public class PhoneCall extends AbstractPhoneCall implements Comparable{
 
   private final String caller;
   private final String callee;
-  private final String beginDate;
-  private final String beginTime;
-  private final String beginMeridiem;
+  private String beginDate;
+  private String beginTime;
+  private String beginMeridiem;
 
-  private final String endDate;
-  private final String endTime;
-  private final String endMeridiem;
-  private final long duration;
+  private String endDate;
+  private String endTime;
+  private String endMeridiem;
+  private long duration;
 
 
 
@@ -80,6 +80,21 @@ public class PhoneCall extends AbstractPhoneCall implements Comparable{
     this.endTime = null;
     this.endMeridiem = null;
     this.duration = 0;
+  }
+
+  public PhoneCall(String caller, String callee, String begin, String end) {
+    this.caller = caller;
+    this.callee = callee;
+    try {
+      setBeginTime(begin);
+    } catch (PhoneCallException e) {
+      throw new RuntimeException(e);
+    }
+    try {
+      setEndTime(end);
+    } catch (PhoneCallException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   /**
@@ -321,9 +336,42 @@ public class PhoneCall extends AbstractPhoneCall implements Comparable{
     return "Phone call from " + this.getCaller() + " to " + this.getCallee() + " from " + this.getBeginTimeString() + " to " + this.getEndTimeString()
             + "\n\tDuration: " + this.getDurationString();
   }
+  @VisibleForTesting
+  void setBeginTime(String time) throws PhoneCallException {
+    String [] values = time.split(" ");
+    if (values.length != 3){
+      throw new PhoneCallException();
+    }
+    if (PhoneCall.isValidDate(values[0]) &&
+        PhoneCall.isValidTime(values[1]) &&
+        PhoneCall.isValidMeridiem(values[2])){
+      this.beginDate = values[0];
+      this.beginTime = values[1];
+      this.beginMeridiem = values[2];
+    }
+  }
+
+  @VisibleForTesting
+  void setEndTime(String time) throws PhoneCallException {
+    String [] values = time.split(" ");
+    if (values.length != 3){
+      throw new PhoneCallException();
+    }
+    if (PhoneCall.isValidDate(values[0]) &&
+        PhoneCall.isValidTime(values[1]) &&
+        PhoneCall.isValidMeridiem(values[2])){
+      this.endDate = values[0];
+      this.endTime = values[1];
+      this.endMeridiem = values[2];
+    }
+  }
+
+
 
   public static class PhoneCallException extends Throwable {
     public PhoneCallException() {
     }
   }
+
+
 }

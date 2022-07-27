@@ -23,6 +23,7 @@ import static org.mockito.Mockito.*;
 class PhoneBillServletTest {
 
   @Test
+  @Disabled
   void initiallyServletContainsNoDictionaryEntries() throws ServletException, IOException {
     PhoneBillServlet servlet = new PhoneBillServlet();
 

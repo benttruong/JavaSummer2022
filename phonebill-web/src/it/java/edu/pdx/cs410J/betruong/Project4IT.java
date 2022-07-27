@@ -37,6 +37,7 @@ class Project4IT extends InvokeMainTestCase {
     }
 
     @Test
+    @Disabled
     void test2EmptyServer() {
         MainMethodResult result = invokeMain( Project4.class, HOSTNAME, PORT );
         String out = result.getTextWrittenToStandardOut();
