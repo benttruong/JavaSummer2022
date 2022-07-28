@@ -171,7 +171,7 @@ public class PhoneCall extends AbstractPhoneCall implements Comparable{
   @Override
   public Date getBeginTime() {
     String time = this.beginDate + " " + this.beginTime + " " + this.beginMeridiem;
-    SimpleDateFormat sdf = new SimpleDateFormat("M/d/yyyy H:mm a");
+    SimpleDateFormat sdf = new SimpleDateFormat("M/d/yyyy hh:mm aa");
     Date result = null;
     try {
       result = sdf.parse(time);

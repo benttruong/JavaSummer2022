@@ -30,7 +30,7 @@ public class TextDumper {
     ) {
       for (Map.Entry<String, PhoneBill> bill: bills.entrySet()){
         for (PhoneCall call: bill.getValue().getPhoneCalls())
-        pw.println("Phone call from " + call.getCaller() + " to " + call.getCallee() + " from " + call.getBeginTimeString() + " to " + call.getEndTimeString());
+        pw.println("Phone call from " + call.getCaller() + " to " + call.getCallee() + " from " + call.getBeginTimeLiterals() + " to " + call.getEndTimeLiterals());
       }
       pw.flush();
     }
@@ -41,7 +41,8 @@ public class TextDumper {
     try (
             PrintWriter pw = new PrintWriter(this.writer)
     ) {
-        pw.println(call.getPrettyCallString());
+        pw.println("Phone call from " + call.getCaller() + " to " + call.getCallee() + " from " + call.getBeginTimeLiterals() + " to " + call.getEndTimeLiterals());
+        // pw.println(call.getPrettyCallString());
         pw.flush();
     }
   }

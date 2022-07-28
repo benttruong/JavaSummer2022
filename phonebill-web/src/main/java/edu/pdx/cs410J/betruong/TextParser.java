@@ -5,6 +5,7 @@ import edu.pdx.cs410J.ParserException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -44,4 +45,31 @@ public class TextParser {
 
     return map;
   }
+
+  public ArrayList<PhoneCall> billParse() throws ParserException {
+    Pattern pattern = Pattern.compile("Phone call from (.*) to (.*) from (.*) to (.*)");
+
+    // Map<String, String> map = new HashMap<>();
+    ArrayList<PhoneCall> bill = new ArrayList<>();
+    try (
+            BufferedReader br = new BufferedReader(this.reader)
+    ) {
+
+      for (String line = br.readLine(); line != null; line = br.readLine()) {
+        Matcher matcher = pattern.matcher(line);
+        if (!matcher.find()) {
+          throw new ParserException("Unexpected text: " + line);
+        }
+        PhoneCall call = new PhoneCall(matcher.group(1), matcher.group(2), matcher.group(3), matcher.group(4));
+
+        bill.add(call);
+      }
+
+    } catch (IOException e) {
+      throw new ParserException("While parsing dictionary", e);
+    }
+
+    return bill;
+  }
+
 }

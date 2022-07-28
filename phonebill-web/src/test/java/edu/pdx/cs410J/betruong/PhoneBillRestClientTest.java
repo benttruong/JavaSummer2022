@@ -28,6 +28,8 @@ public class PhoneBillRestClientTest {
     assertThat(client.getAllDictionaryEntries(), equalTo(dictionary));
   }
 
+
+
   private HttpRequestHelper.Response dictionaryAsText(Map<String, String> dictionary) {
     StringWriter writer = new StringWriter();
     new TextDumper(writer).dump(dictionary);

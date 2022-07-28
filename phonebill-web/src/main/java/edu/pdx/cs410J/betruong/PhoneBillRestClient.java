@@ -3,9 +3,11 @@ package edu.pdx.cs410J.betruong;
 import com.google.common.annotations.VisibleForTesting;
 import edu.pdx.cs410J.ParserException;
 import edu.pdx.cs410J.web.HttpRequestHelper;
+import org.junit.runner.Request;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.Map;
 
 import static edu.pdx.cs410J.web.HttpRequestHelper.Response;
@@ -53,20 +55,8 @@ public class PhoneBillRestClient {
   /**
    * Returns the definition for the given word
    */
-  public String getDefinition(String word) throws IOException, ParserException {
+ /* public String getDefinition(String word) throws IOException, ParserException {
     Response response = http.get(Map.of("word", word));
-    throwExceptionIfNotOkayHttpStatus(response);
-    String content = response.getContent();
-
-    TextParser parser = new TextParser(new StringReader(content));
-    return parser.parse().get(word);
-  }
-
-  /**
-   * Returns the phone bill for the given customer
-   */
- /* public PhoneCall getCall(String customer) throws IOException, ParserException {
-    Response response = http.get(Map.of("customer", customer));
     throwExceptionIfNotOkayHttpStatus(response);
     String content = response.getContent();
 
@@ -74,11 +64,39 @@ public class PhoneBillRestClient {
     return parser.parse().get(word);
   }*/
 
+  /**
+   *
+   * @param customer
+   * @return A phone bill given a customer name
+   * @throws IOException
+   * @throws ParserException
+   */
+    public PhoneBill getCall(String customer) throws IOException, ParserException {
+    Response response = http.get(Map.of("customer", customer));
+    throwExceptionIfNotOkayHttpStatus(response);
+    if (response == null){
+      return null;
+    }
+    TextParser parser = new TextParser(new StringReader(response.getContent()));
+    ArrayList<PhoneCall> calls = parser.billParse();
+    PhoneBill bill = new PhoneBill(customer);
+    for (PhoneCall call : calls){
+      bill.addPhoneCall(call);
+    }
+    return bill;
+    }
+
     public void addDictionaryEntry(String word, String definition) throws IOException {
       Response response = http.post(Map.of("word", word, "definition", definition));
       throwExceptionIfNotOkayHttpStatus(response);
     }
 
+
+    public void addPhoneCallEntry(String customer, String callerNumber, String calleeNumber, String begin, String end) throws IOException {
+      // PhoneCall call = new PhoneCall(callerNumber, calleeNumber, begin, end);
+      Response response = http.post(Map.of("customer", customer, "caller", callerNumber, "callee", calleeNumber, "begin", begin, "end", end));
+      throwExceptionIfNotOkayHttpStatus(response);
+    }
 
 
   public void removeAllDictionaryEntries() throws IOException {
