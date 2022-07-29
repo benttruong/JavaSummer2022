@@ -54,6 +54,7 @@ public class Project4 {
 
             if (Objects.equals(args[i], "-print")) {
                 printCommand = true;
+                firstArg = i +1;
             } else if (Objects.equals(args[i], "-README")) {
                 System.out.println(README);
                 return;
@@ -64,7 +65,7 @@ public class Project4 {
                 }
                 hostName = args[i+1];
                 ++ i;
-
+                firstArg = i +1;
             } else if (Objects.equals(args[i], "-port")) {
                 if (args.length - i == 1) {
                     System.err.println("Command is missing port");
@@ -72,16 +73,21 @@ public class Project4 {
                 }
                 portString = args[i + 1];
                 ++i;
+                firstArg = i+1;
             } else if (Objects.equals(args[i], "-search")){
                 search = true;
-
+                firstArg = i+1;
             }else if (m.matches()) {
                 System.err.println("Unknown Command Line: " + args[i]);
                 return;
-            } else{
+            } else {
                 firstArg = i;
                 break;
             }
+        }
+
+        if (args.length - firstArg >= 1){
+            customer = args[firstArg];
         }
 
         if (hostName == null) {
@@ -90,6 +96,9 @@ public class Project4 {
 
         } else if ( portString == null) {
             usage( "Missing port" );
+            return;
+        } else if (customer == null){
+            System.err.println("Program requires at least a customer's name");
             return;
         } else if (args.length - firstArg > 9){
             usage("Extra arguments");
@@ -105,7 +114,7 @@ public class Project4 {
         }
 
         PhoneBillRestClient client = new PhoneBillRestClient(hostName, port);
-        customer = args[firstArg];
+        // customer = args[firstArg];
 
         PhoneBill bill;
         try {
@@ -118,6 +127,7 @@ public class Project4 {
         if (args.length - firstArg == 1){
             if (bill != null && bill.getPhoneCalls().isEmpty()){
                 System.out.println("Phone bill for customer " + customer + " is empty");
+                return;
             } else {
                 System.out.println(bill.getPrettyBillString());
             }

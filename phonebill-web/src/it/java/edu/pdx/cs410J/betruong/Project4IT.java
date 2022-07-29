@@ -122,6 +122,13 @@ class Project4IT extends InvokeMainTestCase {
         assertThat(out, containsString(beginTime));
 
     }
+    @Test
+    void test7InvokeMainWithHostAndPortButNoCustomerReturnRequiringAtLeastCustomer() {
+        String customer = "Ben Truong";
+        MainMethodResult result = invokeMain(Project4.class, "-host", HOSTNAME, "-port", PORT);
+        String err = result.getTextWrittenToStandardError();
+        assertThat(err, containsString("Program requires at least a customer's name"));
+    }
 
     private int getNumberOfPhoneCallsFromBillString(String out) {
         int num = -1;
