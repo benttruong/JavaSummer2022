@@ -3,6 +3,7 @@ package edu.pdx.cs410J.betruong;
 import edu.pdx.cs410J.InvokeMainTestCase;
 import edu.pdx.cs410J.UncaughtExceptionInMain;
 import edu.pdx.cs410J.web.HttpRequestHelper.RestException;
+import org.apache.tools.ant.Project;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -11,6 +12,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.HttpURLConnection;
+import java.util.Date;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
@@ -71,7 +73,7 @@ class Project4IT extends InvokeMainTestCase {
      String customer = "Ben Truong";
      MainMethodResult result = invokeMain(Project4.class, "-host", HOSTNAME, "-port", PORT, "-print", customer);
      String err = result.getTextWrittenToStandardError();
-     assertThat(err, containsString("Missing command line"));
+     assertThat(err, containsString("Command line is missing"));
     }
 
     @Test
@@ -91,7 +93,35 @@ class Project4IT extends InvokeMainTestCase {
         String out = result.getTextWrittenToStandardOut();
         assertThat(out, containsString("The newly added phone call"));
     }
+    @Test
+    void test6InvokeMainWithSearchCommand() {
+        String customer = "Ben Truong";
+        String caller = "123-456-7890";
+        String callee = "111-222-3333";
 
+        String beginDate = "7/28/2022";
+        String beginTime = "12:30";
+        String beginMeridiem = "PM";
+        String endDate = "7/28/2022";
+        String endTime = "12:45";
+        String endMeridiem = "PM";
+
+        // adding above phone call
+        MainMethodResult result = invokeMain(Project4.class, "-host", HOSTNAME, "-port", PORT, customer, caller, callee, beginDate, beginTime, beginMeridiem, endDate, endTime, endMeridiem);
+        String out = result.getTextWrittenToStandardOut();
+        assertThat(out, containsString("A new phone call added"));
+
+        // searching for phone calls from a month ago returns no phone call
+        result = invokeMain(Project4.class, "-host", HOSTNAME, "-port", PORT, "-search", customer, "6/01/2022", "1:00", "AM", "6/30/2022", "11:59", "PM");
+        out = result.getTextWrittenToStandardOut();
+        assertThat(out, containsString("There is no phone call"));
+
+        // searching for phone calls within this month returns phone call with this begin time
+        result = invokeMain(Project4.class, "-host", HOSTNAME, "-port", PORT, "-search", customer, "7/01/2022", "1:00", "AM", "7/30/2022", "11:59", "PM");
+        out = result.getTextWrittenToStandardOut();
+        assertThat(out, containsString(beginTime));
+
+    }
 
     private int getNumberOfPhoneCallsFromBillString(String out) {
         int num = -1;

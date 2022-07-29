@@ -7,6 +7,7 @@ import edu.pdx.cs410J.web.HttpRequestHelper;
 import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
@@ -83,7 +84,7 @@ public class Project4 {
             }
         }
 
-        if (hostName == null || args.length - firstArg < 1) {
+        if (hostName == null) {
             usage( MISSING_ARGS );
             return;
 
@@ -115,7 +116,7 @@ public class Project4 {
         }
 
         if (args.length - firstArg == 1){
-            if (bill == null){
+            if (bill != null && bill.getPhoneCalls().isEmpty()){
                 System.out.println("Phone bill for customer " + customer + " is empty");
             } else {
                 System.out.println(bill.getPrettyBillString());
@@ -163,29 +164,31 @@ public class Project4 {
         }
 
         if (args.length - firstArg == 1) {
-            System.out.println(bill);
-            for (PhoneCall callToPrint : bill.getPhoneCalls()) {
-                System.out.println(callToPrint.getPrettyCallString());
-            }
-        } else if  (search && args.length - firstArg >= 7){
-            Date rangeFrom = getTime(beginDate + " " + beginTime + " " + beginMeridiem);
-            Date rangeTo = getTime(endDate + " " + endDate + " " + endMeridiem);
-            if (rangeFrom.compareTo(rangeTo) >= 0){
+            System.out.println(bill.getPrettyBillString());
+        } else if  (search && call == null){
+            Date from = getTime(beginDate + " " + beginTime + " " + beginMeridiem);
+            Date to = getTime(endDate + " " + endTime + " " + endMeridiem);
+            if (from.compareTo(to) >= 0){
                 System.err.println("Invalid time range to search, begin time is after end time");
                 return;
             }
+            int count = 0;
             for (PhoneCall callToCheck : bill.getPhoneCalls()){
                 Date timeToCheck = callToCheck.getBeginTime();
-                if (timeToCheck.compareTo(rangeFrom) >= 0 &&
-                    timeToCheck.compareTo(rangeTo) <= 0){
+                if (timeToCheck.compareTo(from) >= 0 &&
+                    timeToCheck.compareTo(to) <= 0){
+                    ++count;
                     System.out.println(callToCheck.getPrettyCallString());
                 }
+            }
+            if (count == 0){
+                System.out.println("There is no phone call from phone bill that started within that range");
             }
         }
 
         if (printCommand){
             if (call == null){
-                usage(MISSING_ARGS);
+                usage("Command line is missing sufficient arguments for a new phone call");
                 return;
             }
             else{
@@ -232,11 +235,12 @@ public class Project4 {
         err.println("  begin            Time when phone call started");
         err.println("  end              Time when phone call ended");
         err.println();
-        err.println("This simple program posts words and their definitions");
+        err.println("This program add a phone call to a phone bill");
         err.println("to the server.");
-        err.println("If no definition is specified, then the word's definition");
-        err.println("is printed.");
-        err.println("If no word is specified, all dictionary entries are printed");
+        err.println("If no phone call is specified, then the phone bill of");
+        err.println("the customer is printed.");
+        err.println("The program expects at least the host and port to ");
+        err.println("establish connection with the server and a customer's name.");
         err.println();
     }
 
@@ -250,7 +254,7 @@ public class Project4 {
             System.out.print(output + '\n');
     }*/
 
-    private static Date getTime(String time){
+     private static Date getTime(String time){
         SimpleDateFormat sdf = new SimpleDateFormat("M/d/yyyy hh:mm aa");
         Date result = null;
         try {

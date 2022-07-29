@@ -51,18 +51,18 @@ public class PhoneBillRestClient {
    * @throws ParserException
    */
     public PhoneBill getCall(String customer) throws IOException, ParserException {
-    Response response = http.get(Map.of("customer", customer));
-    throwExceptionIfNotOkayHttpStatus(response);
-    if (response == null){
-      return null;
-    }
-    TextParser parser = new TextParser(new StringReader(response.getContent()));
-    ArrayList<PhoneCall> calls = parser.billParse();
-    PhoneBill bill = new PhoneBill(customer);
-    for (PhoneCall call : calls){
-      bill.addPhoneCall(call);
-    }
-    return bill;
+      Response response = http.get(Map.of("customer", customer));
+      throwExceptionIfNotOkayHttpStatus(response);
+      if (response == null){
+        return null;
+      }
+      TextParser parser = new TextParser(new StringReader(response.getContent()));
+      ArrayList<PhoneCall> calls = parser.billParse();
+      PhoneBill bill = new PhoneBill(customer);
+      for (PhoneCall call : calls){
+        bill.addPhoneCall(call);
+      }
+      return bill;
     }
 
 

@@ -11,30 +11,30 @@ import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.nullValue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class PhoneBillRestClientTest {
 
- /* @Test
-  @Disabled
-  void getAllDictionaryEntriesPerformsHttpGetWithNoParameters() throws ParserException, IOException {
-    Map<String, String> dictionary = Map.of("One", "1", "Two", "2");
+  @Test
+  void getPhoneCallsEntriesPerformsHttpGetWithNoParameters() throws IOException {
+    String customer = "Ben";
+    Map<String, String> calls = Map.of("customer", customer);
 
     HttpRequestHelper http = mock(HttpRequestHelper.class);
-    when(http.get(eq(Map.of()))).thenReturn(dictionaryAsText(dictionary));
+    when(http.get(eq(Map.of()))).thenReturn(callsAsText(calls));
 
     PhoneBillRestClient client = new PhoneBillRestClient(http);
 
-    assertThat(client.getAllDictionaryEntries(), equalTo(dictionary));
-  }*/
+    assertThat(http.get(calls), equalTo(null));
 
+  }
 
-
-  private HttpRequestHelper.Response dictionaryAsText(Map<String, String> dictionary) {
+  private HttpRequestHelper.Response callsAsText(Map<String, String> calls) {
     StringWriter writer = new StringWriter();
-    new TextDumper(writer).dump(dictionary);
+    new TextDumper(writer).dump(calls);
 
     return new HttpRequestHelper.Response(writer.toString());
   }
