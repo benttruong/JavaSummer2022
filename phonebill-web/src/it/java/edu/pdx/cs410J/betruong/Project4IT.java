@@ -11,6 +11,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.util.Date;
 
@@ -99,10 +100,10 @@ class Project4IT extends InvokeMainTestCase {
         String caller = "123-456-7890";
         String callee = "111-222-3333";
 
-        String beginDate = "7/28/2022";
+        String beginDate = "7/28/2020";
         String beginTime = "12:30";
         String beginMeridiem = "PM";
-        String endDate = "7/28/2022";
+        String endDate = "7/28/2020";
         String endTime = "12:45";
         String endMeridiem = "PM";
 
@@ -117,7 +118,7 @@ class Project4IT extends InvokeMainTestCase {
         assertThat(out, containsString("There is no phone call"));
 
         // searching for phone calls within this month returns phone call with this begin time
-        result = invokeMain(Project4.class, "-host", HOSTNAME, "-port", PORT, "-search", customer, "7/01/2022", "1:00", "AM", "7/30/2022", "11:59", "PM");
+        result = invokeMain(Project4.class, "-host", HOSTNAME, "-port", PORT, "-search", customer, "1/01/2020", "1:00", "AM", "12/31/2020", "11:59", "PM");
         out = result.getTextWrittenToStandardOut();
         assertThat(out, containsString(beginTime));
 
@@ -129,6 +130,20 @@ class Project4IT extends InvokeMainTestCase {
         String err = result.getTextWrittenToStandardError();
         assertThat(err, containsString("Program requires at least a customer's name"));
     }
+
+    @Test
+    void testingPrettyPrinting(){
+        PhoneCall call = new PhoneCall("123-456-7890", "111-222-3333", "7/29/2022 2:00 AM", "7/29/2022 2:30 AM");
+        PhoneBill bill = new PhoneBill("Ben");
+        bill.addPhoneCall(call);
+
+        // StringWriter sw = new StringWriter();
+        PrettyPrinter pretty= new PrettyPrinter(System.out);
+        pretty.billDump(bill);
+        pretty.callDump(call);
+
+    }
+
 
     private int getNumberOfPhoneCallsFromBillString(String out) {
         int num = -1;

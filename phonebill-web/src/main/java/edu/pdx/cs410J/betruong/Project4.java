@@ -38,6 +38,8 @@ public class Project4 {
         String endMeridiem = null;
         PhoneCall call = null;
 
+        PrettyPrinter pretty = new PrettyPrinter(System.out);
+
         // variable to keep track of position of first required argument
         int firstArg = 0;
 
@@ -129,7 +131,7 @@ public class Project4 {
                 System.out.println("Phone bill for customer " + customer + " is empty");
                 return;
             } else {
-                System.out.println(bill.getPrettyBillString());
+                pretty.billDump(bill);
             }
         } else if (args.length - firstArg == 7){
             beginDate = args[firstArg + 1];
@@ -174,7 +176,7 @@ public class Project4 {
         }
 
         if (args.length - firstArg == 1) {
-            System.out.println(bill.getPrettyBillString());
+            pretty.billDump(bill);
         } else if  (search && call == null){
             Date from = getTime(beginDate + " " + beginTime + " " + beginMeridiem);
             Date to = getTime(endDate + " " + endTime + " " + endMeridiem);
@@ -188,7 +190,8 @@ public class Project4 {
                 if (timeToCheck.compareTo(from) >= 0 &&
                     timeToCheck.compareTo(to) <= 0){
                     ++count;
-                    System.out.println(callToCheck.getPrettyCallString());
+                    System.out.print(count + ". ");
+                    pretty.callDump(callToCheck);
                 }
             }
             if (count == 0){
@@ -199,11 +202,10 @@ public class Project4 {
         if (printCommand){
             if (call == null){
                 usage("Command line is missing sufficient arguments for a new phone call");
-                return;
             }
             else{
-                System.out.println("The newly added phone call:\n"
-                                    + call.getPrettyCallString());
+                System.out.println("The newly added phone call:");
+                pretty.callDump(call);
             }
         }
     }
@@ -253,16 +255,6 @@ public class Project4 {
         err.println("establish connection with the server and a customer's name.");
         err.println();
     }
-
-   /* @VisibleForTesting
-    static void printReadme() throws IOException {
-        InputStream readme = Project4.class.getResourceAsStream("README.txt");
-        assert readme != null;
-        BufferedReader reader = new BufferedReader(new InputStreamReader(readme));
-        String output;
-        while ((output = reader.readLine()) != null)
-            System.out.print(output + '\n');
-    }*/
 
      private static Date getTime(String time){
         SimpleDateFormat sdf = new SimpleDateFormat("M/d/yyyy hh:mm aa");

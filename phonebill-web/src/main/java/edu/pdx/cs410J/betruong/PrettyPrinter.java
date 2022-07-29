@@ -2,43 +2,53 @@ package edu.pdx.cs410J.betruong;
 
 import com.google.common.annotations.VisibleForTesting;
 
+import java.io.PrintStream;
 import java.io.PrintWriter;
-import java.io.Writer;
-import java.util.Map;
 
 public class PrettyPrinter {
-  private final Writer writer;
+  private final PrintStream writer;
 
   @VisibleForTesting
-  static String formatWordCount(int count )
+  static String formatCallCount(int count )
   {
-    return String.format( "Dictionary on server contains %d words", count );
+    return String.format( "This bill contains %d phone call(s)", count );
   }
 
   @VisibleForTesting
-  static String formatDictionaryEntry(String word, String definition )
+  static String formatPhoneCalls(PhoneCall call )
   {
-    return String.format("  %s : %s", word, definition);
+    return call.getPrettyCallString();
   }
 
 
-  public PrettyPrinter(Writer writer) {
+  public PrettyPrinter(PrintStream writer) {
     this.writer = writer;
   }
 
-  public void dump(Map<String, String> dictionary) {
+  @VisibleForTesting
+  public void billDump(PhoneBill bill) {
     try (
       PrintWriter pw = new PrintWriter(this.writer)
     ) {
-
-      pw.println(formatWordCount(dictionary.size()));
-
-      for (Map.Entry<String, String> entry : dictionary.entrySet()) {
-        String word = entry.getKey();
-        String definition = entry.getValue();
-        pw.println(formatDictionaryEntry(word, definition));
+      pw.println("Customer: " + bill.getCustomer());
+      pw.println(formatCallCount(bill.getPhoneCalls().size()));
+      pw.println("===============================================");
+      int i = 1;
+      for (PhoneCall call : bill.getPhoneCalls()) {
+        pw.print(i + ". ");
+        pw.println(formatPhoneCalls(call));
       }
+      pw.println("===============================================");
 
+      pw.flush();
+    }
+  }
+  @VisibleForTesting
+  public void callDump(PhoneCall call) {
+    try (
+            PrintWriter pw = new PrintWriter(this.writer)
+    ){
+      pw.println(formatPhoneCalls(call));
       pw.flush();
     }
 

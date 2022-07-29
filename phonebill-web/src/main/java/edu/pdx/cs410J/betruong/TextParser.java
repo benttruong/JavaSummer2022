@@ -66,7 +66,7 @@ public class TextParser {
       }
 
     } catch (IOException e) {
-      throw new ParserException("While parsing dictionary", e);
+      throw new ParserException("While parsing phone bill ", e);
     }
 
     return bill;

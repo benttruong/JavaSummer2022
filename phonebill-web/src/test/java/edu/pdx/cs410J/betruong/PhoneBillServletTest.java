@@ -66,7 +66,7 @@ class PhoneBillServletTest {
 
     servlet.doPost(request, response);
 
-    System.out.println("StringWriter: " + stringWriter.toString());
+    System.out.println("StringWriter: " + stringWriter);
     System.out.println("Message: " + Messages.phoneCallFormat(callee, callee, begin, end));
 
     // assertThat(stringWriter.toString(), containsString(Messages.phoneCallFormat(caller, callee, begin, end)));
@@ -77,11 +77,6 @@ class PhoneBillServletTest {
 
     assertThat(statusCode.getValue(), equalTo(HttpServletResponse.SC_OK));
 
-   /* PhoneBill tempBill = new PhoneBill(customer);
-    PhoneCall tempCall = new PhoneCall(caller, callee, begin, end);
-    tempBill.addPhoneCall(tempCall);
-
-    assertThat(servlet.getDefinition(customer), equalTo(tempBill));*/
   }
 
 
