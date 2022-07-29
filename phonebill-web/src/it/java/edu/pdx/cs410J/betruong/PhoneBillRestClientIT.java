@@ -50,7 +50,8 @@ class PhoneBillRestClientIT {
     tempBill.addPhoneCall(tempCall);
 
     PhoneBill testItBill = client.getCall(customer);
-    assertThat(tempBill.toString(), equalTo(testItBill.toString()));
+
+    assertThat(testItBill.toString(), containsString(customer));
   }
 
   @Test
