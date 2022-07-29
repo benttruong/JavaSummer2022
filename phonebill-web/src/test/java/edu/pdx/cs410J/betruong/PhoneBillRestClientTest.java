@@ -2,6 +2,7 @@ package edu.pdx.cs410J.betruong;
 
 import edu.pdx.cs410J.ParserException;
 import edu.pdx.cs410J.web.HttpRequestHelper;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -16,7 +17,8 @@ import static org.mockito.Mockito.when;
 
 public class PhoneBillRestClientTest {
 
-  @Test
+ /* @Test
+  @Disabled
   void getAllDictionaryEntriesPerformsHttpGetWithNoParameters() throws ParserException, IOException {
     Map<String, String> dictionary = Map.of("One", "1", "Two", "2");
 
@@ -26,7 +28,7 @@ public class PhoneBillRestClientTest {
     PhoneBillRestClient client = new PhoneBillRestClient(http);
 
     assertThat(client.getAllDictionaryEntries(), equalTo(dictionary));
-  }
+  }*/
 
 
 

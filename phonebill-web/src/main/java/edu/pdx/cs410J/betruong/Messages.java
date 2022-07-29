@@ -11,13 +11,10 @@ public class Messages
         return String.format("The required parameter \"%s\" is missing", parameterName);
     }
 
-    public static String definedWordAs(String word, String definition )
+    public static String phoneCallFormat(String caller, String callee, String begin, String end )
     {
-        return String.format( "Defined %s as %s", word, definition );
+        return String.format( "Phone call from %s to %s from %s to %s", caller, callee, begin, end );
     }
 
-    public static String allDictionaryEntriesDeleted() {
-        return "All dictionary entries have been deleted";
-    }
 
 }

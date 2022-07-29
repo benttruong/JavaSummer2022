@@ -24,19 +24,26 @@ public class Project4 {
     public static void main(String... args) {
         String hostName = null;
         String portString = null;
-        String word = null;
-        String definition = null;
         boolean search = false;
         boolean printCommand = false;
         String customer = null;
         String callerNumber = null;
         String calleeNumber = null;
-        String begin = null;
-        String end = null;
+        String beginDate = null;
+        String beginTime = null;
+        String beginMeridiem = null;
+        String endDate = null;
+        String endTime = null;
+        String endMeridiem = null;
         PhoneCall call = null;
 
         // variable to keep track of position of first required argument
         int firstArg = 0;
+
+        if (args.length < 1){
+            usage(MISSING_ARGS);
+            return;
+        }
 
         // looking for optional command
         for (int i = 0; i < args.length; ++i) {
@@ -47,11 +54,7 @@ public class Project4 {
             if (Objects.equals(args[i], "-print")) {
                 printCommand = true;
             } else if (Objects.equals(args[i], "-README")) {
-                try {
-                    printReadme();
-                } catch (IOException e) {
-                    System.err.println("Something wrong happened while trying to load README");
-                }
+                System.out.println(README);
                 return;
             } else if (Objects.equals(args[i], "-host")) {
                 if (args.length - i == 1){
@@ -80,51 +83,78 @@ public class Project4 {
             }
         }
 
-        if (hostName == null || args.length - firstArg < 3) {
+        if (hostName == null || args.length - firstArg < 1) {
             usage( MISSING_ARGS );
+            return;
 
         } else if ( portString == null) {
             usage( "Missing port" );
-        } else if (args.length - firstArg > 5){
+            return;
+        } else if (args.length - firstArg > 9){
             usage("Extra arguments");
+            return;
         }
-
-        customer = args[firstArg];
-        if (args.length - firstArg == 3){
-            begin = args[firstArg + 1];
-            end = args[firstArg + 2];
-        } else if (args.length - firstArg == 5){
-            callerNumber = args[firstArg + 1];
-            calleeNumber = args[firstArg + 2];
-            begin = args[firstArg +3];
-            end = args[firstArg + 4];
-            call = new PhoneCall(callerNumber, calleeNumber, begin, end);
-        }
-
-
         int port;
         try {
             port = Integer.parseInt( portString );
-            
+
         } catch (NumberFormatException ex) {
             usage("Port \"" + portString + "\" must be an integer");
             return;
         }
 
         PhoneBillRestClient client = new PhoneBillRestClient(hostName, port);
+        customer = args[firstArg];
 
-        String message;
+        PhoneBill bill;
+        try {
+            bill = client.getCall(customer);
+        } catch (IOException | ParserException e) {
+            usage(String.valueOf(e));
+            return;
+        }
+
+        if (args.length - firstArg == 1){
+            if (bill == null){
+                System.out.println("Phone bill for customer " + customer + " is empty");
+            } else {
+                System.out.println(bill.getPrettyBillString());
+            }
+        } else if (args.length - firstArg == 7){
+            beginDate = args[firstArg + 1];
+            beginTime = args[firstArg + 2];
+            beginMeridiem = args[firstArg + 3];
+            endDate = args[firstArg + 4];
+            endTime = args[firstArg + 5];
+            endMeridiem = args[firstArg + 6];
+        } else if (args.length - firstArg == 9){
+            callerNumber = args[firstArg + 1];
+            calleeNumber = args[firstArg + 2];
+            beginDate = args[firstArg + 3];
+            beginTime = args[firstArg + 4];
+            beginMeridiem = args[firstArg + 5];
+            endDate = args[firstArg + 6];
+            endTime  = args[firstArg + 7];
+            endMeridiem = args[firstArg + 8];
+            try {
+                call = new PhoneCall(callerNumber, calleeNumber, beginDate, beginTime, beginMeridiem, endDate, endTime, endMeridiem);
+            } catch (PhoneCall.PhoneCallException e) {
+                usage("Data for new Phone Call is malformed");
+                return;
+            }
+        }
+
 
         if (call != null){
             try {
-                client.addPhoneCallEntry(customer, callerNumber, calleeNumber, begin, end);
+                client.addPhoneCallEntry(customer, callerNumber, calleeNumber, beginDate +" "+ beginTime +" "+ beginMeridiem, endDate +" "+ endTime +" "+ endMeridiem);
+                System.out.println("A new phone call added to " + customer + "'s phone bill");
             } catch (IOException e) {
                 usage(String.valueOf(e));
                 return;
             }
         }
 
-        PhoneBill bill;
         try {
             bill = client.getCall(customer);
         } catch (IOException | ParserException e) {
@@ -137,25 +167,32 @@ public class Project4 {
             for (PhoneCall callToPrint : bill.getPhoneCalls()) {
                 System.out.println(callToPrint.getPrettyCallString());
             }
-        }
-        if (search && args.length - firstArg >= 3){
-            Date beginTime = getTime(begin);
-            Date endTime = getTime(end);
-            System.out.println("Search command recognized");
+        } else if  (search && args.length - firstArg >= 7){
+            Date rangeFrom = getTime(beginDate + " " + beginTime + " " + beginMeridiem);
+            Date rangeTo = getTime(endDate + " " + endDate + " " + endMeridiem);
+            if (rangeFrom.compareTo(rangeTo) >= 0){
+                System.err.println("Invalid time range to search, begin time is after end time");
+                return;
+            }
             for (PhoneCall callToCheck : bill.getPhoneCalls()){
                 Date timeToCheck = callToCheck.getBeginTime();
-                if (timeToCheck.compareTo(beginTime) >= 0 &&
-                    timeToCheck.compareTo(endTime) <= 0){
+                if (timeToCheck.compareTo(rangeFrom) >= 0 &&
+                    timeToCheck.compareTo(rangeTo) <= 0){
                     System.out.println(callToCheck.getPrettyCallString());
                 }
             }
         }
 
-        if (printCommand && call != null){
-            System.out.println("The newly added phone call:\n"
-                               + call.getPrettyCallString());
+        if (printCommand){
+            if (call == null){
+                usage(MISSING_ARGS);
+                return;
+            }
+            else{
+                System.out.println("The newly added phone call:\n"
+                                    + call.getPrettyCallString());
+            }
         }
-        // System.out.println(message);
     }
 
     /**
@@ -203,16 +240,15 @@ public class Project4 {
         err.println();
     }
 
-    @VisibleForTesting
+   /* @VisibleForTesting
     static void printReadme() throws IOException {
-        // System.out.println("README Command Recognized");
         InputStream readme = Project4.class.getResourceAsStream("README.txt");
         assert readme != null;
         BufferedReader reader = new BufferedReader(new InputStreamReader(readme));
         String output;
         while ((output = reader.readLine()) != null)
             System.out.print(output + '\n');
-    }
+    }*/
 
     private static Date getTime(String time){
         SimpleDateFormat sdf = new SimpleDateFormat("M/d/yyyy hh:mm aa");
@@ -224,4 +260,37 @@ public class Project4 {
         }
         return result;
     }
+
+    private static final String README =
+            "Project4 - Ben Truong\n" +
+            "This this a client application that communicates with" +
+            "a running server that can record a new phone call and assign\n" +
+            "that phone call to a phone bill with a customer name\n" +
+            "with information provided from command line arguments.\n" +
+            "\n" +
+            "A phone call is initiated by a person with a given phone\n" +
+            "number at a given time, is received by a person with a\n" +
+            "given phone number, and terminates at a given time.\n" +
+            "\n" +
+            "This is how you use it from the command line:\n" +
+            "java -jar target/phonebill-2022.0.0.jar [options] <args>\n" +
+            "\n" +
+            "args are (in this order):\n" +
+            "    customer        : Person whose phone bill we’re modeling\n" +
+            "    callerNumber    : Phone number of caller\n" +
+            "    calleeNumber    : Phone number of person who was called\n" +
+            "    begin           : Date and time (am/pm) call began\n" +
+            "    end             : Date and time (am/pm) call ended\n" +
+            "\n" +
+            "options are (options may appear in any order):\n" +
+            "    -pretty file    : Pretty print the phone bill to a text file\n" +
+            "                      or standard out (file -).\n" +
+            "    -textFile file  : could be just a file name or\n" +
+            "                      a path with a file name included\n" +
+            "                      where to read/write the phone bill\n" +
+            "    -print          : Prints a description of the new phone call\n" +
+            "    -README         : Prints a README for this project and exits\n" +
+            "\n" +
+            "Date and time should be in the format: mm/dd/yyyy hh:mm aa\n" +
+            "aa: could be AM or PM";
 }

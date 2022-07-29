@@ -7,12 +7,15 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.StringReader;
 import java.net.HttpURLConnection;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.MethodOrderer.MethodName;
 
@@ -25,56 +28,80 @@ class Project4IT extends InvokeMainTestCase {
     private static final String PORT = System.getProperty("http.port", "8080");
 
     @Test
-    void test0RemoveAllMappings() throws IOException {
-      PhoneBillRestClient client = new PhoneBillRestClient(HOSTNAME, Integer.parseInt(PORT));
-      client.removeAllDictionaryEntries();
-    }
-
-    @Test
-    @Disabled
     void test1NoCommandLineArguments() {
-        MainMethodResult result = invokeMain( Project4.class );
+        MainMethodResult result = invokeMain(Project4.class);
         assertThat(result.getTextWrittenToStandardError(), containsString(Project4.MISSING_ARGS));
     }
 
     @Test
-    @Disabled
-    void test2EmptyServer() {
-        MainMethodResult result = invokeMain( Project4.class, HOSTNAME, PORT );
+    void test2InvokeMainWithOnlyCustomerReturnsCorrectPhoneBill() {
+        String customer = "Ben Truong";
+        MainMethodResult result = invokeMain(Project4.class, "-host", HOSTNAME, "-port", PORT, customer);
         String out = result.getTextWrittenToStandardOut();
-        assertThat(out, out, containsString(PrettyPrinter.formatWordCount(0)));
+        assertThat(out, containsString(customer));
     }
 
     @Test
-    @Disabled
-    void test3NoDefinitionsThrowsAppointmentBookRestException() {
-        String word = "WORD";
-        try {
-            invokeMain(Project4.class, HOSTNAME, PORT, word);
-            fail("Expected a RestException to be thrown");
+    void test3AddPhoneCall() {
+        String customer = "Ben Truong";
+        String caller = "123-456-7890";
+        String callee = "111-222-3333";
 
-        } catch (UncaughtExceptionInMain ex) {
-            RestException cause = (RestException) ex.getCause();
-            assertThat(cause.getHttpStatusCode(), equalTo(HttpURLConnection.HTTP_NOT_FOUND));
+        String beginDate = "7/28/2022";
+        String beginTime = "12:30";
+        String beginMeridiem = "PM";
+        String endDate = "7/28/2022";
+        String endTime = "12:45";
+        String endMeridiem = "PM";
+
+        MainMethodResult result = invokeMain(Project4.class, "-host", HOSTNAME, "-port", PORT, customer);
+        String out = result.getTextWrittenToStandardOut();
+        int originalNumOfPhoneCalls = getNumberOfPhoneCallsFromBillString(out);
+
+        invokeMain(Project4.class, "-host", HOSTNAME, "-port", PORT, customer, caller, callee, beginDate, beginTime, beginMeridiem, endDate, endTime, endMeridiem);
+        result = invokeMain(Project4.class, "-host", HOSTNAME, "-port", PORT, customer);
+        out = result.getTextWrittenToStandardOut();
+        int numOfPhoneCallsAfterNewPhoneCallAdded = getNumberOfPhoneCallsFromBillString(out);
+
+        assertEquals(originalNumOfPhoneCalls + 1, numOfPhoneCallsAfterNewPhoneCallAdded);
+    }
+
+    @Test
+    void test4InvokeMainWithPrintCommandAndNoPhoneCallReturnsMissingArg() {
+     String customer = "Ben Truong";
+     MainMethodResult result = invokeMain(Project4.class, "-host", HOSTNAME, "-port", PORT, "-print", customer);
+     String err = result.getTextWrittenToStandardError();
+     assertThat(err, containsString("Missing command line"));
+    }
+
+    @Test
+    void test5InvokeMainWithPrintCommandAndCorrectPhoneCallReturnsPrettyPhoneCall() {
+        String customer = "Ben Truong";
+        String caller = "123-456-7890";
+        String callee = "111-222-3333";
+
+        String beginDate = "7/28/2022";
+        String beginTime = "12:30";
+        String beginMeridiem = "PM";
+        String endDate = "7/28/2022";
+        String endTime = "12:45";
+        String endMeridiem = "PM";
+
+        MainMethodResult result = invokeMain(Project4.class, "-host", HOSTNAME, "-port", PORT, "-print", customer, caller, callee, beginDate, beginTime, beginMeridiem, endDate, endTime, endMeridiem);
+        String out = result.getTextWrittenToStandardOut();
+        assertThat(out, containsString("The newly added phone call"));
+    }
+
+
+    private int getNumberOfPhoneCallsFromBillString(String out) {
+        int num = -1;
+        for (int i = 0; i < out.length(); ++i) {
+            if (Character.isDigit(out.charAt(i))) {
+                num = Integer.parseInt(String.valueOf(out.charAt(i)));
+                break;
+            }
         }
-    }
-
-    @Test
-    @Disabled
-    void test4AddDefinition() {
-        String word = "WORD";
-        String definition = "DEFINITION";
-
-        MainMethodResult result = invokeMain( Project4.class, HOSTNAME, PORT, word, definition );
-        String out = result.getTextWrittenToStandardOut();
-        assertThat(out, out, containsString(Messages.definedWordAs(word, definition)));
-
-        result = invokeMain( Project4.class, HOSTNAME, PORT, word );
-        out = result.getTextWrittenToStandardOut();
-        assertThat(out, out, containsString(PrettyPrinter.formatDictionaryEntry(word, definition)));
-
-        result = invokeMain( Project4.class, HOSTNAME, PORT );
-        out = result.getTextWrittenToStandardOut();
-        assertThat(out, out, containsString(PrettyPrinter.formatDictionaryEntry(word, definition)));
+        return num;
     }
 }
+
