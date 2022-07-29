@@ -314,6 +314,7 @@ accordingly
   
   
   </repositories>
+<<<<<<< HEAD
           
   
   
@@ -328,6 +329,31 @@ accordingly
   
   
   
+=======
+
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-site-plugin</artifactId>
+        <configuration>
+          <topSiteURL>scm:git:git@github.com:YourGithubUser/PortlandStateJavaSummer2022.git</topSiteURL>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-scm-publish-plugin</artifactId>
+        <version>3.1.0</version>
+        <configuration>
+          <scmBranch>gh-pages</scmBranch>
+          <tryUpdate>true</tryUpdate>
+          <addUniqueDirectory>true</addUniqueDirectory>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <scm>
+    <connection>scm:git:git@github.com:YourGithubUser/PortlandStateJavaSummer2022.git</connection>
+>>>>>>> 1f6a477f7570e088ffa8000207a8eae6c8dfcdb2
   </scm>
           
   
@@ -369,6 +395,7 @@ accordingly
       
       
       <name>GitHub Pages</name>
+<<<<<<< HEAD
                               
       
       
@@ -378,6 +405,9 @@ accordingly
     
     
     
+=======
+      <url>scm:git:git@github.com:YourGithubUser/PortlandStateJavaSummer2022.git</url>
+>>>>>>> 1f6a477f7570e088ffa8000207a8eae6c8dfcdb2
     </site>
                   
   
