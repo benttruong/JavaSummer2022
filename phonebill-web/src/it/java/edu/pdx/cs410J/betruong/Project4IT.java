@@ -4,6 +4,7 @@ import edu.pdx.cs410J.InvokeMainTestCase;
 import edu.pdx.cs410J.UncaughtExceptionInMain;
 import edu.pdx.cs410J.web.HttpRequestHelper.RestException;
 import org.apache.tools.ant.Project;
+import org.junit.Assert;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -58,14 +59,12 @@ class Project4IT extends InvokeMainTestCase {
 
         MainMethodResult result = invokeMain(Project4.class, "-host", HOSTNAME, "-port", PORT, customer);
         String out = result.getTextWrittenToStandardOut();
-        int originalNumOfPhoneCalls = getNumberOfPhoneCallsFromBillString(out);
+        assertThat(out, containsString("is empty"));
 
         invokeMain(Project4.class, "-host", HOSTNAME, "-port", PORT, customer, caller, callee, beginDate, beginTime, beginMeridiem, endDate, endTime, endMeridiem);
         result = invokeMain(Project4.class, "-host", HOSTNAME, "-port", PORT, customer);
         out = result.getTextWrittenToStandardOut();
-        int numOfPhoneCallsAfterNewPhoneCallAdded = getNumberOfPhoneCallsFromBillString(out);
-
-        assertEquals(originalNumOfPhoneCalls + 1, numOfPhoneCallsAfterNewPhoneCallAdded);
+        assertThat(out, containsString("1 phone call"));
     }
 
     @Test
@@ -167,17 +166,5 @@ class Project4IT extends InvokeMainTestCase {
         assertThat(result.getTextWrittenToStandardError(), containsString("must be an integer"));
     }
 
-
-
-    private int getNumberOfPhoneCallsFromBillString(String out) {
-        int num = -1;
-        for (int i = 0; i < out.length(); ++i) {
-            if (Character.isDigit(out.charAt(i))) {
-                num = Integer.parseInt(String.valueOf(out.charAt(i)));
-                break;
-            }
-        }
-        return num;
-    }
 }
 
