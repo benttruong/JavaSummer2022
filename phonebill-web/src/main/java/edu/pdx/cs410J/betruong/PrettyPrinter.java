@@ -5,15 +5,32 @@ import com.google.common.annotations.VisibleForTesting;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 
+/**
+ * A class used to pretty print a Phone Bill or a Phone Call to PrintStream
+ */
 public class PrettyPrinter {
   private final PrintStream writer;
 
+  /**
+   * Method to pretty print the number of phone calls from a phone bill
+   * @param count
+   *        Number of phone call
+   * @return a <code>String</code> in a pretty format
+   */
   @VisibleForTesting
   static String formatCallCount(int count )
   {
     return String.format( "This bill contains %d phone call(s)", count );
   }
 
+  /**
+   * Method to format the phone call to be pretty
+   *
+   * @param call
+   *        A Phone Call
+   * @return
+   *        A <code>String</code> of the phone call in the pretty format
+   */
   @VisibleForTesting
   static String formatPhoneCalls(PhoneCall call )
   {
@@ -25,6 +42,11 @@ public class PrettyPrinter {
     this.writer = writer;
   }
 
+  /**
+   * Method to format a phone bill to be pretty
+   * @param bill
+   *        A phone bill
+   */
   @VisibleForTesting
   public void billDump(PhoneBill bill) {
     try (

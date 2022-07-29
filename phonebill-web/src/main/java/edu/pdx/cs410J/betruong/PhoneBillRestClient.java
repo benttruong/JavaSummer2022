@@ -46,6 +46,8 @@ public class PhoneBillRestClient {
   /**
    *
    * @param customer
+   *        The parameter to passed in the method and trigger the get request
+   *        using the customer name to look for the phone bill
    * @return A phone bill given a customer name
    * @throws IOException
    * @throws ParserException
@@ -65,7 +67,22 @@ public class PhoneBillRestClient {
       return bill;
     }
 
-
+  /**
+   * Client method to trigger the post request to add a new phone call
+   * @param customer
+   *        Customer's name
+   * @param callerNumber
+   *        Caller number of the phone call
+   * @param calleeNumber
+   *        Callee number of the phone call
+   * @param begin
+   *        Begin time of the phone call
+   * @param end
+   *        Ending time of the phone call
+   * @throws IOException
+   *        This method can throw IOExeption
+   *        if the data of the phone call is malformed
+   */
     public void addPhoneCallEntry(String customer, String callerNumber, String calleeNumber, String begin, String end) throws IOException {
       Response response = http.post(Map.of("customer", customer, "caller", callerNumber, "callee", calleeNumber, "begin", begin, "end", end));
       throwExceptionIfNotOkayHttpStatus(response);

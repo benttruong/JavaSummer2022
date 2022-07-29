@@ -16,9 +16,10 @@ import java.util.Map;
 /**
  * This servlet ultimately provides a REST API for working with an
  * <code>PhoneBill</code>.  However, in its current state, it is an example
- * of how to use HTTP and Java servlets to store simple dictionary of words
- * and their definitions.
+ * of how to use HTTP and Java servlets to store phone bills for customers
+ * and the phone calls in it.
  */
+
 public class PhoneBillServlet extends HttpServlet
 {
 
@@ -32,10 +33,10 @@ public class PhoneBillServlet extends HttpServlet
     private final Map<String, String> dictionary = new HashMap<>();
     private final Map<String, PhoneBill> bills = new HashMap<>();
     /**
-     * Handles an HTTP GET request from a client by writing the definition of the
-     * word specified in the "word" HTTP parameter to the HTTP response.  If the
-     * "word" parameter is not specified, all of the entries in the dictionary
-     * are written to the HTTP response.
+     * Handles an HTTP GET request from a client by adding the phone calls
+     * to the phone bills of customers specified in the "customer" HTTP parameter
+     * to the HTTP response.  If the only "customer" parameter is not specified,
+     * all the entries in the phone bill are written to the HTTP response.
      */
     @Override
     protected void doGet( HttpServletRequest request, HttpServletResponse response ) throws IOException
@@ -65,8 +66,8 @@ public class PhoneBillServlet extends HttpServlet
     }
 
     /**
-     * Handles an HTTP POST request by storing the dictionary entry for the
-     * "word" and "definition" request parameters.  It writes the dictionary
+     * Handles an HTTP POST request by storing phone call entry for the
+     * "customer" request parameter.  It writes the phone call
      * entry to the HTTP response.
      */
     @Override
@@ -111,24 +112,6 @@ public class PhoneBillServlet extends HttpServlet
         response.setStatus( HttpServletResponse.SC_OK);
     }
 
-    /**
-     * Handles an HTTP DELETE request by removing all dictionary entries.  This
-     * behavior is exposed for testing purposes only.  It's probably not
-     * something that you'd want a real application to expose.
-     */
-   /* @Override
-    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("text/plain");
-
-        this.dictionary.clear();
-
-        PrintWriter pw = response.getWriter();
-        pw.println(Messages.allDictionaryEntriesDeleted());
-        pw.flush();
-
-        response.setStatus(HttpServletResponse.SC_OK);
-
-    }*/
 
     /**
      * Writes an error message about a missing parameter to the HTTP response.
@@ -227,6 +210,16 @@ public class PhoneBillServlet extends HttpServlet
         return this.dictionary.get(word);
     }
 
+    /**
+     * Method to convert a <code>String</code> of time
+     * to a <code>Date</code> object to support comparing functionalities
+     * @param time
+     *          The <code>String</code> to pass in
+     * @return result
+     *          A <code>Date</code> object
+     *
+     */
+    @VisibleForTesting
     public Date getTime(String time){
         SimpleDateFormat sdf = new SimpleDateFormat("M/d/yyyy hh:mm aa");
         Date result = null;

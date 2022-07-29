@@ -148,6 +148,10 @@ public class PhoneCallTest {
     assertFalse(PhoneCall.isValidTime("1:60"));
   }
 
+  /**
+   * Testing functionalities of comparing phone calls
+   * @throws PhoneCall.PhoneCallException
+   */
   @Test
   void comparingPhoneCalls() throws PhoneCall.PhoneCallException {
     String callee = "111-111-1111";
@@ -166,6 +170,10 @@ public class PhoneCallTest {
     assertTrue(call3.compareTo(call2) > 0);
   }
 
+  /**
+   * Testing <code>getDuration</code> method of <code>PhoneCall</code>
+   * @throws PhoneCall.PhoneCallException
+   */
   @Test
   void getDurationForPhoneCallReturnsCorrectDuration() throws PhoneCall.PhoneCallException {
     String caller = "111-111-1111";
@@ -182,6 +190,10 @@ public class PhoneCallTest {
   }
 
 
+  /**
+   * Testing phone calls that can generate duration
+   * @throws PhoneCall.PhoneCallException
+   */
 
   @Test
   void testPhoneCallPrintingPrettyCallWithDuration() throws PhoneCall.PhoneCallException {
