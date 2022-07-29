@@ -46,7 +46,7 @@ class Project4IT extends InvokeMainTestCase {
 
     @Test
     void test3AddPhoneCall() {
-        String customer = "Ben Truong";
+        String customer = "John Deer";
         String caller = "123-456-7890";
         String callee = "111-222-3333";
 
