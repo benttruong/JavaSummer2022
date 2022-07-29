@@ -18,8 +18,7 @@ import java.util.Date;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.MethodOrderer.MethodName;
 
 /**
@@ -143,6 +142,31 @@ class Project4IT extends InvokeMainTestCase {
         pretty.callDump(call);
 
     }
+
+    @Test
+    void testREADME(){
+        MainMethodResult result = invokeMain(Project4.class, "-README");
+        assertThat(result.getTextWrittenToStandardOut(), containsString("Project4 - Ben Truong"));
+    }
+
+    @Test
+    void testingMissingCommandLinesAndMalformedData(){
+        MainMethodResult result = invokeMain(Project4.class, "-host");
+        assertThat(result.getTextWrittenToStandardError(), containsString("Missing host name"));
+
+        result = invokeMain(Project4.class, "-port");
+        assertThat(result.getTextWrittenToStandardError(), containsString("Missing port"));
+
+        result = invokeMain(Project4.class, "-unknown");
+        assertThat(result.getTextWrittenToStandardError(), containsString("Unknown Command Line"));
+
+        result = invokeMain(Project4.class, "-host", "-port", "8080", "Ben", "111-222-3333", "222-333-4444", "7/29/2022", "3:40", "AM", "7/29/2022", "3:50", "AM");
+        assertThat(result.getTextWrittenToStandardError(), containsString("Missing host name"));
+
+        result = invokeMain(Project4.class, "-host", "localhost", "-port", "abcd", "Ben", "111-222-3333", "222-333-4444", "7/29/2022", "3:40", "AM", "7/29/2022", "3:50", "AM");
+        assertThat(result.getTextWrittenToStandardError(), containsString("must be an integer"));
+    }
+
 
 
     private int getNumberOfPhoneCallsFromBillString(String out) {

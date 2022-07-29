@@ -61,18 +61,30 @@ public class Project4 {
                 System.out.println(README);
                 return;
             } else if (Objects.equals(args[i], "-host")) {
-                if (args.length - i == 1){
-                    System.err.println("Command is missing host name");
+                if (args.length - i == 1 ) {
+                    usage("Missing host name");
                     return;
                 }
+                Matcher nextArg = unknownCommandPattern.matcher(args[i+1]);
+                if ( nextArg.matches()) {
+                    usage("Missing host name");
+                    return;
+                }
+
                 hostName = args[i+1];
                 ++ i;
                 firstArg = i +1;
             } else if (Objects.equals(args[i], "-port")) {
-                if (args.length - i == 1) {
-                    System.err.println("Command is missing port");
+                if (args.length - i == 1 ) {
+                    usage("Missing port");
                     return;
                 }
+                Matcher nextArg = unknownCommandPattern.matcher(args[i+1]);
+                if ( nextArg.matches()) {
+                    usage("Missing port");
+                    return;
+                }
+
                 portString = args[i + 1];
                 ++i;
                 firstArg = i+1;
@@ -116,7 +128,6 @@ public class Project4 {
         }
 
         PhoneBillRestClient client = new PhoneBillRestClient(hostName, port);
-        // customer = args[firstArg];
 
         PhoneBill bill;
         try {
@@ -151,7 +162,7 @@ public class Project4 {
             endMeridiem = args[firstArg + 8];
             try {
                 call = new PhoneCall(callerNumber, calleeNumber, beginDate, beginTime, beginMeridiem, endDate, endTime, endMeridiem);
-            } catch (PhoneCall.PhoneCallException e) {
+            } catch (PhoneCall.PhoneCallException | RuntimeException e) {
                 usage("Data for new Phone Call is malformed");
                 return;
             }
@@ -279,7 +290,7 @@ public class Project4 {
             "given phone number, and terminates at a given time.\n" +
             "\n" +
             "This is how you use it from the command line:\n" +
-            "java -jar target/phonebill-2022.0.0.jar [options] <args>\n" +
+            "java -jar target/phonebill-client.jar [options] <args>\n" +
             "\n" +
             "args are (in this order):\n" +
             "    customer        : Person whose phone bill we’re modeling\n" +
@@ -289,12 +300,10 @@ public class Project4 {
             "    end             : Date and time (am/pm) call ended\n" +
             "\n" +
             "options are (options may appear in any order):\n" +
-            "    -pretty file    : Pretty print the phone bill to a text file\n" +
-            "                      or standard out (file -).\n" +
-            "    -textFile file  : could be just a file name or\n" +
-            "                      a path with a file name included\n" +
-            "                      where to read/write the phone bill\n" +
+            "    -host file      : Host computer on which the server runs\n" +
+            "    -port file      : Port on which the server is listening\n" +
             "    -print          : Prints a description of the new phone call\n" +
+            "    -search         : Phone calls should be search for\n" +
             "    -README         : Prints a README for this project and exits\n" +
             "\n" +
             "Date and time should be in the format: mm/dd/yyyy hh:mm aa\n" +

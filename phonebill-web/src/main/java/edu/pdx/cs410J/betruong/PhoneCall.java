@@ -18,8 +18,8 @@ import java.util.regex.Pattern;
 public class PhoneCall extends AbstractPhoneCall implements Comparable{
 
 
-  private final String caller;
-  private final String callee;
+  private String caller;
+  private String callee;
   private String beginDate;
   private String beginTime;
   private String beginMeridiem;
@@ -54,14 +54,30 @@ public class PhoneCall extends AbstractPhoneCall implements Comparable{
   // method to construct PhoneCall with information from command lines:
   @VisibleForTesting
   public PhoneCall(String caller, String callee, String beginDate, String beginTime, String beginMeridiem, String endDate, String endTime, String endMeridiem) throws PhoneCallException {
-    this.caller = caller;
-    this.callee = callee;
-    this.beginDate = beginDate;
-    this.beginTime = beginTime;
-    this.beginMeridiem = beginMeridiem;
-    this.endDate = endDate;
-    this.endTime = endTime;
-    this.endMeridiem = endMeridiem;
+    try {
+      if (isValidPhoneNumber(caller))
+        this.caller = caller;
+    } catch (PhoneCallException e) {
+      throw new RuntimeException(e);
+    }
+    try {
+      if (isValidPhoneNumber(callee))
+        this.callee = callee;
+    } catch (PhoneCallException e) {
+      throw new RuntimeException(e);
+    }
+    if (isValidDate(beginDate))
+      this.beginDate = beginDate;
+    if (isValidTime(beginTime))
+      this.beginTime = beginTime;
+    if (isValidMeridiem(beginMeridiem))
+      this.beginMeridiem = beginMeridiem;
+    if(isValidDate(endDate))
+      this.endDate = endDate;
+    if(isValidTime(endTime))
+      this.endTime = endTime;
+    if(isValidMeridiem(endMeridiem))
+      this.endMeridiem = endMeridiem;
     this.duration = getDuration();
 
   }
@@ -83,8 +99,18 @@ public class PhoneCall extends AbstractPhoneCall implements Comparable{
   }
 
   public PhoneCall(String caller, String callee, String begin, String end) {
-    this.caller = caller;
-    this.callee = callee;
+    try {
+      if (isValidPhoneNumber(caller))
+        this.caller = caller;
+    } catch (PhoneCallException e) {
+      throw new RuntimeException(e);
+    }
+    try {
+      if (isValidPhoneNumber(callee))
+        this.callee = callee;
+    } catch (PhoneCallException e) {
+      throw new RuntimeException(e);
+    }
     try {
       setBeginTime(begin);
     } catch (PhoneCallException e) {
@@ -92,6 +118,11 @@ public class PhoneCall extends AbstractPhoneCall implements Comparable{
     }
     try {
       setEndTime(end);
+    } catch (PhoneCallException e) {
+      throw new RuntimeException(e);
+    }
+    try {
+      this.duration = getDuration();
     } catch (PhoneCallException e) {
       throw new RuntimeException(e);
     }
@@ -279,17 +310,18 @@ public class PhoneCall extends AbstractPhoneCall implements Comparable{
    * false if not in the correct format
    */
   @VisibleForTesting
-  static boolean isValidPhoneNumber(String phoneNumber) {
+  static boolean isValidPhoneNumber(String phoneNumber) throws PhoneCallException {
     Pattern p = Pattern.compile("^\\d{3}-\\d{3}-\\d{4}$");
     Matcher m = p.matcher(phoneNumber);
     if (m.matches())
       return true;
     else {
-      System.err.println(phoneNumber + " is an Invalid Phone Number");
-      return false;
+      throw new PhoneCallException();
     }
 
   }
+
+
 
   @VisibleForTesting
   static boolean isValidMeridiem(String arg) {

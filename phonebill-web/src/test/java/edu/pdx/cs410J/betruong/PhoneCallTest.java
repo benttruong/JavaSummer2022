@@ -2,6 +2,7 @@ package edu.pdx.cs410J.betruong;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -94,7 +95,7 @@ public class PhoneCallTest {
     } catch (ParseException e) {
       throw new RuntimeException(e);
     }
-    PhoneCall call = new PhoneCall("123", "456", "12/5/2022", "11:15", "AM", "12/16/2022", "12:30", "PM");
+    PhoneCall call = new PhoneCall("123-456-7890", "456-123-7890", "12/5/2022", "11:15", "AM", "12/16/2022", "12:30", "PM");
     assertEquals(call.getBeginTime(), time);
   }
 
@@ -104,7 +105,7 @@ public class PhoneCallTest {
    */
   @Test
   void getEndTimeStringReturnsCorrectTime() throws PhoneCall.PhoneCallException {
-    PhoneCall call = new PhoneCall("123", "456", "12/5/2022", "11:15", "AM", "12/16/2022", "12:30", "PM");
+    PhoneCall call = new PhoneCall("123-456-7890", "456-111-1111", "12/5/2022", "11:15", "AM", "12/16/2022", "12:30", "PM");
     assertThat(call.getEndTimeString(), containsString("12:30 PM"));
     System.out.println(call.getEndTimeString());
     System.out.println(call);
@@ -195,11 +196,23 @@ public class PhoneCallTest {
   }
 
   @Test
-  @Disabled
   void testingPhoneCallDateTimeParsing(){
     PhoneCall call = new PhoneCall("123-456-7890", "111-456-7890", "7/26/2022 7:15 PM", "7/26/2022 7:20 PM");
     assertThat(call.getCaller(), containsString("123-456-7890"));
     assertThat(call.getBeginTimeLiterals(), containsString("7/26/2022 7:15 PM"));
+  }
+
+  @Test
+  void testingPhoneCallIntegratingWithPhoneBill(){
+    PhoneCall emptyPhoneCall = new PhoneCall();
+    assertEquals(null, emptyPhoneCall.getCaller());
+    PhoneBill bill = new PhoneBill("Ben");
+    PhoneCall call = new PhoneCall("111-222-3333", "111-333-5555", "7/29/2022 3:00 AM", "7/29/2022 3:15 AM");
+    assertEquals(0, bill.getPhoneCalls().size());
+    bill.addPhoneCall(call);
+    assertEquals(1, bill.getPhoneCalls().size());
+
+
   }
 
 }
