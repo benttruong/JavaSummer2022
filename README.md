@@ -391,6 +391,18 @@ in submitted code much easier.  Note that the `submit.sh` will issue an error if
 uncommitted changes in your local clone of the repository.  So, be sure to commit all of
 your changes before submitting. 
 
+Once the `submit.sh` has completed, and the tag for the repository has been created, the tag will need to be pushed to the remote repository (your Github repository). 
+
+To push all tags:
+```shell
+$ git push --tags
+```
+
+To push individual tag:
+```shell
+$ git push origin submit-Project1-20220501T09:00:58
+```
+
 ### About how long do the projects take to complete?
 
 Starting in the Winter of 2022, we started gathering data from students
@@ -561,6 +573,7 @@ pushing it to GitHub:
 ```
 $ git checkout 62fc42c5b0cf4ddddf78e7568b008bedc9037b38
 $ git branch gh-pages
+$ git checkout gh-pages
 $ git rm README.md
 $ git commit -m "Remove README.md on gh-pages branch" README.md
 $ git push --set-upstream origin gh-pages
@@ -570,9 +583,7 @@ $ git checkout main
 Then, you can generate and publish your website using the below
 commands.  Note that before you can do this, you must replace
 instances of `YourGitHubUser` with your GitHub username in the
-top-level (parent) `pom.xml` file.  (Note that it is essential that
-your GitHub id be **lowercase letters** in the
-`distributionManagement/url` section of the `pom.xml` file.)
+top-level (parent) `pom.xml` file.
 
 ```
 $ ./mvnw site
