@@ -20,4 +20,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ReadMe.class);
         startActivity(intent);
     }
+
+    public void addPhoneCall(View view) {
+        Intent intent = new Intent(this, AddPhoneCall.class);
+        startActivity(intent);
+    }
 }
