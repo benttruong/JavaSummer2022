@@ -10,25 +10,27 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello Ben!"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="500dp"
+        android:text="Welcome to Ben's Phone Bill Application"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.507"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.671" />
+        app:layout_constraintVertical_bias="0.682" />
 
     <Button
         android:id="@+id/button2"
         android:layout_width="107dp"
         android:layout_height="35dp"
-        android:layout_marginBottom="193dp"
-        android:onClick="sayHello"
-        android:text="Click ME"
-        app:layout_constraintBottom_toTopOf="@+id/textView"
+        android:layout_marginTop="200dp"
+        android:onClick="displayREADME"
+        android:text="Help"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.488" />
+        app:layout_constraintVertical_bias="0.85" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

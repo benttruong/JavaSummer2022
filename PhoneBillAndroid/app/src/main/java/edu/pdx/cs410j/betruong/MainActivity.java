@@ -2,6 +2,7 @@ package edu.pdx.cs410j.betruong;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.view.View;
@@ -15,8 +16,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
-    public void sayHello(View view) {
-        PhoneCall call = new PhoneCall();
-        Toast.makeText(this, "Call detail: " + call, Toast.LENGTH_SHORT).show();
+    public void displayREADME(View view) {
+        Intent intent = new Intent(this, ReadMe.class);
+        startActivity(intent);
     }
 }

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Phone Bill</string>
+    <string name="readMe"><![CDATA[Readme will show here]]></string>
 </resources>
