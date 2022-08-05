@@ -1,5 +1,7 @@
 package edu.pdx.cs410j.betruong;
 
+import android.widget.Toast;
+
 import androidx.annotation.VisibleForTesting;
 
 import java.text.DateFormat;
@@ -11,9 +13,10 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
 import edu.pdx.cs410J.AbstractPhoneCall;
 
-public class PhoneCall extends AbstractPhoneCall {
+public class PhoneCall extends AbstractPhoneCall implements Comparable{
 
     private String caller;
     private String callee;
@@ -95,34 +98,16 @@ public class PhoneCall extends AbstractPhoneCall {
         this.duration = 0;
     }
 
-    public PhoneCall(String caller, String callee, String begin, String end) {
-        try {
-            if (isValidPhoneNumber(caller))
-                this.caller = caller;
-        } catch (PhoneCallException e) {
-            throw new RuntimeException(e);
+    public PhoneCall(String caller, String callee, String begin, String end) throws PhoneCallException {
+        if (isValidPhoneNumber(caller)) {
+            this.caller = caller;
         }
-        try {
-            if (isValidPhoneNumber(callee))
-                this.callee = callee;
-        } catch (PhoneCallException e) {
-            throw new RuntimeException(e);
+        if (isValidPhoneNumber(callee)) {
+            this.callee = callee;
         }
-        try {
-            setBeginTime(begin);
-        } catch (PhoneCallException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            setEndTime(end);
-        } catch (PhoneCallException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            this.duration = getDuration();
-        } catch (PhoneCallException e) {
-            throw new RuntimeException(e);
-        }
+        setBeginTime(begin);
+        setEndTime(end);
+        this.duration = getDuration();
     }
 
     /**
@@ -266,14 +251,15 @@ public class PhoneCall extends AbstractPhoneCall {
     }
 
     @VisibleForTesting
-    static boolean isValidTime(String time) {
+    static boolean isValidTime(String time) throws PhoneCallException {
         Pattern p = Pattern.compile("^(\\d|[0-1][0-2]|):([0-5]\\d)$");
         Matcher m = p.matcher(time);
         if (m.matches())
             return true;
         else {
-            System.err.println(time + " is an Invalid Time");
-            return false;
+            throw new PhoneCallException("Time is not valid. Format should be hh:mm");
+            // System.err.println(time + " is an Invalid Time");
+            // return false;
         }
     }
 
@@ -286,14 +272,15 @@ public class PhoneCall extends AbstractPhoneCall {
      * false if format is not correct
      */
     @VisibleForTesting
-    static boolean isValidDate(String date) {
+    static boolean isValidDate(String date) throws PhoneCallException {
         Pattern p = Pattern.compile("^(0?[1-9]|1[012])[- /.](0?[1-9]|[12]\\d|3[01])[- /.](19|20)\\d\\d$");
         Matcher m = p.matcher(date);
         if (m.matches())
             return true;
         else {
-            System.err.println(date + " is an Invalid Date");
-            return false;
+            throw new PhoneCallException("Date is not valid. Format should be mm/dd/yyyy");
+            // System.err.println(date + " is an Invalid Date");
+            // return false;
         }
     }
 
@@ -312,7 +299,7 @@ public class PhoneCall extends AbstractPhoneCall {
         if (m.matches())
             return true;
         else {
-            throw new PhoneCallException();
+            throw new PhoneCallException("Phone number is not valid. Format example: 123-456-7890");
         }
 
     }
@@ -320,11 +307,12 @@ public class PhoneCall extends AbstractPhoneCall {
 
 
     @VisibleForTesting
-    static boolean isValidMeridiem(String arg) {
+    static boolean isValidMeridiem(String arg) throws PhoneCallException {
         if (Objects.equals(arg.toLowerCase(Locale.ROOT), "am") || Objects.equals(arg.toLowerCase(Locale.ROOT), "pm")){
             return true;
         }
-        return false;
+        throw new PhoneCallException("expecting am/pm after time");
+        // return false;
     }
 
     @VisibleForTesting
@@ -333,7 +321,7 @@ public class PhoneCall extends AbstractPhoneCall {
         Date end = getEndTime();
         long duration = end.getTime() - begin.getTime();
         if (duration < 0){
-            throw new PhoneCallException ();
+            throw new PhoneCallException ("Error: End Time is before Begin Time");
         }
         return duration;
     }
@@ -368,7 +356,7 @@ public class PhoneCall extends AbstractPhoneCall {
     void setBeginTime(String time) throws PhoneCallException {
         String [] values = time.split(" ");
         if (values.length != 3){
-            throw new PhoneCallException();
+            throw new PhoneCallException("Missing information for Date and Time");
         }
         if (PhoneCall.isValidDate(values[0]) &&
                 PhoneCall.isValidTime(values[1]) &&
@@ -383,7 +371,7 @@ public class PhoneCall extends AbstractPhoneCall {
     void setEndTime(String time) throws PhoneCallException {
         String [] values = time.split(" ");
         if (values.length != 3){
-            throw new PhoneCallException();
+            throw new PhoneCallException("Missing information for Date and Time");
         }
         if (PhoneCall.isValidDate(values[0]) &&
                 PhoneCall.isValidTime(values[1]) &&
@@ -397,7 +385,8 @@ public class PhoneCall extends AbstractPhoneCall {
 
 
     public static class PhoneCallException extends Throwable {
-        public PhoneCallException() {
+        public PhoneCallException(String message) {
+            super(message);
         }
     }
 

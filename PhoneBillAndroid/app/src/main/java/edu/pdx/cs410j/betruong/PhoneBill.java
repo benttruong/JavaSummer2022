@@ -5,11 +5,12 @@ import androidx.annotation.VisibleForTesting;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 import edu.pdx.cs410J.AbstractPhoneBill;
 import edu.pdx.cs410J.AbstractPhoneCall;
 
-public class PhoneBill extends AbstractPhoneBill {
+public class PhoneBill extends AbstractPhoneBill<PhoneCall> {
 
     private final String customer;
 
@@ -41,15 +42,15 @@ public class PhoneBill extends AbstractPhoneBill {
      *        A phone call to add
      */
     @Override
-    public void addPhoneCall(AbstractPhoneCall call) {
+    public void addPhoneCall(PhoneCall call) {
         this.phoneCalls.add((PhoneCall) call);
-        // Collections.sort(phoneCalls);
+        Collections.sort(phoneCalls);
     }
 
-    public void addPhoneCall(PhoneCall call) {
+  /*  public void addPhoneCall(PhoneCall call) {
         this.phoneCalls.add(call);
         // Collections.sort(phoneCalls);
-    }
+    }*/
 
     /**
      * <code>Collection</code> of phone calls from this phone bill
