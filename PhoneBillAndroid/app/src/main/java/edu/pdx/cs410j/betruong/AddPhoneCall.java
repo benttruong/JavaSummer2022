@@ -2,10 +2,12 @@ package edu.pdx.cs410j.betruong;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import edu.pdx.cs410j.betruong.PhoneCall.PhoneCallException;
@@ -52,6 +54,15 @@ public class AddPhoneCall extends AppCompatActivity {
         }
         bill.addPhoneCall(call);
 
-        Toast.makeText(this, call.toString(), Toast.LENGTH_LONG).show();
+        @SuppressLint("UseSwitchCompatOrMaterialCode") Switch prettyCall = (Switch) findViewById(R.id.printCall);
+
+        if (prettyCall.isChecked()) {
+            Toast.makeText(this, call.getPrettyCallString(), Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "Phone call added", Toast.LENGTH_LONG).show();
+        }
+        // Toast.makeText(this, prettyCall.getTextOn(), Toast.LENGTH_LONG).show();
+        // Toast.makeText(this, call.toString(), Toast.LENGTH_LONG).show();
+        // finish();
     }
 }
