@@ -1,7 +1,5 @@
 package edu.pdx.cs410j.betruong;
 
-import android.widget.Toast;
-
 import androidx.annotation.VisibleForTesting;
 
 import java.text.DateFormat;
@@ -54,18 +52,9 @@ public class PhoneCall extends AbstractPhoneCall implements Comparable{
     // method to construct PhoneCall with information from command lines:
     @VisibleForTesting
     public PhoneCall(String caller, String callee, String beginDate, String beginTime, String beginMeridiem, String endDate, String endTime, String endMeridiem) throws PhoneCallException {
-        try {
-            if (isValidPhoneNumber(caller))
-                this.caller = caller;
-        } catch (PhoneCallException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            if (isValidPhoneNumber(callee))
-                this.callee = callee;
-        } catch (PhoneCallException e) {
-            throw new RuntimeException(e);
-        }
+        this.caller = caller;
+        this.callee = callee;
+
         if (isValidDate(beginDate))
             this.beginDate = beginDate;
         if (isValidTime(beginTime))
