@@ -377,6 +377,10 @@ public class PhoneCall extends AbstractPhoneCall implements Comparable{
         public PhoneCallException(String message) {
             super(message);
         }
+
+        public PhoneCallException() {
+
+        }
     }
 
 
