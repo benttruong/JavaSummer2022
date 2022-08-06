@@ -19,7 +19,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -106,7 +105,6 @@ public class MainActivity extends AppCompatActivity {
         public void addPhoneCall (View view){
             Intent intent = new Intent(this, AddPhoneCall.class);
             startActivityForResult(intent, GET_CUSTOMER_FROM_ADD_PHONE_CALL);
-
         }
 
         @SuppressLint("SetTextI18n")
