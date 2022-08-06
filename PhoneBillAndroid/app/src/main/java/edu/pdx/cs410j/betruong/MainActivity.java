@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         bills = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
 
         try {
-            bills.addAll((Collection<? extends PhoneBill>) readFromBillsFile());
+            bills.addAll(readFromBillsFile());
         } catch (IOException | ParserException | PhoneCall.PhoneCallException e) {
             Toast.makeText(this, "Something wrong while reading files. Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
@@ -64,48 +64,36 @@ public class MainActivity extends AppCompatActivity {
     protected ArrayList<PhoneBill> readFromBillsFile() throws IOException, ParserException, PhoneCall.PhoneCallException {
         ArrayList<PhoneBill> bills = new ArrayList<>();
         File billsFile = getBillsFile();
-        Pattern p = Pattern.compile("^Customer: (.*)$");
+        Pattern c = Pattern.compile("^Customer: (.*)$");
+        Pattern p = Pattern.compile("^Phone call from (.*) to (.*) from (.*) to (.*)$");
 
         try (BufferedReader br = new BufferedReader(new FileReader(billsFile))) {
 
-            String toRead = br.readLine();
-            if (toRead == null) {
-                throw new ParserException(("File is empty"));
-            }
             String customer;
             PhoneBill bill = null;
-            while (toRead != null) {
-                Matcher m = p.matcher(toRead);
-                if (m.matches()) {
-                    customer = m.group(1);
+            String toRead;
+            while ((toRead = br.readLine()) != null) {
+                Matcher customerMatcher = c.matcher(toRead);
+                Matcher phoneCallMatcher = p.matcher(toRead);
+                if (customerMatcher.matches()) {
+                    if (bill != null) {
+                        bills.add(bill);
+                    }
+                    customer = customerMatcher.group(1);
                     bill = new PhoneBill(customer);
                     bills.add(bill);
-                } else {
-                    String[] values = toRead.split("Phone call from | to | from | ");
-                    if (values.length != 9) {
-                        throw new ParserException("Data is malformed");
-                    }
-
-                    if (PhoneCall.isValidPhoneNumber(values[1]) &&
-                            PhoneCall.isValidPhoneNumber(values[2]) &&
-                            PhoneCall.isValidDate(values[3]) &&
-                            PhoneCall.isValidTime(values[4]) &&
-                            PhoneCall.isValidMeridiem(values[5]) &&
-                            PhoneCall.isValidDate(values[6]) &&
-                            PhoneCall.isValidTime(values[7]) &&
-                            PhoneCall.isValidMeridiem(values[8])) {
-                        try {
-                            bill.addPhoneCall(new PhoneCall(values[1], values[2], values[3], values[4], values[5], values[6], values[7], values[8]));
-                        } catch (PhoneCall.PhoneCallException e) {
-                            throw new PhoneCall.PhoneCallException();
-                        }
-                    } else {
-                        throw new ParserException("Phone call from file has malformed data");
-                    }
-                    toRead = br.readLine();
+                } else if (phoneCallMatcher.matches()) {
+                    PhoneCall call = new PhoneCall(
+                            phoneCallMatcher.group(1),
+                            phoneCallMatcher.group(2),
+                            phoneCallMatcher.group(3),
+                            phoneCallMatcher.group(4));
+                    assert bill != null;
+                    bill.addPhoneCall(call);
                 }
-
             }
+        } catch (IOException e){
+            Toast.makeText(this, "This is the first time the app is ran and there is no data yet", Toast.LENGTH_SHORT).show();
         }
         return bills;
     }
@@ -166,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
                 for (int i = 0; i < bills.getCount(); ++i) {
                     pw.println("Customer: " + bills.getItem(i).getCustomer());
                     for (PhoneCall call : bills.getItem(i).getPhoneCalls()) {
-                        pw.println(call);
+                        pw.println(call.toFile());
                     }
                 }
             }
@@ -175,8 +163,7 @@ public class MainActivity extends AppCompatActivity {
         @NonNull
         private File getBillsFile() {
             File dataDirectory = this.getDataDir();
-            File billFile = new File(dataDirectory, "bills.txt");
-            return billFile;
+            return new File(dataDirectory, "bills.txt");
         }
 
     }

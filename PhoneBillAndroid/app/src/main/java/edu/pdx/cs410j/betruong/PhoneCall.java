@@ -1,5 +1,6 @@
 package edu.pdx.cs410j.betruong;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 
 import java.text.DateFormat;
@@ -371,6 +372,11 @@ public class PhoneCall extends AbstractPhoneCall implements Comparable{
         }
     }
 
+
+
+    public String toFile() {
+        return "Phone call from " + this.caller + " to " + this.callee + " from " + this.getBeginTimeLiterals() + " to " + this.getEndTimeLiterals();
+    }
 
 
     public static class PhoneCallException extends Throwable {
