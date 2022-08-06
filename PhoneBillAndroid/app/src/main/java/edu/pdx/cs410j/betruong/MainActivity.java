@@ -6,7 +6,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -19,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayAdapter<PhoneBill> bills;
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "VisibleForTests"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
