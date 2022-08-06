@@ -5,10 +5,9 @@ import androidx.annotation.VisibleForTesting;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
+
 
 import edu.pdx.cs410J.AbstractPhoneBill;
-import edu.pdx.cs410J.AbstractPhoneCall;
 
 public class PhoneBill extends AbstractPhoneBill<PhoneCall> {
 
@@ -47,10 +46,6 @@ public class PhoneBill extends AbstractPhoneBill<PhoneCall> {
         Collections.sort(phoneCalls);
     }
 
-  /*  public void addPhoneCall(PhoneCall call) {
-        this.phoneCalls.add(call);
-        // Collections.sort(phoneCalls);
-    }*/
 
     /**
      * <code>Collection</code> of phone calls from this phone bill
@@ -64,7 +59,7 @@ public class PhoneBill extends AbstractPhoneBill<PhoneCall> {
 
     @VisibleForTesting
     public String getPrettyBillString() {
-        String result = "==========================================================================================================\n"
+        String result = "==============================\n"
                 + "Customer's name: " + this.getCustomer()
                 + "\n" + "This phone bill contains " + this.phoneCalls.size() + " phone call(s)."
                 + "\n----------------------";
@@ -73,7 +68,7 @@ public class PhoneBill extends AbstractPhoneBill<PhoneCall> {
             result += "\n" + count + ". " + call.getPrettyCallString();
             ++count;
         }
-        result += "\n==========================================================================================================\n";
+        result += "\n===============================\n";
         return result;
     }
 }

@@ -3,8 +3,8 @@ package edu.pdx.cs410j.betruong;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Switch;
@@ -14,6 +14,11 @@ import edu.pdx.cs410j.betruong.PhoneCall.PhoneCallException;
 
 public class AddPhoneCall extends AppCompatActivity {
 
+    static final String EXTRA_CUSTOMER = "CUSTOMER";
+    static final String EXTRA_CALL = "CALL";
+    private PhoneCall call;
+    private String customer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,6 +26,7 @@ public class AddPhoneCall extends AppCompatActivity {
     }
 
 
+    @SuppressLint("VisibleForTests")
     public void addPhoneCall(View view) {
         EditText customerText = findViewById(R.id.customer);
 
@@ -29,7 +35,7 @@ public class AddPhoneCall extends AppCompatActivity {
         EditText beginDateTimeText = findViewById(R.id.beginDateTime);
         EditText endDateTimeText = findViewById(R.id.endDateTime);
 
-        String customer = customerText.getText().toString();
+        customer = customerText.getText().toString();
         String caller = callerText.getText().toString();
         String callee = calleeText.getText().toString();
         String beginDateTime = beginDateTimeText.getText().toString();
@@ -43,16 +49,15 @@ public class AddPhoneCall extends AppCompatActivity {
             Toast.makeText(this, "All fields are required", Toast.LENGTH_LONG).show();
             return;
         }
-        PhoneBill bill = new PhoneBill(customer);
+        // PhoneBill bill = new PhoneBill(customer);
 
-        PhoneCall call;
         try {
-            call = new PhoneCall(caller, callee, beginDateTime, endDateTime);
+            this.call = new PhoneCall(caller, callee, beginDateTime, endDateTime);
         } catch (PhoneCallException e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
             return;
         }
-        bill.addPhoneCall(call);
+        // bill.addPhoneCall(this.call);
 
         @SuppressLint("UseSwitchCompatOrMaterialCode") Switch prettyCall = (Switch) findViewById(R.id.printCall);
 
@@ -61,8 +66,21 @@ public class AddPhoneCall extends AppCompatActivity {
         } else {
             Toast.makeText(this, "Phone call added", Toast.LENGTH_LONG).show();
         }
-        // Toast.makeText(this, prettyCall.getTextOn(), Toast.LENGTH_LONG).show();
-        // Toast.makeText(this, call.toString(), Toast.LENGTH_LONG).show();
-        // finish();
+        savePhoneCall(view);
+        // goToShowPhoneBills(view);
     }
+
+    public void savePhoneCall(View view){
+        Intent intent = new Intent();
+        // intent.putExtra(EXTRA_CALL, call);
+        intent.putExtra(EXTRA_CUSTOMER, this.customer);
+        intent.putExtra(EXTRA_CALL, call);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
+   /* public void goToShowPhoneBills(View view){
+        Intent intent = new Intent(this, ShowPhoneBills.class);
+        startActivityForResult(intent, requestCode );
+    }*/
 }

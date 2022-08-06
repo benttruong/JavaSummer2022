@@ -12,13 +12,14 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:ems="10"
-        android:hint="Customer's Name"
+        android:hint="@string/customer_s_name"
         android:inputType="textPersonName"
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:autofillHints="" />
 
     <EditText
         android:id="@+id/caller"
@@ -26,14 +27,15 @@
         android:layout_height="49dp"
         android:layout_marginTop="52dp"
         android:ems="10"
-        android:hint="Caller Number"
+        android:hint="@string/caller_number"
         android:inputType="phone"
         android:singleLine="true"
         android:textColorHint="#757575"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/customer" />
+        app:layout_constraintTop_toBottomOf="@+id/customer"
+        android:autofillHints="" />
 
 
     <EditText
@@ -42,28 +44,30 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:ems="10"
-        android:hint="Callee Number"
+        android:hint="@string/callee_number"
         android:inputType="phone"
         android:minHeight="48dp"
         android:singleLine="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/caller" />
+        app:layout_constraintTop_toBottomOf="@+id/caller"
+        android:autofillHints="" />
     <EditText
         android:id="@+id/beginDateTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:ems="10"
-        android:hint="Begin Date and Time"
+        android:hint="@string/begin_date_and_time"
         android:inputType="date|time"
         android:minHeight="48dp"
         android:singleLine="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/callee" />
+        app:layout_constraintTop_toBottomOf="@+id/callee"
+        android:autofillHints="" />
 
     <EditText
         android:id="@+id/endDateTime"
@@ -71,14 +75,15 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:ems="10"
-        android:hint="End Date and Time"
+        android:hint="@string/end_date_and_time"
         android:inputType="date|time"
         android:minHeight="48dp"
         android:singleLine="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/beginDateTime" />
+        app:layout_constraintTop_toBottomOf="@+id/beginDateTime"
+        android:autofillHints="" />
 
 
     <Button
@@ -86,7 +91,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="addPhoneCall"
-        android:text="Add"
+        android:text="@string/add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -98,12 +103,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Pretty print call"
-        android:textOff="OFF"
-        android:textOn="ON"
+        android:text="@string/pretty_print_call"
+        android:textOff="@string/off"
+        android:textOn="@string/on"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.374"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/endDateTime" />
+        app:layout_constraintTop_toBottomOf="@+id/endDateTime"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
