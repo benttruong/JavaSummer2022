@@ -28,7 +28,7 @@ public class AddPhoneCall extends AppCompatActivity {
 
     @SuppressLint("VisibleForTests")
     public void addPhoneCall(View view) {
-        EditText customerText = findViewById(R.id.customer);
+        EditText customerText = findViewById(R.id.customerToSearch);
 
         EditText callerText = findViewById(R.id.caller);
         EditText calleeText = findViewById(R.id.callee);

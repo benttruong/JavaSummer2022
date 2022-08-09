@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -18,6 +19,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -27,7 +29,9 @@ import edu.pdx.cs410J.ParserException;
 public class MainActivity extends AppCompatActivity {
 
 
-    private static final int GET_CUSTOMER_FROM_ADD_PHONE_CALL = 42;
+    private static final int ADD_PHONE_CALL = 42;
+    static final String BILLS = "BILLS";
+    private static final int SEARCH = 84;
 
     private ArrayAdapter<PhoneBill> bills;
 
@@ -104,7 +108,18 @@ public class MainActivity extends AppCompatActivity {
 
         public void addPhoneCall (View view){
             Intent intent = new Intent(this, AddPhoneCall.class);
-            startActivityForResult(intent, GET_CUSTOMER_FROM_ADD_PHONE_CALL);
+            startActivityForResult(intent, ADD_PHONE_CALL);
+        }
+
+        public void searchPhoneCall (View view) {
+            ArrayList<PhoneBill> billsToSearch = new ArrayList<>();
+            for (int i = 0; i<bills.getCount(); ++i){
+                billsToSearch.add(bills.getItem(i));
+            }
+            Intent intent = new Intent(this, Search.class);
+            intent.putExtra(BILLS, billsToSearch);
+            setResult(RESULT_OK, intent);
+            startActivity(intent);
         }
 
         @SuppressLint("SetTextI18n")
@@ -116,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
             ListView listView = findViewById(R.id.mainPhoneBills);
 
 
-            if (requestCode == GET_CUSTOMER_FROM_ADD_PHONE_CALL && resultCode == RESULT_OK) {
+            if (requestCode == ADD_PHONE_CALL && resultCode == RESULT_OK) {
                 PhoneCall call = (PhoneCall) data.getSerializableExtra(AddPhoneCall.EXTRA_CALL);
                 String customer = data.getStringExtra(AddPhoneCall.EXTRA_CUSTOMER);
                 for (int i = 0; i < bills.getCount(); ++i) {
