@@ -15,7 +15,7 @@
         android:autofillHints=""
         android:ems="10"
         android:hint="@string/to_time"
-        android:inputType="datetime|time"
+        android:inputType="date|datetime|time"
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fromTimeToSearch" />
